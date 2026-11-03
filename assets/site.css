@@ -858,14 +858,20 @@ a { color: inherit; }
   .foot-top { align-items: flex-start; flex-direction: column; gap: 18px; }
 }
 
-@media (max-width: 400px) {
-  .nav-cta { padding-inline: 14px; }
+@media (max-width: 430px) {
+  .nav { gap: 10px; }
+  .nav-links { gap: 10px; }
+  .nav-cta { padding-inline: 12px; }
+  .wordmark { gap: 6px; font-size: var(--fs-small); }
+  .wordmark-avatar { width: 20px; height: 20px; }
+}
+
+@media (max-width: 380px) {
+  .nav { gap: 8px; }
+  .nav-links { gap: 8px; }
 }
 
 @media (max-width: 360px) {
-  .nav { gap: 10px; }
-  .wordmark { gap: 6px; font-size: var(--fs-small); }
-  .wordmark-avatar { width: 20px; height: 20px; }
   .nav-links a:nth-child(3) { display: none; }
 }
 
