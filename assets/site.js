@@ -21,11 +21,83 @@
     window.requestAnimationFrame(tick);
   };
 
+  /* ── 标题数字解码 ─────────────────────────────────────── */
+  const GLYPHS = '0123456789';
+
+  const splitChars = (el) => {
+    const chars = [];
+
+    [...el.childNodes].forEach((node) => {
+      if (node.nodeType !== Node.TEXT_NODE) return;
+
+      const frag = document.createDocumentFragment();
+      [...node.textContent].forEach((ch) => {
+        if (/\s/.test(ch)) {
+          frag.append(ch);
+          return;
+        }
+        const span = document.createElement('span');
+        span.className = 'ch';
+        span.textContent = ch;
+        span.dataset.ch = ch;
+        frag.append(span);
+        chars.push(span);
+      });
+      node.replaceWith(frag);
+    });
+
+    return chars;
+  };
+
+  const runDecode = (el) => {
+    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+    const chars = splitChars(el);
+    if (!chars.length) return;
+
+    const start = performance.now();
+    const wait = 220;      // 等遮罩揭开一段再开始
+    const stagger = 58;    // 每字启动间隔
+    const hold = 300;      // 每字乱跳时长
+
+    const tick = (now) => {
+      let pending = false;
+
+      chars.forEach((node, i) => {
+        const t = now - start - wait - i * stagger;
+
+        if (t < 0) {
+          pending = true;
+          return;
+        }
+
+        if (t < hold) {
+          pending = true;
+          node.classList.add('is-scrambling');
+          if (!node.dataset.next || now >= Number(node.dataset.next)) {
+            node.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+            node.dataset.next = String(now + 45 + Math.random() * 45);
+          }
+        } else if (node.textContent !== node.dataset.ch) {
+          node.textContent = node.dataset.ch;
+          node.classList.remove('is-scrambling');
+        }
+      });
+
+      if (pending) window.requestAnimationFrame(tick);
+    };
+
+    window.requestAnimationFrame(tick);
+  };
+
   /* ── 入场 ─────────────────────────────────────────────── */
   const items = Array.from(document.querySelectorAll('[data-reveal]'));
 
   const activate = (el) => {
     el.classList.add('is-in');
+    if ('decode' in el.dataset && el.dataset.decoded !== '1') {
+      el.dataset.decoded = '1';
+      runDecode(el);
+    }
     if (el.dataset.counted === '1') return;
     el.dataset.counted = '1';
     el.querySelectorAll('[data-count]').forEach(runCounter);

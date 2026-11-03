@@ -193,12 +193,30 @@ a { color: inherit; }
 }
 
 .hero h1 {
+  --ls: -0.045em;
   font-family: var(--cjk);
   font-weight: 700;
   font-size: var(--fs-display);
   line-height: 0.9;
-  letter-spacing: -0.045em;
+  letter-spacing: var(--ls);
   text-wrap: balance;
+}
+
+/* 解码动效：单字锁定 1em 宽，乱跳的数字不会撑动排版。
+   字间距改用 margin —— letter-spacing 不作用于 inline-block 之间 */
+.decode .ch {
+  display: inline-block;
+  width: 1em;
+  margin-right: var(--ls, 0);
+  text-align: center;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.28s var(--ease), opacity 0.28s var(--ease);
+}
+
+.decode .ch.is-scrambling {
+  color: var(--muted);
+  opacity: 0.75;
 }
 
 .hero-sub {
