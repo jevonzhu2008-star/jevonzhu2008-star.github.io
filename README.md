@@ -1,5 +1,7 @@
 # Jevon Zhu · Power BI 站点入口
 
+线上地址：<https://jevonzhu2008-star.github.io/>
+
 三个站点的统一首页：
 
 - **人人都爱 Power BI** — <https://ipowerbi.mysxl.cn/>
