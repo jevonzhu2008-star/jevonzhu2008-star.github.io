@@ -232,14 +232,6 @@ a { color: inherit; }
   color: var(--muted);
 }
 
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  flex-wrap: wrap;
-  margin-top: 34px;
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -268,16 +260,6 @@ a { color: inherit; }
 
 .btn:hover .arr { transform: translateX(4px); }
 .btn:active { transform: translateY(1px); }
-
-.link-arrow {
-  font-size: var(--fs-body);
-  text-decoration: none;
-  border-bottom: 2px solid var(--accent);
-  padding-bottom: 2px;
-  transition: border-color 0.2s var(--ease);
-}
-
-.link-arrow:hover { border-color: var(--ink); }
 
 .hero-stats {
   grid-column: 1 / -1;
