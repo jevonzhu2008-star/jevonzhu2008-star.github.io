@@ -157,6 +157,7 @@
   const hero = document.querySelector('.hero');
   const heroText = document.querySelector('.hero-text');
   const deck = document.querySelector('.deck');
+  const stages = Array.from(document.querySelectorAll('[data-stage]'));
 
   const onScroll = () => {
     if (nav) nav.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -171,6 +172,18 @@
       const p = Math.min(1, Math.max(0, window.scrollY / Math.max(1, hero.offsetHeight)));
       deck.style.setProperty('--sy', `${(p * 34).toFixed(1)}px`);
       if (heroText) heroText.style.setProperty('--ho', p.toFixed(3));
+    }
+
+    if (!reduce && stages.length) {
+      const offsets = stages.map((stage) => {
+        const rect = stage.getBoundingClientRect();
+        const mid = rect.top + rect.height / 2;
+        return Math.max(-1, Math.min(1, (window.innerHeight / 2 - mid) / (window.innerHeight * 0.75)));
+      });
+
+      stages.forEach((stage, i) => {
+        stage.style.setProperty('--sp', offsets[i].toFixed(3));
+      });
     }
 
     updateSpy();
@@ -207,6 +220,59 @@
       targetX = 0;
       targetY = 0;
       if (!frame) frame = window.requestAnimationFrame(render);
+    });
+  }
+
+  /* ── 站点舞台：指针视差、跟随光标、聚光灯 ─────────────── */
+  if (finePointer && !reduce) {
+    stages.forEach((stage) => {
+      const cursor = stage.querySelector('.stage-cursor');
+      let targetX = 0;
+      let targetY = 0;
+      let curX = 0;
+      let curY = 0;
+      let frame = 0;
+
+      const render = () => {
+        frame = 0;
+        curX += (targetX - curX) * 0.14;
+        curY += (targetY - curY) * 0.14;
+        stage.style.setProperty('--mx', curX.toFixed(4));
+        stage.style.setProperty('--my', curY.toFixed(4));
+        if (Math.abs(targetX - curX) > 0.002 || Math.abs(targetY - curY) > 0.002) schedule();
+      };
+
+      const schedule = () => {
+        if (!frame) frame = window.requestAnimationFrame(render);
+      };
+
+      const track = (event) => {
+        const rect = stage.getBoundingClientRect();
+        const px = event.clientX - rect.left;
+        const py = event.clientY - rect.top;
+
+        targetX = Math.max(-1, Math.min(1, (px / rect.width - 0.5) * 2));
+        targetY = Math.max(-1, Math.min(1, (py / rect.height - 0.5) * 2));
+
+        if (cursor) {
+          cursor.style.setProperty('--cx', `${px.toFixed(1)}px`);
+          cursor.style.setProperty('--cy', `${py.toFixed(1)}px`);
+        }
+
+        stage.style.setProperty('--gx', `${px.toFixed(1)}px`);
+        stage.style.setProperty('--gy', `${py.toFixed(1)}px`);
+
+        schedule();
+      };
+
+      stage.addEventListener('pointermove', track);
+      stage.addEventListener('pointerenter', track);
+
+      stage.addEventListener('pointerleave', () => {
+        targetX = 0;
+        targetY = 0;
+        schedule();
+      });
     });
   }
 
