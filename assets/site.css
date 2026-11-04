@@ -357,18 +357,69 @@ a { color: inherit; }
 /* ── 站点屏 ───────────────────────────────────────────────── */
 
 .panel {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   min-height: 100svh;
   padding: 104px 0;
   scroll-margin-top: 68px;
-  overflow-x: clip;
+  overflow: clip;
 }
 
-.panel-soft { background: var(--soft); }
-.panel-lilac { background: var(--lilac); }
+#site-ipowerbi {
+  background:
+    radial-gradient(85% 75% at 94% 2%, #ffe98f 0%, rgba(255, 233, 143, 0) 58%),
+    radial-gradient(70% 65% at 0% 100%, #f6cf22 0%, rgba(246, 207, 34, 0) 55%),
+    var(--accent);
+}
+
+#site-portfolio {
+  background:
+    radial-gradient(80% 80% at 6% 4%, #ffffff 0%, rgba(255, 255, 255, 0) 60%),
+    radial-gradient(90% 90% at 100% 100%, #e8def6 0%, rgba(232, 222, 246, 0) 60%),
+    #f5eff3;
+}
+
+#site-platform {
+  color: var(--dark-ink);
+  background:
+    radial-gradient(90% 80% at 72% 0%, #2b2144 0%, rgba(43, 33, 68, 0) 60%),
+    #130f1c;
+}
+
+/* 背景纹理层：文字与图片叠在同一场景里 */
+.panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#site-ipowerbi::after {
+  background-image: repeating-linear-gradient(135deg, rgba(16, 16, 16, 0.05) 0 1px, transparent 1px 15px);
+  mask-image: radial-gradient(90% 80% at 84% 16%, #000 5%, transparent 72%);
+}
+
+#site-portfolio::after {
+  background-image: radial-gradient(rgba(16, 16, 16, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  mask-image: linear-gradient(to bottom, #000, transparent 80%);
+}
+
+#site-platform::after {
+  background-image:
+    linear-gradient(rgba(167, 139, 250, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(90% 90% at 50% 40%, #000 10%, transparent 85%);
+}
 
 .panel-inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 32px;
@@ -379,18 +430,25 @@ a { color: inherit; }
   padding-inline: var(--gutter);
 }
 
-.panel-text { grid-column: 1 / span 5; }
+.panel-text {
+  position: relative;
+  z-index: 2;
+  grid-column: 1 / span 5;
+}
 
 .panel-visual {
   grid-column: 6 / span 7;
   border-radius: var(--r);
 }
 
+/* 视觉区向文字区收拢，让标题、后景卡与窗口叠在一起 */
 .panel:not(.is-flipped) .panel-visual {
+  margin-left: -56px;
   margin-right: calc(-1 * (var(--edge) + var(--gutter)));
 }
 
 .panel.is-flipped .panel-visual {
+  margin-right: -56px;
   margin-left: calc(-1 * (var(--edge) + var(--gutter)));
 }
 
@@ -405,7 +463,7 @@ a { color: inherit; }
   --sp: 0;
   position: relative;
   display: block;
-  overflow: hidden;
+  overflow: visible;
   border-radius: var(--r);
   text-decoration: none;
   isolation: isolate;
@@ -568,19 +626,6 @@ a { color: inherit; }
 
 .stage--ip {
   aspect-ratio: 16 / 10.4;
-  background:
-    radial-gradient(95% 80% at 88% 6%, #ffe98f 0%, rgba(255, 233, 143, 0) 62%),
-    radial-gradient(85% 75% at 2% 98%, #f8d437 0%, rgba(248, 212, 55, 0) 58%),
-    var(--accent);
-}
-
-.stage--ip::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(135deg, rgba(16, 16, 16, 0.055) 0 1px, transparent 1px 15px);
-  mask-image: radial-gradient(90% 80% at 84% 16%, #000 5%, transparent 72%);
-  pointer-events: none;
 }
 
 .stage--ip .window {
@@ -616,10 +661,10 @@ a { color: inherit; }
 }
 
 .chip--a {
-  top: 7%;
-  left: -10%;
+  top: 6%;
+  left: -8%;
   width: 33%;
-  rotate: -7deg;
+  rotate: -8deg;
   transform: translate3d(calc(var(--mx) * -22px), calc(var(--my) * -16px + var(--sp) * 34px), 0) translateZ(-12px);
 }
 
@@ -638,8 +683,8 @@ a { color: inherit; }
 
 .stage-tag {
   position: absolute;
-  left: 4%;
-  bottom: 5%;
+  left: 16%;
+  bottom: 9%;
   z-index: 4;
   padding: 9px 16px 10px;
   background: #fff;
@@ -655,19 +700,6 @@ a { color: inherit; }
 
 .stage--pf {
   aspect-ratio: 16 / 11;
-  border: 1px solid rgba(16, 16, 16, 0.06);
-  background: radial-gradient(110% 100% at 16% 0%, #ffffff 0%, #f7eef4 55%, #ece4f7 100%);
-}
-
-.stage--pf::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(16, 16, 16, 0.12) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.5;
-  mask-image: linear-gradient(to bottom, #000 0%, transparent 80%);
-  pointer-events: none;
 }
 
 .stage--pf .window {
@@ -763,19 +795,6 @@ a { color: inherit; }
 
 .stage--l2 {
   aspect-ratio: 16 / 10.4;
-  background: radial-gradient(120% 110% at 50% -12%, #2a2140 0%, #171122 55%, #0b0810 100%);
-}
-
-.stage--l2::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(167, 139, 250, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(167, 139, 250, 0.09) 1px, transparent 1px);
-  background-size: clamp(26px, 4vw, 48px) clamp(26px, 4vw, 48px);
-  mask-image: radial-gradient(95% 85% at 50% 26%, #000 10%, transparent 78%);
-  pointer-events: none;
 }
 
 .stage--l2 .window {
@@ -823,22 +842,21 @@ a { color: inherit; }
 
 .stage--l2:hover .stage-glow { opacity: 1; }
 
-.stage-scan {
+.window-scan {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  height: 24%;
-  z-index: 5;
+  height: 32%;
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, rgba(167, 139, 250, 0.06) 55%, rgba(196, 181, 253, 0.22) 94%, transparent);
+  background: linear-gradient(to bottom, transparent, rgba(167, 139, 250, 0.1) 55%, rgba(196, 181, 253, 0.3) 92%, transparent);
   mix-blend-mode: screen;
-  animation: stage-scan 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: window-scan 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
-@keyframes stage-scan {
+@keyframes window-scan {
   from { transform: translateY(-110%); }
-  to { transform: translateY(430%); }
+  to { transform: translateY(320%); }
 }
 
 .stage--l2 .stage-cursor { background: #c4b5fd; color: #140f1e; }
@@ -897,6 +915,19 @@ a { color: inherit; }
 }
 
 .panel .btn { margin-top: 38px; }
+
+/* 站点三：深色面板上的文字与按钮 */
+#site-platform h2 { color: var(--dark-ink); }
+#site-platform .panel-desc { color: #b4abd0; }
+#site-platform .panel-facts dt { color: #ece8f8; }
+#site-platform .panel-facts dd { color: #a79fc0; }
+#site-platform .btn { background: #c4b5fd; color: #140f1e; }
+#site-platform .btn:hover { background: var(--accent); color: var(--accent-ink); }
+#site-platform :focus-visible { outline-color: #c4b5fd; }
+
+/* 站点一：黄色面板上的正文加深，保证对比度 */
+#site-ipowerbi .panel-desc,
+#site-ipowerbi .panel-facts dd { color: #453f22; }
 
 /* ── 方法 ─────────────────────────────────────────────────── */
 
@@ -1325,7 +1356,7 @@ a { color: inherit; }
   .js [data-reveal].wipe .stage { scale: 1; transition: none; }
 
   .stage-cursor { display: none; }
-  .stage-scan { animation: none; }
+  .window-scan { display: none; }
   .stage-glow { opacity: 0.55; }
 
   .window,
