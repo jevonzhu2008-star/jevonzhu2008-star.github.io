@@ -1,6 +1,9 @@
 (() => {
   'use strict';
 
+  /* 隐藏态由脚本自己声明：脚本没加载时，页面内容保持可见 */
+  document.documentElement.classList.add('js');
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -150,6 +153,37 @@
       else item.link.removeAttribute('aria-current');
     });
   };
+
+  /* ── 移动端菜单 ───────────────────────────────────────── */
+  const navToggle = document.getElementById('nav-toggle');
+  const navDrawer = document.getElementById('nav-drawer');
+
+  if (navToggle && navDrawer) {
+    const setMenu = (open) => {
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+      navDrawer.classList.toggle('is-open', open);
+    };
+
+    navToggle.addEventListener('click', () => {
+      setMenu(navToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    navDrawer.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setMenu(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        navToggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 721px)').addEventListener('change', (event) => {
+      if (event.matches) setMenu(false);
+    });
+  }
 
   /* ── 滚动：导航阴影、进度条、卡组下坠 ─────────────────── */
   const nav = document.getElementById('nav');

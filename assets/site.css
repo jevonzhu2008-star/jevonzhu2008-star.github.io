@@ -3,6 +3,18 @@
    方向：亮色产品页。Power BI 黄作签名色，一屏一站。
    ───────────────────────────────────────────────────────────── */
 
+/* 拉丁字形自托管：单文件 24KB，只覆盖拉丁/数字子集，中日韩文字走系统字体 */
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('fonts/manrope-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+                 U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC,
+                 U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --bg: #ffffff;
   --soft: #f6f6f3;
@@ -18,6 +30,7 @@
 
   --gutter: 24px;
   --maxw: 1320px;
+  --nav-h: 68px;
   --edge: max(0px, (100vw - var(--maxw)) / 2);
   --r: 20px;
   --r-control: 999px;
@@ -28,8 +41,8 @@
   --fs-body: 1.0625rem;
   --fs-small: 0.875rem;
 
-  --latin: 'Manrope Variable', 'Noto Sans SC Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --cjk: 'Noto Sans SC Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --latin: 'Manrope Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --cjk: 'Manrope Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -57,6 +70,7 @@ body {
 h1, h2, h3, p, dl, dd, figure, figcaption { margin: 0; }
 ul { margin: 0; padding: 0; list-style: none; }
 img { max-width: 100%; }
+picture { display: contents; }
 a { color: inherit; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
@@ -170,6 +184,53 @@ a { color: inherit; }
   height: 3px;
   background: var(--accent);
 }
+
+/* 移动端菜单：汉堡按钮 + 抽屉，桌面端不出现 */
+
+.nav-toggle {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  margin-left: 2px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s var(--ease);
+}
+
+.nav-toggle:hover { background: rgba(16, 16, 16, 0.06); }
+
+.nav-toggle-bar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 2px;
+  margin: -1px 0 0 -9px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.24s var(--ease), translate 0.24s var(--ease);
+}
+
+.nav-toggle-bar:nth-child(1) { translate: 0 -4px; }
+.nav-toggle-bar:nth-child(2) { translate: 0 4px; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  translate: 0 0;
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  translate: 0 0;
+  transform: rotate(-45deg);
+}
+
+.nav-drawer { display: none; }
 
 /* ── 首屏 ─────────────────────────────────────────────────── */
 
@@ -915,6 +976,22 @@ a { color: inherit; }
 
 .panel .btn { margin-top: 42px; }
 
+.panel-alt {
+  margin-top: 16px;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.panel-alt a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent);
+}
+
+.panel-alt a:hover { text-decoration-color: var(--ink); }
+
 /* 站点三：深色面板上的文字与按钮 */
 #site-platform h2 { color: var(--dark-ink); }
 #site-platform .panel-desc { color: #c3bbdb; }
@@ -922,6 +999,9 @@ a { color: inherit; }
 #site-platform .panel-facts dd { color: #b7afd0; }
 #site-platform .btn { background: #c4b5fd; color: #140f1e; }
 #site-platform .btn:hover { background: var(--accent); color: var(--accent-ink); }
+#site-platform .panel-alt { color: #a79fc4; }
+#site-platform .panel-alt a { color: #ece8f8; text-decoration-color: #c4b5fd; }
+#site-platform .panel-alt a:hover { text-decoration-color: var(--accent); }
 #site-platform :focus-visible { outline-color: #c4b5fd; }
 
 /* 站点一：黄色面板上的正文加深，保证对比度 */
@@ -1265,13 +1345,51 @@ a { color: inherit; }
 }
 
 @media (max-width: 720px) {
+  :root { --nav-h: 60px; }
+
   .nav { gap: 12px; height: 60px; }
 
   .wordmark { gap: 8px; }
   .wordmark-avatar { width: 22px; height: 22px; }
 
-  .nav-links { gap: 12px; }
-  .nav-links a:nth-child(4) { display: none; }
+  .nav-links { display: none; }
+  .nav-cta { margin-left: auto; white-space: nowrap; }
+
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+
+  .nav-drawer {
+    display: block;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    padding: 6px var(--gutter) 18px;
+    background: var(--bg);
+    border-bottom: 1px solid rgba(16, 16, 16, 0.08);
+    box-shadow: 0 26px 40px -30px rgba(16, 16, 16, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -10px;
+    transition: opacity 0.22s var(--ease), translate 0.22s var(--ease), visibility 0.22s;
+  }
+
+  .nav-drawer > nav { display: grid; }
+
+  .nav-drawer a {
+    padding: 14px 2px;
+    border-bottom: 1px solid rgba(16, 16, 16, 0.07);
+    color: var(--ink);
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .nav-drawer a:last-child { border-bottom: 0; }
+
+  .nav-drawer.is-open {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+  }
 
   .hero h1 { font-size: clamp(2.6rem, 12vw, 3.6rem); }
 
@@ -1315,7 +1433,6 @@ a { color: inherit; }
 
 @media (max-width: 430px) {
   .nav { gap: 10px; }
-  .nav-links { gap: 10px; }
   .nav-cta { padding-inline: 12px; }
   .wordmark { gap: 6px; font-size: var(--fs-small); }
   .wordmark-avatar { width: 20px; height: 20px; }
@@ -1333,11 +1450,6 @@ a { color: inherit; }
 
 @media (max-width: 380px) {
   .nav { gap: 8px; }
-  .nav-links { gap: 8px; }
-}
-
-@media (max-width: 360px) {
-  .nav-links a:nth-child(3) { display: none; }
 }
 
 /* ── 降低动态 ─────────────────────────────────────────────── */

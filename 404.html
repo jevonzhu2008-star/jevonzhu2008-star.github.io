@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 · 这一页没做出来 · Jevon Zhu</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .nf {
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - 68px);
+    padding: 48px 0 80px;
+    background: radial-gradient(72% 94% at 94% 4%, var(--lilac) 0%, rgba(243, 241, 250, 0) 68%);
+    overflow: clip;
+  }
+
+  .nf-code {
+    display: inline-block;
+    margin: 0 0 30px;
+    padding: 0 10px;
+    font-family: var(--latin);
+    font-weight: 800;
+    font-size: clamp(6rem, 20vw, 13.5rem);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 100% 10%;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+  }
+
+  .nf-title {
+    font-family: var(--cjk);
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .nf-note {
+    margin-top: 18px;
+    max-width: 30em;
+    font-size: var(--fs-lead);
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .nf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1.5px rgba(16, 16, 16, 0.16);
+  }
+
+  .btn-ghost:hover {
+    background: var(--ink);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .nf-foot {
+    padding: 26px 0 36px;
+    border-top: 1px solid rgba(16, 16, 16, 0.08);
+  }
+
+  .nf-foot p {
+    font-size: var(--fs-small);
+    color: var(--muted);
+  }
+
+  @media (max-width: 720px) {
+    .nf { padding: 24px 0 64px; }
+    .nf-actions .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="nav">
+  <a class="wordmark" href="/"><img class="wordmark-avatar" src="/assets/avatar-96.png" srcset="/assets/avatar-192.png 2x" alt="" width="26" height="26">JEVON ZHU</a>
+  <nav class="nav-links" aria-label="站点">
+    <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">官网</a>
+    <a href="https://jevonzhu2008-star.github.io/AIA-PowerBI-Portfolio/">作品集</a>
+    <a href="https://jevonzhu2008-star.github.io/L2-data-platform/">开发平台</a>
+  </nav>
+  <a class="nav-cta" href="/">返回首页</a>
+  <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开菜单">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
+  <div class="nav-drawer" id="nav-drawer">
+    <nav aria-label="移动端导航">
+      <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">官网</a>
+      <a href="https://jevonzhu2008-star.github.io/AIA-PowerBI-Portfolio/">作品集</a>
+      <a href="https://jevonzhu2008-star.github.io/L2-data-platform/">开发平台</a>
+      <a href="/">返回首页</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="nf">
+  <div class="wrap">
+    <p class="nf-code" aria-hidden="true">404</p>
+    <h1 class="nf-title">这一页没做出来</h1>
+    <p class="nf-note">地址可能打错了一个字，也可能链接已经过期。回到首页，三个站点都还在。</p>
+    <div class="nf-actions">
+      <a class="btn" href="/">回到首页 <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="https://jevonzhu2008-star.github.io/AIA-PowerBI-Portfolio/">看看作品集</a>
+    </div>
+  </div>
+</main>
+
+<footer class="nf-foot">
+  <div class="wrap">
+    <p>© 2026 Jevon Zhu · 三个站点，一个入口</p>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

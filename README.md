@@ -12,29 +12,51 @@
 
 ## 本地打开
 
-直接双击 `index.html`（图片、样式、脚本均为相对路径）。字体通过 jsDelivr 加载，离线时回退到系统无衬线字体。
+直接双击 `index.html`（图片、样式、脚本均为相对路径）。字体不依赖任何 CDN：拉丁字形用 `assets/fonts/` 里自托管的 Manrope（单个 24KB woff2，SIL Open Font License 1.1），中日韩文字走系统字体（PingFang SC / 微软雅黑）。
+
+`404.html` 用的是站点根路径（`/assets/...`），双击打开会丢样式，需要本地起一个静态服务器预览。
 
 ## 文件
 
 ```
 index.html            页面结构（文案、链接都在这里）
+404.html              GitHub Pages 的 404 页，与首页同一套视觉
+robots.txt            允许抓取，并指向 sitemap
+sitemap.xml           单页站点地图
 assets/site.css       全部样式
-assets/site.js        入场动画、导航高亮
-assets/shots/*.jpg    截图（当前页面用 8 张，另有 5 张备用）
+assets/site.js        入场动画、导航高亮、移动端菜单
+assets/fonts/         自托管 Manrope 可变字体
+assets/og-cover.jpg   社交分享卡片（1200×630）
+assets/shots/*.webp   截图（WebP 为主，jpg 仅作旧浏览器兜底）
 ```
+
+三张大图（`ip-home`、`pf-overview`、`platform-login`）有 `-1600` / `-800` 两档，靠 `srcset` + `sizes` 按屏幕挑；小图（`ip-factory`、`ip-sales`、`report-*`）只有一档 WebP。截图是 2026-11-05 从线上站点按 1600px 宽重截的。
 
 ## 部署
 
 放到任意静态站点即可，无需构建：
 
 - GitHub Pages：把整个目录推到仓库根目录，或 `docs/` 并在仓库设置里指定。
+- `404.html`、`robots.txt`、`sitemap.xml` 必须放在站点根目录才会生效。
 - 如果本页作为根站 `jevonzhu2008-star.github.io`，三个站点链接保持现在的绝对地址即可。
+
+## 域名与三站统一（待办）
+
+三个站点现在分属两种托管，这是「看起来不像一个站」的根源：
+
+- 官网 `ipowerbi.mysxl.cn`：第三方建站，内容不在本仓库，视觉和加载方式由平台决定；
+- 作品集、平台和本站：GitHub Pages，同一个 origin，共用这套视觉。
+
+**短期**：把官网内容迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css` 的字体与色板，三站归到同一个域名、同一套视觉。需要 mysxl 站点的导出或原稿。
+
+**长期**：换自有域名。在 GitHub Pages 设置自定义域名后，GitHub 会把 `jevonzhu2008-star.github.io` 301 到新域名；本仓库里的绝对链接统一替换成新域名即可。官网页面源码里出现的 `ipowerbi.com.cn` 如果是自己持有的域名，可以直接用它。
 
 ## 修改
 
-- **换截图**：替换 `assets/shots/` 下同名的 jpg，宽高写在 `<img>` 的 `width`/`height` 里，保持比例即可。
+- **换截图**：重截 16:10 的 1600×1000 原图，导出 `-1600.webp`、`-800.webp` 两档（小图单档）；jpg 兜底保持同名同比例。`<img>` 上的 `width`/`height` 只是占位比例，跟着改成 1600×1000 即可。
 - **改文案**：首屏在 `.hero`，三站在 `.panel`，工作方法在 `.steps`，关于在 `.about`。
 - **换链接**：按钮和帧的 `<a href>` 指向对应页面；公开报表用的是 `app.powerbi.com/view` 的公开地址。
+- **换分享卡片**：`assets/og-cover.jpg` 固定 1200×630，改文案后重出一张，并同步 `index.html` 里的 `og:image` / `twitter:image`。
 
 ## 已知取舍
 
