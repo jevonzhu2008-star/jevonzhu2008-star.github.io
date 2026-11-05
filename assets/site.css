@@ -16,17 +16,27 @@
 }
 
 :root {
+  /* 底色：白为主，两级浅底只差一点色温，靠明度分层而不是靠边框 */
   --bg: #ffffff;
-  --soft: #f6f6f3;
-  --lilac: #f3f1fa;
-  --ink: #101010;
-  --muted: #5c5c58;
+  --soft: #f5f5f2;
+  --lilac: #f3f2f7;
+
+  /* 墨色：中性无偏色，白底对比度 7:1 以上；--muted 用于次级说明，--faint 只做装饰 */
+  --ink: #141413;
+  --ink-soft: #3d3d36;
+  --muted: #57574f;
+  --faint: #8a8a82;
+
+  /* 品牌黄：只出现在动作与区块底，文字一律压深 */
   --accent: #f2c811;
   --accent-hover: #ffd633;
-  --accent-ink: #101010;
+  --accent-ink: #1c1908;
+  --on-accent: #3a341d;
+
+  /* 深色区 */
   --dark: #111110;
-  --dark-ink: #f4f4f1;
-  --dark-muted: #a3a39d;
+  --dark-ink: #f5f5f2;
+  --dark-muted: #b3b3aa;
 
   --gutter: 24px;
   --maxw: 1320px;
@@ -35,14 +45,20 @@
   --r: 20px;
   --r-control: 999px;
 
-  --fs-display: clamp(3.4rem, 8.4vw, 7.5rem);
-  --fs-head: clamp(2.25rem, 4.4vw, 4.25rem);
-  --fs-lead: clamp(1.1875rem, 1.5vw, 1.375rem);
-  --fs-body: 1.0625rem;
+  /* 五级字号：巨、标题、导语、正文、辅助。没有第六级，模拟界面的小字另走 --fs-mini */
+  --fs-display: clamp(3.25rem, 8vw, 7.25rem);
+  --fs-head: clamp(2.125rem, 4.2vw, 4rem);
+  --fs-lead: clamp(1.1875rem, 1.4vw, 1.375rem);
+  --fs-body: 1.125rem;
   --fs-small: 0.875rem;
+  --fs-mini: 0.8125rem;
 
-  --latin: 'Manrope Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --cjk: 'Manrope Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --lh-body: 1.72;
+  --lh-lead: 1.68;
+
+  /* 中文优先 macOS / 鸿蒙 / 小米 / Windows 各自的正文无衬线，拉丁字形统一走 Manrope */
+  --latin: 'Manrope Variable', 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+  --cjk: 'Manrope Variable', 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -62,8 +78,10 @@ body {
   color: var(--ink);
   font-family: var(--cjk);
   font-size: var(--fs-body);
-  line-height: 1.65;
+  line-height: var(--lh-body);
+  font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
 
@@ -259,11 +277,11 @@ a { color: inherit; }
 }
 
 .hero h1 {
-  --ls: -0.03em;
+  --ls: -0.02em;
   font-family: var(--cjk);
   font-weight: 700;
   font-size: var(--fs-display);
-  line-height: 0.95;
+  line-height: 1.02;
   letter-spacing: var(--ls);
   text-wrap: balance;
 }
@@ -286,11 +304,11 @@ a { color: inherit; }
 }
 
 .hero-sub {
-  margin-top: 24px;
+  margin-top: 26px;
   max-width: 30em;
   font-size: var(--fs-lead);
-  line-height: 1.6;
-  color: var(--muted);
+  line-height: var(--lh-lead);
+  color: var(--ink-soft);
 }
 
 .btn {
@@ -350,6 +368,18 @@ a { color: inherit; }
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* 单位退一级：数字是主体，汉字只做注解，不跟数字抢同一档字号 */
+.hero-stats dd .unit {
+  margin-left: 0.1em;
+  font-family: var(--cjk);
+  font-size: 0.56em;
+  font-weight: 600;
+  letter-spacing: 0;
+  vertical-align: 0.06em;
+  color: var(--muted);
 }
 
 .hero-visual {
@@ -425,26 +455,18 @@ a { color: inherit; }
   overflow: clip;
 }
 
+/* 三站各用一种纯色场地：黄、暖白、深紫。不用渐变，靠色本身分场 */
 #site-ipowerbi {
-  background:
-    radial-gradient(62% 96% at 6% 48%, rgba(255, 252, 234, 0.96) 0%, rgba(255, 252, 234, 0) 72%),
-    radial-gradient(85% 75% at 94% 2%, #ffe98f 0%, rgba(255, 233, 143, 0) 58%),
-    radial-gradient(70% 65% at 0% 100%, #f6cf22 0%, rgba(246, 207, 34, 0) 55%),
-    var(--accent);
+  background: var(--accent);
 }
 
 #site-portfolio {
-  background:
-    radial-gradient(80% 80% at 6% 4%, #ffffff 0%, rgba(255, 255, 255, 0) 60%),
-    radial-gradient(90% 90% at 100% 100%, #e8def6 0%, rgba(232, 222, 246, 0) 60%),
-    #f5eff3;
+  background: #f4eef3;
 }
 
 #site-platform {
   color: var(--dark-ink);
-  background:
-    radial-gradient(90% 80% at 72% 0%, #2b2144 0%, rgba(43, 33, 68, 0) 60%),
-    #130f1c;
+  background: #130f1c;
 }
 
 /* 背景纹理层：文字与图片叠在同一场景里 */
@@ -592,7 +614,7 @@ a { color: inherit; }
   border: 1px solid rgba(16, 16, 16, 0.06);
   border-radius: var(--r-control);
   font-family: var(--latin);
-  font-size: clamp(8.5px, 0.82vw, 11.5px);
+  font-size: clamp(13px, 1vw, 14px);
   line-height: 1.45;
   color: var(--muted);
   white-space: nowrap;
@@ -619,7 +641,9 @@ a { color: inherit; }
 
 .window-go {
   flex-shrink: 0;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
   line-height: 1;
   color: var(--muted);
 }
@@ -659,7 +683,7 @@ a { color: inherit; }
   background: var(--ink);
   color: #fff;
   border-radius: var(--r-control);
-  font-size: 0.8125rem;
+  font-size: var(--fs-mini);
   font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
@@ -721,7 +745,7 @@ a { color: inherit; }
 
 .chip--a {
   top: 6%;
-  left: -4.5%;
+  left: 5.5%;
   width: 33%;
   rotate: -8deg;
   transform: translate3d(calc(var(--mx) * -22px), calc(var(--my) * -16px + var(--sp) * 34px), 0) translateZ(-12px);
@@ -748,7 +772,7 @@ a { color: inherit; }
   padding: 9px 16px 10px;
   background: #fff;
   border-radius: var(--r-control);
-  font-size: clamp(10px, 1vw, 13px);
+  font-size: clamp(10.5px, 1vw, 13.5px);
   font-weight: 600;
   letter-spacing: 0.01em;
   box-shadow: 0 14px 26px -14px rgba(16, 16, 16, 0.4);
@@ -835,7 +859,7 @@ a { color: inherit; }
   border: 1px solid rgba(16, 16, 16, 0.06);
   border-radius: var(--r-control);
   backdrop-filter: blur(10px);
-  font-size: clamp(10px, 1vw, 13px);
+  font-size: clamp(10.5px, 1vw, 13.5px);
   font-weight: 600;
   color: var(--ink);
   box-shadow: 0 10px 24px -12px rgba(16, 16, 16, 0.24);
@@ -945,8 +969,8 @@ a { color: inherit; }
   margin-top: 22px;
   max-width: 27em;
   font-size: var(--fs-lead);
-  line-height: 1.65;
-  color: var(--muted);
+  line-height: var(--lh-lead);
+  color: var(--ink-soft);
   text-wrap: pretty;
 }
 
@@ -970,8 +994,8 @@ a { color: inherit; }
 
 .panel-facts dd {
   font-size: var(--fs-body);
-  line-height: 1.6;
-  color: var(--muted);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
 }
 
 .panel .btn { margin-top: 42px; }
@@ -1006,7 +1030,7 @@ a { color: inherit; }
 
 /* 站点一：黄色面板上的正文加深，保证对比度 */
 #site-ipowerbi .panel-desc,
-#site-ipowerbi .panel-facts dd { color: #453f22; }
+#site-ipowerbi .panel-facts dd { color: var(--on-accent); }
 
 /* ── 方法 ─────────────────────────────────────────────────── */
 
@@ -1035,8 +1059,8 @@ a { color: inherit; }
 .method-head p {
   grid-column: 6 / span 6;
   font-size: var(--fs-lead);
-  line-height: 1.6;
-  color: var(--muted);
+  line-height: var(--lh-lead);
+  color: var(--ink-soft);
 }
 
 .steps {
@@ -1058,8 +1082,8 @@ a { color: inherit; }
 .steps p {
   margin-top: 12px;
   font-size: var(--fs-body);
-  line-height: 1.65;
-  color: var(--muted);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
 }
 
 /* ── 关于 ─────────────────────────────────────────────────── */
@@ -1108,15 +1132,15 @@ a { color: inherit; }
 
 .about-lead {
   font-size: var(--fs-lead);
-  line-height: 1.6;
+  line-height: var(--lh-lead);
   letter-spacing: -0.01em;
 }
 
 .about-note {
   margin-top: 22px;
   font-size: var(--fs-body);
-  line-height: 1.7;
-  color: var(--muted);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
 }
 
 .about-stack {
@@ -1379,7 +1403,7 @@ a { color: inherit; }
     padding: 14px 2px;
     border-bottom: 1px solid rgba(16, 16, 16, 0.07);
     color: var(--ink);
-    font-size: 1rem;
+    font-size: var(--fs-body);
     text-decoration: none;
   }
 
