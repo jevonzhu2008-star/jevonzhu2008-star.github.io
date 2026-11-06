@@ -3,3 +3,6 @@
 
 # 宣传片原始素材（47MB），上线用压缩后的 assets/portfolio-promo.mp4
 promo.mp4
+
+# 微信名片原图，线上只用 assets/wechat-qr.webp 里的二维码裁切
+微信二维码.jpg

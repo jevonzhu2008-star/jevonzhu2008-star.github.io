@@ -29,6 +29,7 @@ assets/site.css       全部样式
 assets/site.js        入场动画、导航高亮、移动端菜单、宣传片播放
 assets/fonts/         自托管 Manrope 可变字体
 assets/og-cover.jpg   社交分享卡片（1200×630）
+assets/wechat-qr.webp 微信二维码（从名片图裁切，联系区使用）
 assets/portfolio-promo.mp4   作品集宣传片（720p / 50 秒 / 3.4MB，无音轨）
 assets/shots/*.webp   截图（WebP 为主，jpg 仅作旧浏览器兜底）
 assets/shots/promo-poster.webp  宣传片封面帧

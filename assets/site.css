@@ -1421,6 +1421,23 @@ a { color: inherit; }
 .cells .is-accent span { color: rgba(16, 16, 16, 0.68); }
 .cells .is-accent:hover { background: var(--accent-hover); }
 
+/* 微信卡片：二维码白底居中，点开可看原图、长按保存 */
+.cells .is-wechat {
+  gap: 12px;
+  padding: 24px;
+  align-items: center;
+  text-align: center;
+}
+
+.cells .is-wechat img {
+  display: block;
+  width: 144px;
+  height: 144px;
+  max-width: 100%;
+  border-radius: 10px;
+  background: #fff;
+}
+
 .foot { margin-top: 96px; }
 
 .foot-top {
