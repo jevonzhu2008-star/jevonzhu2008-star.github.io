@@ -310,6 +310,39 @@
     });
   }
 
+  /* ── 作品集宣传片：进入视口才下载并播放 ───────────────── */
+  const promos = Array.from(document.querySelectorAll('.stage-video'));
+
+  if (promos.length && !reduce) {
+    const connection = navigator.connection;
+    const saveData = Boolean(connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || '')));
+
+    const canPlay = (video) => {
+      const started = video.play();
+      if (started && typeof started.catch === 'function') started.catch(() => {});
+    };
+
+    if (saveData) {
+      /* 省流量模式：停在封面帧，不下载视频 */
+    } else if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            if (video.preload !== 'auto') video.preload = 'auto';
+            canPlay(video);
+          } else if (!video.paused) {
+            video.pause();
+          }
+        });
+      }, { rootMargin: '240px 0px' });
+
+      promos.forEach((video) => observer.observe(video));
+    } else {
+      promos.forEach(canPlay);
+    }
+  }
+
   /* ── 按钮磁吸 ─────────────────────────────────────────── */
   if (finePointer && !reduce) {
     document.querySelectorAll('.btn').forEach((btn) => {

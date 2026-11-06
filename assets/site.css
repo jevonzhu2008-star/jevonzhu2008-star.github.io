@@ -782,14 +782,26 @@ a { color: inherit; }
 /* ── 站点二：作品集（扇形报表卡） ───────────────────────── */
 
 .stage--pf {
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 9.8;
 }
 
 .stage--pf .window {
   left: 5%;
-  top: 6%;
+  top: 4%;
   width: 88%;
   transform: translate3d(calc(var(--mx) * 8px), calc(var(--my) * 6px + var(--sp) * -20px), 0) translateZ(24px);
+}
+
+/* 窗口里放宣传片：黑场承接视频自带的深色背景 */
+.window-shot--video { background: #0b0b12; }
+
+.stage-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0b0b12;
 }
 
 .fan {
@@ -868,9 +880,9 @@ a { color: inherit; }
 
 .stage--pf .stage-badge {
   top: auto;
-  right: 4%;
-  bottom: 6%;
-  left: auto;
+  right: auto;
+  bottom: 8%;
+  left: 6%;
   transform: translate3d(calc(var(--mx) * 24px), calc(var(--my) * 18px), 0) translateZ(80px);
 }
 
@@ -1336,6 +1348,18 @@ a { color: inherit; }
 
   .panel:not(.is-flipped) .stage,
   .panel.is-flipped .stage { border-radius: 0; }
+
+  /* 窄屏没有后景卡，窗口直接由视频撑开，占满整行 */
+  .stage--pf { aspect-ratio: auto; }
+  .stage--pf .stage-scene { position: relative; inset: auto; }
+  .stage--pf .window {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    transform: none;
+  }
+  .stage--pf .stage-badge { display: none; }
 
   .hero-sub { max-width: 42ch; }
 

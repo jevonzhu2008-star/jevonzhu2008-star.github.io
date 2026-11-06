@@ -24,10 +24,12 @@ index.html            页面结构（文案、链接都在这里）
 robots.txt            允许抓取，并指向 sitemap
 sitemap.xml           单页站点地图
 assets/site.css       全部样式
-assets/site.js        入场动画、导航高亮、移动端菜单
+assets/site.js        入场动画、导航高亮、移动端菜单、宣传片播放
 assets/fonts/         自托管 Manrope 可变字体
 assets/og-cover.jpg   社交分享卡片（1200×630）
+assets/portfolio-promo.mp4   作品集宣传片（720p / 50 秒 / 3.4MB，无音轨）
 assets/shots/*.webp   截图（WebP 为主，jpg 仅作旧浏览器兜底）
+assets/shots/promo-poster.webp  宣传片封面帧
 ```
 
 三张大图（`ip-home`、`pf-overview`、`platform-login`）有 `-1600` / `-800` 两档，靠 `srcset` + `sizes` 按屏幕挑；小图（`ip-factory`、`ip-sales`、`report-*`）只有一档 WebP。截图是 2026-11-05 从线上站点按 1600px 宽重截的。
@@ -62,4 +64,5 @@ assets/shots/*.webp   截图（WebP 为主，jpg 仅作旧浏览器兜底）
 
 - 截图是 2026 年 11 月抓取的真实页面，站点改版后需要重截。
 - 平台登录页公开可见，工作台需要账号；首页只展示登录页并注明「账号授权后访问」。
-- 页面没有视频：三个站点没有可直接使用的自有素材，画面全部用真实截图。
+- 作品集区块放的是宣传片：静音、循环、`preload="none"`，滚到附近才开始下载播放；开了减少动效或省流量模式时只显示封面帧。
+- 原始素材 `promo.mp4`（47MB / 1080p）不进仓库，已写进 `.gitignore`；改片后重新压一版 `assets/portfolio-promo.mp4` 并重出 `promo-poster.webp` 即可。
