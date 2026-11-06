@@ -4,17 +4,17 @@
 #   powershell -ExecutionPolicy Bypass -File .\scripts\indexnow.ps1
 #
 # 密钥文件 ca8fb82aa608eb6566678430c4a768a8.txt 必须在站点根目录，且可公开访问：
-#   https://jevonzhu2008-star.github.io/ca8fb82aa608eb6566678430c4a768a8.txt
+#   https://ipowerbi.icu/ca8fb82aa608eb6566678430c4a768a8.txt
 
 param(
   [string[]]$Urls = @(
-    'https://jevonzhu2008-star.github.io/',
-    'https://jevonzhu2008-star.github.io/AIA-PowerBI-Portfolio/'
+    'https://ipowerbi.icu/',
+    'https://ipowerbi.icu/AIA-PowerBI-Portfolio/'
   )
 )
 
 $key = 'ca8fb82aa608eb6566678430c4a768a8'
-$siteHost = 'jevonzhu2008-star.github.io'
+$siteHost = 'ipowerbi.icu'
 
 $payload = @{
   host        = $siteHost

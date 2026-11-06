@@ -1,12 +1,12 @@
 # Jevon Zhu · Power BI 站点入口
 
-线上地址：<https://jevonzhu2008-star.github.io/>
+线上地址：<https://ipowerbi.icu/>
 
 三个站点的统一首页：
 
 - **人人都爱 Power BI** — <https://ipowerbi.mysxl.cn/>
-- **Power BI 作品集** — <https://jevonzhu2008-star.github.io/AIA-PowerBI-Portfolio/>
-- **PBI 报表开发平台** — <https://jevonzhu2008-star.github.io/L2-data-platform/>
+- **Power BI 作品集** — <https://ipowerbi.icu/AIA-PowerBI-Portfolio/>
+- **PBI 报表开发平台** — <https://ipowerbi.icu/L2-data-platform/>
 
 页面按「一屏一站」组织：首屏讲人，随后官网、作品集、平台各占一屏，接着是「做报表的方法」、关于和联系。亮色底、Power BI 黄作签名色、黑色胶囊按钮。
 
@@ -43,7 +43,7 @@ assets/shots/promo-poster.webp  宣传片封面帧
 
 - GitHub Pages：把整个目录推到仓库根目录，或 `docs/` 并在仓库设置里指定。
 - `404.html`、`robots.txt`、`sitemap.xml` 必须放在站点根目录才会生效。
-- 如果本页作为根站 `jevonzhu2008-star.github.io`，三个站点链接保持现在的绝对地址即可。
+- 仓库根目录的 `CNAME` 已绑定 `ipowerbi.icu`，GitHub Pages 会把旧地址 `jevonzhu2008-star.github.io` 301 到新域名。三个站点的绝对链接统一用 `https://ipowerbi.icu/`。
 
 ## 搜索引擎收录
 
@@ -67,23 +67,23 @@ powershell -ExecutionPolicy Bypass -File .\scripts\indexnow.ps1
 
 ### 关于百度
 
-百度对 `*.github.io` 的收录率很低，原因是 GitHub Pages 在国内访问不稳定，Baiduspider 抓取成功率上不去。这不是页面结构的问题，加多少 meta 都解决不了。要让百度稳定收录，只有两条路：
+站点已绑定自有域名 `ipowerbi.icu`，百度不再受 `github.io` 主域站点数限制，按上面的清单添加站点、验证、提交 sitemap 即可。
 
-- **换自有域名**（推荐）：内容原样迁移，在 GitHub Pages 设置自定义域名后会自动 301，本仓库的绝对链接统一替换即可。
-- **国内托管**：域名备案后放阿里云 OSS / 腾讯云 COS + CDN，百度抓取和排名都会正常。
+百度对国内访问速度敏感；如果以后希望排名更稳，可以把站点迁到国内托管（域名备案 + 阿里云 OSS / 腾讯云 COS + CDN）。
 
-必应和谷歌对 GitHub Pages 没有这个问题，按上面的清单提交，通常几天到两周内收录。
+必应和谷歌按上面的清单提交，通常几天到两周内收录。
 
-## 域名与三站统一（待办）
+## 域名与三站统一
 
-三个站点现在分属两种托管，这是「看起来不像一个站」的根源：
+`https://ipowerbi.icu/` 是三个站点的统一入口：
 
-- 官网 `ipowerbi.mysxl.cn`：第三方建站，内容不在本仓库，视觉和加载方式由平台决定；
-- 作品集、平台和本站：GitHub Pages，同一个 origin，共用这套视觉。
+- 本站：`https://ipowerbi.icu/`
+- 作品集：`https://ipowerbi.icu/AIA-PowerBI-Portfolio/`
+- 平台：`https://ipowerbi.icu/L2-data-platform/`
 
-**短期**：把官网内容迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css` 的字体与色板，三站归到同一个域名、同一套视觉。需要 mysxl 站点的导出或原稿。
+根站绑定自定义域名后，同在 `jevonzhu2008-star.github.io` 下的项目站点会自动跟随到新域名，旧地址由 GitHub 301 过去。
 
-**长期**：换自有域名。在 GitHub Pages 设置自定义域名后，GitHub 会把 `jevonzhu2008-star.github.io` 301 到新域名；本仓库里的绝对链接统一替换成新域名即可。官网页面源码里出现的 `ipowerbi.com.cn` 如果是自己持有的域名，可以直接用它。
+仍待办：官网 `ipowerbi.mysxl.cn` 还在第三方平台，内容不在本仓库，视觉和加载方式由平台决定。把官网迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css`，三站才算真正同一套视觉。需要 mysxl 站点的导出或原稿。
 
 ## 修改
 
