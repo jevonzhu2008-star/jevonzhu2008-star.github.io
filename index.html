@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Power BI 顾问 Jevon Zhu｜成都报表开发、语义模型与培训</title>
-<meta name="description" content="成都的 Power BI 顾问 Jevon Zhu，十年报表开发、语义模型与培训经验，覆盖 DAX、FinOps、Databricks 与 Microsoft Fabric。">
+<meta name="description" content="成都的 Power BI 顾问 Jevon Zhu，十年报表开发、语义模型与培训经验，覆盖 SAP BW、DAX、Microsoft Fabric、Databricks 与 FinOps 云成本分析。">
 <meta name="author" content="Jevon Zhu">
 <meta name="theme-color" content="#ffffff">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
@@ -18,7 +18,7 @@
 <link rel="alternate" hreflang="x-default" href="https://jevonzhu2008-star.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Power BI 顾问 Jevon Zhu｜成都报表开发、语义模型与培训">
-<meta property="og:description" content="成都的 Power BI 顾问，十年报表开发、语义模型与培训经验，覆盖 DAX、FinOps、Databricks 与 Microsoft Fabric。">
+<meta property="og:description" content="成都的 Power BI 顾问，十年报表开发、语义模型与培训经验，覆盖 SAP BW、DAX、Microsoft Fabric、Databricks 与 FinOps 云成本分析。">
 <meta property="og:url" content="https://jevonzhu2008-star.github.io/">
 <meta property="og:image" content="https://jevonzhu2008-star.github.io/assets/og-cover.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Power BI 顾问 Jevon Zhu｜成都报表开发、语义模型与培训">
-<meta name="twitter:description" content="成都的 Power BI 顾问，十年报表开发、语义模型与培训经验，覆盖 DAX、FinOps、Databricks 与 Microsoft Fabric。">
+<meta name="twitter:description" content="成都的 Power BI 顾问，十年报表开发、语义模型与培训经验，覆盖 SAP BW、DAX、Microsoft Fabric、Databricks 与 FinOps 云成本分析。">
 <meta name="twitter:image" content="https://jevonzhu2008-star.github.io/assets/og-cover.jpg">
 <meta name="twitter:image:alt" content="Jevon Zhu 的 Power BI 站点入口：把数据做成决策">
 <script type="application/ld+json">
@@ -56,6 +56,8 @@
         "语义模型",
         "Microsoft Fabric",
         "Databricks",
+        "SAP BW",
+        "SAP ERP",
         "FinOps",
         "Power Query",
         "数据可视化"
@@ -89,13 +91,14 @@
       "@type": "Service",
       "@id": "https://jevonzhu2008-star.github.io/#service",
       "name": "Power BI 报表开发与顾问服务",
-      "description": "Power BI 报表开发与交付、语义模型与 DAX 建模、企业培训与团队赋能、FinOps 云成本分析、Databricks 湖仓与数据平台搭建。",
+      "description": "Power BI 报表开发与交付、语义模型与 DAX 建模、企业培训与团队赋能、SAP BW / ERP 数据接入、FinOps 云成本分析、Databricks 与 Microsoft Fabric 湖仓平台搭建。",
       "serviceType": [
         "Power BI 报表开发",
         "Power BI 语义模型与 DAX 建模",
         "Power BI 企业培训",
+        "SAP BW / ERP 数据接入",
         "FinOps 云成本分析",
-        "数据平台与湖仓建设"
+        "Databricks 与 Microsoft Fabric 数据平台"
       ],
       "provider": { "@id": "https://jevonzhu2008-star.github.io/#person" },
       "areaServed": [
@@ -159,6 +162,22 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Excel 适合单人或小范围的计算和呈现；Power BI 强在数据量大、多源合并、口径统一和自动刷新。常见做法是 Excel 继续做录入和明细，Power BI 负责汇总与分发。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "SAP 里的数据能接进 Power BI 吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可以。常见做法是从 SAP BW 或 ERP 的表、查询结果里按周期取数，先落到中转层再建语义模型；中大型项目通常按月度循环抽取，配合增量刷新控制负载。关键是维度和口径提前对齐，否则每张报表都要重新对账。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Microsoft Fabric 和 Power BI 是什么关系？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fabric 是微软的数据平台，把 Lakehouse、数据工厂、实时分析和 Power BI 放在同一套体系里。Power BI 既是 Fabric 里的报表层，也能单独连接 Databricks、SQL Server 或 SAP。已经用 Databricks 的团队，可以只把 Fabric 当语义模型和报表层。"
           }
         }
       ]
@@ -449,7 +468,7 @@
         </li>
         <li data-reveal style="--i:6">
           <span class="service-no" aria-hidden="true">05</span>
-          <h3>Databricks 与湖仓数据平台</h3>
+          <h3>Databricks、Fabric 与湖仓平台</h3>
           <p>Databricks 湖仓做底座，Power BI 做展示层；需要时接入 Microsoft Fabric 与 Power Automate，把刷新、分发和权限固化下来。</p>
         </li>
         <li data-reveal style="--i:7">
@@ -458,6 +477,20 @@
           <p>已有报表跑得慢、口径对不上、上线后没人用，可以做一次体检，出一份问题清单和改进顺序，再由团队决定先改哪些。</p>
         </li>
       </ol>
+
+      <div class="stack" data-reveal>
+        <h3>常用技术栈</h3>
+        <ul class="stack-list">
+          <li><strong>Power BI</strong><span>报表、语义模型、发布与权限</span></li>
+          <li><strong>DAX</strong><span>度量值、计算表、性能调优</span></li>
+          <li><strong>Microsoft Fabric</strong><span>Lakehouse、OneLake、语义模型直连</span></li>
+          <li><strong>Databricks</strong><span>湖仓建模、Delta 表、与 Power BI 对接</span></li>
+          <li><strong>SAP BW / ERP</strong><span>按月循环取数、维度对齐、报表数据接入</span></li>
+          <li><strong>FinOps</strong><span>云账单归集、预算 vs 实际、RI/SP 节省</span></li>
+          <li><strong>Power Query</strong><span>增量抽取、参数化、自定义函数</span></li>
+          <li><strong>SQL</strong><span>ODS 到 ADS 分层、宽表与指标加工</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -512,6 +545,14 @@
         <div data-reveal style="--i:7">
           <dt>Power BI 和 Excel 有什么区别？</dt>
           <dd>Excel 适合单人或小范围的计算和呈现；Power BI 强在数据量大、多源合并、口径统一和自动刷新。常见做法是 Excel 继续做录入和明细，Power BI 负责汇总与分发。</dd>
+        </div>
+        <div data-reveal style="--i:8">
+          <dt>SAP 里的数据能接进 Power BI 吗？</dt>
+          <dd>可以。常见做法是从 SAP BW 或 ERP 的表、查询结果里按周期取数，先落到中转层再建语义模型；中大型项目通常按月度循环抽取，配合增量刷新控制负载。关键是维度和口径提前对齐，否则每张报表都要重新对账。</dd>
+        </div>
+        <div data-reveal style="--i:9">
+          <dt>Microsoft Fabric 和 Power BI 是什么关系？</dt>
+          <dd>Fabric 是微软的数据平台，把 Lakehouse、数据工厂、实时分析和 Power BI 放在同一套体系里。Power BI 既是 Fabric 里的报表层，也能单独连接 Databricks、SQL Server 或 SAP。已经用 Databricks 的团队，可以只把 Fabric 当语义模型和报表层。</dd>
         </div>
       </dl>
     </div>
