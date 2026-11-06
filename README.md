@@ -65,6 +65,14 @@ assets/shots/promo-poster.webp  宣传片封面帧
 powershell -ExecutionPolicy Bypass -File .\scripts\indexnow.ps1
 ```
 
+百度同样有主动推送，配额每天 10 条左右：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\baidu-push.ps1
+```
+
+推送 token 属于敏感信息，不写进仓库：放在项目根目录的 `.baidu-token` 文件里（已加进 `.gitignore`），或者设置环境变量 `BAIDU_PUSH_TOKEN`。
+
 ### 关于百度
 
 站点已绑定自有域名 `ipowerbi.icu`，百度不再受 `github.io` 主域站点数限制，按上面的清单添加站点、验证、提交 sitemap 即可。

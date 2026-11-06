@@ -6,3 +6,6 @@ promo.mp4
 
 # 微信名片原图，线上只用 assets/wechat-qr.webp 里的二维码裁切
 微信二维码.jpg
+
+# 百度主动推送 token，仓库是公开的，不能提交
+.baidu-token

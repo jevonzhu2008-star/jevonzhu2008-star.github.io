@@ -1,4 +1,4 @@
-# 部署后把 URL 主动推送给 Bing / Yandex（IndexNow 协议）
+﻿# 部署后把 URL 主动推送给 Bing / Yandex（IndexNow 协议）
 #
 # 用法：站点推上 GitHub Pages 并上线后，在本目录运行
 #   powershell -ExecutionPolicy Bypass -File .\scripts\indexnow.ps1
