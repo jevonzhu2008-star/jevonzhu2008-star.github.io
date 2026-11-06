@@ -1162,6 +1162,145 @@ a { color: inherit; }
   color: var(--muted);
 }
 
+/* ── 服务 ─────────────────────────────────────────────────── */
+
+.services {
+  padding: 128px 0;
+  scroll-margin-top: 68px;
+}
+
+.services-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.services-head h2,
+.faq-head h2 {
+  grid-column: 1 / span 4;
+  font-size: var(--fs-head);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.services-head p,
+.faq-head p {
+  grid-column: 6 / span 6;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--ink-soft);
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 48px 32px;
+  margin: 72px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-no {
+  display: block;
+  margin-bottom: 16px;
+  font-family: var(--latin);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.service-grid h3 {
+  font-size: var(--fs-lead);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.service-grid p {
+  margin-top: 12px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
+}
+
+/* ── 常见问题 ─────────────────────────────────────────────── */
+
+.faq {
+  padding: 128px 0;
+  background: var(--soft);
+  scroll-margin-top: 68px;
+}
+
+.faq-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.faq-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 56px;
+  margin: 72px 0 0;
+}
+
+.faq-list > div {
+  padding-top: 24px;
+  border-top: 1px solid rgba(20, 20, 19, 0.14);
+}
+
+.faq-list dt {
+  font-size: var(--fs-lead);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.faq-list dd {
+  margin: 12px 0 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1080px) {
+  .services,
+  .faq { padding: 96px 0; }
+
+  .services-head,
+  .faq-head { grid-template-columns: 1fr; gap: 24px; }
+
+  .services-head h2,
+  .services-head p,
+  .faq-head h2,
+  .faq-head p { grid-column: 1 / -1; }
+
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 24px;
+    margin-top: 48px;
+  }
+
+  .faq-list {
+    gap: 40px 32px;
+    margin-top: 48px;
+  }
+}
+
+@media (max-width: 720px) {
+  .service-grid,
+  .faq-list { grid-template-columns: 1fr; }
+
+  .service-grid { gap: 36px; }
+  .faq-list { gap: 32px; }
+}
+
 /* ── 联系 + 页脚 ──────────────────────────────────────────── */
 
 .closing {

@@ -22,7 +22,9 @@
 index.html            页面结构（文案、链接都在这里）
 404.html              GitHub Pages 的 404 页，与首页同一套视觉
 robots.txt            允许抓取，并指向 sitemap
-sitemap.xml           单页站点地图
+sitemap.xml           站点地图（首页 + 作品集）
+ca8fb82aa608eb6566678430c4a768a8.txt   IndexNow 密钥，Bing 主动推送验证用
+scripts/indexnow.ps1  上线后把 URL 推给 Bing / Yandex
 assets/site.css       全部样式
 assets/site.js        入场动画、导航高亮、移动端菜单、宣传片播放
 assets/fonts/         自托管 Manrope 可变字体
@@ -41,6 +43,35 @@ assets/shots/promo-poster.webp  宣传片封面帧
 - GitHub Pages：把整个目录推到仓库根目录，或 `docs/` 并在仓库设置里指定。
 - `404.html`、`robots.txt`、`sitemap.xml` 必须放在站点根目录才会生效。
 - 如果本页作为根站 `jevonzhu2008-star.github.io`，三个站点链接保持现在的绝对地址即可。
+
+## 搜索引擎收录
+
+页面本身已经做了：唯一 H1、canonical、OG / Twitter 卡片、`Person` / `WebSite` / `ProfilePage` / `Service` / `FAQPage` 结构化数据、含作品集的 sitemap、robots.txt、IndexNow 密钥，以及「服务」和「常见问题」两块正文内容。
+
+剩下的是在各站长平台登记，都要用你自己的账号，做一次即可：
+
+| 平台 | 入口 | 要做的 |
+| --- | --- | --- |
+| Google | Search Console | 添加「网址前缀」资源 → 用 HTML 标记验证（值填进 `index.html` 里 `google-site-verification` 的注释）→ 提交 `sitemap.xml` |
+| 必应 | Bing Webmaster Tools | 可从 Search Console 直接导入；也可以添加站点后 HTML 验证 → 提交 sitemap |
+| 百度 | 百度搜索资源平台 | 添加站点 → HTML 标签验证（`baidu-site-verification`）→ 提交 sitemap → 在「链接提交」里配主动推送 |
+
+验证用的 `<meta>` 已经在 `index.html` 的 head 里留了注释位，拿到值后取消注释填进去。
+
+每次改版推上线后，可以主动推一次 Bing：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\indexnow.ps1
+```
+
+### 关于百度
+
+百度对 `*.github.io` 的收录率很低，原因是 GitHub Pages 在国内访问不稳定，Baiduspider 抓取成功率上不去。这不是页面结构的问题，加多少 meta 都解决不了。要让百度稳定收录，只有两条路：
+
+- **换自有域名**（推荐）：内容原样迁移，在 GitHub Pages 设置自定义域名后会自动 301，本仓库的绝对链接统一替换即可。
+- **国内托管**：域名备案后放阿里云 OSS / 腾讯云 COS + CDN，百度抓取和排名都会正常。
+
+必应和谷歌对 GitHub Pages 没有这个问题，按上面的清单提交，通常几天到两周内收录。
 
 ## 域名与三站统一（待办）
 
