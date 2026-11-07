@@ -309,6 +309,7 @@ a { color: inherit; }
   font-size: var(--fs-lead);
   line-height: var(--lh-lead);
   color: var(--ink-soft);
+  text-wrap: pretty;
 }
 
 .btn {
@@ -1048,9 +1049,13 @@ a { color: inherit; }
 
 .method {
   padding: 128px 0;
-  background: var(--soft);
+  background: var(--accent);
   scroll-margin-top: 68px;
 }
+
+/* 黄底上的文字压深，与站点一面板保持同一套取值 */
+.method-head p,
+.steps p { color: var(--on-accent); }
 
 .method-head {
   display: grid;
@@ -1077,8 +1082,9 @@ a { color: inherit; }
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 32px;
+  /* 四列时每行只有十六个字，读起来是断句；改成两列，每行三十出头 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 48px;
   margin: 64px 0 0;
   padding: 0;
   list-style: none;
@@ -1150,6 +1156,7 @@ a { color: inherit; }
 
 .about-note {
   margin-top: 22px;
+  max-width: 34em;
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--ink-soft);
@@ -1283,6 +1290,9 @@ a { color: inherit; }
   .stack-list { grid-template-columns: 1fr; }
 }
 
+/* 技术栈挪到关于之后，间距按新位置收紧 */
+.about .stack { margin-top: 48px; }
+
 /* ── 常见问题 ─────────────────────────────────────────────── */
 
 .faq {
@@ -1301,24 +1311,46 @@ a { color: inherit; }
 .faq-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 48px 56px;
+  gap: 0 56px;
   margin: 72px 0 0;
 }
 
-.faq-list > div {
-  padding-top: 24px;
+.faq-list details {
   border-top: 1px solid rgba(20, 20, 19, 0.14);
 }
 
-.faq-list dt {
+/* 折叠：用 details/summary，答案始终留在 DOM 里，收录不受影响 */
+.faq-list summary {
+  position: relative;
+  display: block;
+  padding: 22px 40px 22px 0;
+  cursor: pointer;
+  list-style: none;
   font-size: var(--fs-lead);
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: -0.01em;
 }
 
-.faq-list dd {
-  margin: 12px 0 0;
+.faq-list summary::-webkit-details-marker { display: none; }
+
+.faq-list summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 17px;
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--muted);
+  transition: transform 0.22s var(--ease);
+}
+
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+
+.faq-a {
+  max-width: 34em;
+  padding-bottom: 24px;
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--ink-soft);
@@ -1343,7 +1375,7 @@ a { color: inherit; }
   }
 
   .faq-list {
-    gap: 40px 32px;
+    gap: 0 32px;
     margin-top: 48px;
   }
 }
@@ -1353,7 +1385,7 @@ a { color: inherit; }
   .faq-list { grid-template-columns: 1fr; }
 
   .service-grid { gap: 36px; }
-  .faq-list { gap: 32px; }
+  .faq-list { gap: 0; }
 }
 
 /* ── 联系 + 页脚 ──────────────────────────────────────────── */
@@ -1741,4 +1773,6 @@ a { color: inherit; }
 
   .btn,
   .cells a { transition: none; }
+
+  .faq-list summary::after { transition: none; }
 }
