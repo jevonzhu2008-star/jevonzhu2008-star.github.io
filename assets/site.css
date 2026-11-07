@@ -1049,13 +1049,9 @@ a { color: inherit; }
 
 .method {
   padding: 128px 0;
-  background: var(--accent);
+  background: var(--bg);
   scroll-margin-top: 68px;
 }
-
-/* 黄底上的文字压深，与站点一面板保持同一套取值 */
-.method-head p,
-.steps p { color: var(--on-accent); }
 
 .method-head {
   display: grid;
