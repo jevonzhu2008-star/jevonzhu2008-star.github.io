@@ -470,6 +470,11 @@ a { color: inherit; }
   background: #130f1c;
 }
 
+/* 第四块：AI 问数，浅灰场地，视觉在左 */
+#site-finance {
+  background: var(--soft);
+}
+
 /* 背景纹理层：文字与图片叠在同一场景里 */
 .panel::after {
   content: '';
