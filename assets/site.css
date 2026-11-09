@@ -1290,6 +1290,168 @@ a { color: inherit; }
 /* 技术栈挪到关于之后，间距按新位置收紧 */
 .about .stack { margin-top: 48px; }
 
+/* ── 为什么用语义模型 ─────────────────────────────────────── */
+
+.compare-sec {
+  padding: 128px 0;
+  scroll-margin-top: 68px;
+}
+
+.compare-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.compare-head h2 {
+  grid-column: 1 / span 5;
+  font-size: var(--fs-head);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.compare-head p {
+  grid-column: 7 / span 6;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 64px;
+}
+
+.compare th,
+.compare td {
+  text-align: left;
+  vertical-align: top;
+  padding: 24px 32px 24px 0;
+  border-top: 1px solid rgba(20, 20, 19, 0.14);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.compare thead th {
+  border-top: 0;
+  border-bottom: 1px solid rgba(20, 20, 19, 0.3);
+  padding-top: 0;
+  padding-bottom: 16px;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.compare thead th.is-ours { color: var(--ink); }
+
+.compare tbody th {
+  width: 12%;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.compare td {
+  width: 44%;
+  color: var(--muted);
+}
+
+.compare td.is-ours { color: var(--ink-soft); }
+
+.compare-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 9px;
+  border-radius: var(--r-control);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  vertical-align: 1px;
+}
+
+.compare-note {
+  margin-top: 40px;
+  max-width: 46em;
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.inline-link {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent);
+}
+.inline-link:hover { text-decoration-color: var(--ink); }
+
+@media (max-width: 1080px) {
+  .compare-head { grid-template-columns: 1fr; gap: 24px; }
+  .compare-head h2,
+  .compare-head p { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .compare-sec { padding: 96px 0; }
+
+  .compare { display: block; margin-top: 40px; }
+  .compare thead { display: none; }
+  .compare tbody { display: block; }
+
+  .compare tr {
+    display: block;
+    padding: 20px 0;
+    border-top: 1px solid rgba(20, 20, 19, 0.14);
+  }
+
+  .compare tbody th {
+    display: block;
+    width: auto;
+    margin-bottom: 10px;
+    font-size: var(--fs-small);
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  /* 标签挪到左侧栏，省掉每格一行高度 */
+  .compare td {
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 12px;
+    width: auto;
+    border-top: 0;
+    padding: 0 0 10px;
+  }
+
+  .compare td::before {
+    content: attr(data-label);
+    padding-top: 3px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--faint);
+  }
+
+  .compare td.is-ours::before { color: var(--muted); }
+}
+
 /* ── 常见问题 ─────────────────────────────────────────────── */
 
 .faq {

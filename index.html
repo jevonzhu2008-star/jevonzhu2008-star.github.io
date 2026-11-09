@@ -489,7 +489,7 @@
         <p class="panel-desc" data-reveal style="--i:1">用中文问自己的财务数据：这个月花了多少、哪张卡负债最高、手续费同比怎么变。答案由语义模型算出来，每条都附一段可展开的 DAX。</p>
         <dl class="panel-facts" data-reveal style="--i:2">
           <div><dt>问法</dt><dd>自然语言提问，不用点筛选器，也不用自己写 DAX</dd></div>
-          <div><dt>回答</dt><dd>数字来自已发布的语义模型，问句与查询结果交给 DeepSeek 组织成话</dd></div>
+          <div><dt>回答</dt><dd>数字来自已发布的语义模型，问句与查询结果交给 DeepSeek 组织成话。<a class="inline-link" href="#why-semantic">为什么不是直接连数据库</a></dd></div>
           <div><dt>访问</dt><dd>口令保护，口令找作者要</dd></div>
         </dl>
         <a class="btn" href="https://app.ipowerbi.icu" target="_blank" rel="noopener" data-reveal style="--i:3">打开应用 <span class="arr" aria-hidden="true">→</span></a>
@@ -521,6 +521,65 @@
           </div>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- ── 为什么用语义模型 ─────────────────────────────── -->
+  <section class="compare-sec" id="why-semantic">
+    <div class="wrap">
+      <div class="compare-head">
+        <h2 class="mask" data-reveal>为什么用语义模型<br>而不是直连数据库</h2>
+        <p data-reveal style="--i:1">财务问数的每个数字都来自一个已发布的语义模型，不是数据库直连。这不是绕远路——先把口径、关联和权限定死，AI 才有东西可以问对。</p>
+      </div>
+
+      <table class="compare" data-reveal style="--i:2">
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">对比维度</span></th>
+            <th scope="col" class="is-ours">语义模型 <span class="compare-tag">现在用的</span></th>
+            <th scope="col">直接连数据库</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">口径</th>
+            <td class="is-ours" data-label="语义模型">「支出」「收入」「负债」都写成度量值，只有一种算法</td>
+            <td data-label="连数据库">AI 每次自己拼 SQL、自己猜口径，同一个问题隔天再问可能换了算法</td>
+          </tr>
+          <tr>
+            <th scope="row">关联</th>
+            <td class="is-ours" data-label="语义模型">星型模型只保留一条正确的关联路径</td>
+            <td data-label="连数据库">订单日期、发货日期、入账日期并列，连错一个全错；一对多没处理会重复计数</td>
+          </tr>
+          <tr>
+            <th scope="row">字段</th>
+            <td class="is-ours" data-label="语义模型">客户、毛利率、本月支出，都是业务上的说法</td>
+            <td data-label="连数据库">KUNNR、MANDT、ZTERR 这类原始字段，先得猜是什么</td>
+          </tr>
+          <tr>
+            <th scope="row">权限</th>
+            <td class="is-ours" data-label="语义模型">行级权限写在模型里，谁来问都只看到自己那份</td>
+            <td data-label="连数据库">要给 AI 一个能读全库的账号，权限得另做一套</td>
+          </tr>
+          <tr>
+            <th scope="row">时间</th>
+            <td class="is-ours" data-label="语义模型">同比、环比、YTD 建一次，处处一致</td>
+            <td data-label="连数据库">每次现写日期逻辑，财年和跨月边界容易算错</td>
+          </tr>
+          <tr>
+            <th scope="row">速度</th>
+            <td class="is-ours" data-label="语义模型">列存预聚合，回答基本即时；交给 AI 的表和度量值只有十几个</td>
+            <td data-label="连数据库">动辄扫千万行；表越多，模型选错表的概率越高</td>
+          </tr>
+          <tr>
+            <th scope="row">可核对</th>
+            <td class="is-ours" data-label="语义模型">每条回答附 DAX，数字不对能顺着公式查下去</td>
+            <td data-label="连数据库">只有生成的 SQL，看着像对的，算没算错得自己验</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="compare-note" data-reveal>财务问数用的是个人数据，但做法和集团报表是同一套：先建模，再让 AI 在上面说话。</p>
     </div>
   </section>
 
