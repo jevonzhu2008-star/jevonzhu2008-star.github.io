@@ -481,29 +481,29 @@
     </div>
   </section>
 
-  <!-- ── 站点四：AI 问数 ─────────────────────────────── -->
+  <!-- ── 站点四：智能问数 ─────────────────────────────── -->
   <section class="panel is-flipped" id="site-finance">
     <div class="panel-inner">
       <div class="panel-text">
-        <h2 class="mask" data-reveal>AI/BI 财务问数</h2>
-        <p class="panel-desc" data-reveal style="--i:1">用中文问自己的财务数据：这个月花了多少、哪张卡负债最高、手续费同比怎么变。答案由语义模型算出来，每条都附一段可展开的 DAX。</p>
+        <h2 class="mask" data-reveal>智能问数</h2>
+        <p class="panel-desc" data-reveal style="--i:1">建在 Power BI 语义模型上的 AI 问数：员工用中文提问，系统出数、出图、出结论。口径、关联和权限提前固化在模型里，AI 只做翻译与查询。</p>
         <dl class="panel-facts" data-reveal style="--i:2">
-          <div><dt>问法</dt><dd>自然语言提问，不用点筛选器，也不用自己写 DAX</dd></div>
-          <div><dt>回答</dt><dd>数字来自已发布的语义模型，问句与查询结果交给 DeepSeek 组织成话。<a class="inline-link" href="#why-semantic">为什么不是直接连数据库</a></dd></div>
-          <div><dt>访问</dt><dd>口令保护，口令找作者要</dd></div>
+          <div><dt>定位</dt><dd>垂直行业 ChatBI，不直连数据库，AI 不负责算数</dd></div>
+          <div><dt>口径</dt><dd>同比、环比、预算、库存人工校验后写成度量值，改口径只改一处</dd></div>
+          <div><dt>权限</dt><dd>复用 Power BI 行级权限，按岗位各看各的，不给 AI 全库账号</dd></div>
         </dl>
-        <a class="btn" href="https://app.ipowerbi.icu" target="_blank" rel="noopener" data-reveal style="--i:3">打开应用 <span class="arr" aria-hidden="true">→</span></a>
-        <p class="panel-alt" data-reveal style="--i:4">没有口令？<a href="#contact">联系作者获取</a></p>
+        <a class="btn" href="https://app.ipowerbi.icu" target="_blank" rel="noopener" data-reveal style="--i:3">试用在线演示 <span class="arr" aria-hidden="true">→</span></a>
+        <p class="panel-alt" data-reveal style="--i:4">演示用个人记账数据搭建，做法与企业版一致；口令找作者要，<a href="#contact">也可以聊聊企业方案</a>。</p>
       </div>
       <div class="panel-visual wipe wipe-l" data-reveal style="--i:1">
-        <a class="stage stage--pf" data-stage href="https://app.ipowerbi.icu" target="_blank" rel="noopener" aria-label="打开财务问数应用（新窗口）">
+        <a class="stage stage--pf" data-stage href="https://app.ipowerbi.icu" target="_blank" rel="noopener" aria-label="打开智能问数演示（新窗口）">
           <span class="stage-cursor" aria-hidden="true">打开应用 <b>↗</b></span>
           <div class="stage-scene">
             <figure class="window window--pf">
               <div class="window-bar">
                 <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
                 <span class="window-url">
-                  <span class="url-idle">财务问数 · 个人财务分析 v3</span>
+                  <span class="url-idle">app.ipowerbi.icu</span>
                   <span class="url-hot" aria-hidden="true">打开应用 ↗</span>
                 </span>
                 <span class="window-go" aria-hidden="true">↗</span>
@@ -511,7 +511,7 @@
               <div class="window-shot window-shot--video">
                 <video class="stage-video" width="1280" height="720" muted loop playsinline preload="none"
                        poster="assets/shots/finance-qa.webp"
-                       aria-label="AI/BI 财务问数宣传片：用中文提问，答案连同可展开的 DAX 一起给出">
+                       aria-label="智能问数演示：用中文提问，答案连同可展开的 DAX 一起给出">
                   <source src="assets/finance-promo.mp4" type="video/mp4">
                 </video>
                 <span class="window-glare" aria-hidden="true"></span>
@@ -524,12 +524,12 @@
     </div>
   </section>
 
-  <!-- ── 为什么用语义模型 ─────────────────────────────── -->
+  <!-- ── 问数凭什么敢直接上线 ─────────────────────────── -->
   <section class="compare-sec" id="why-semantic">
     <div class="wrap">
       <div class="compare-head">
-        <h2 class="mask" data-reveal>为什么用语义模型<br>而不是直连数据库</h2>
-        <p data-reveal style="--i:1">财务问数的每个数字都来自一个已发布的语义模型，不是数据库直连。这不是绕远路——先把口径、关联和权限定死，AI 才有东西可以问对。</p>
+        <h2 class="mask" data-reveal>问数凭什么<br>敢直接上线</h2>
+        <p data-reveal style="--i:1">不少智能问数让 AI 自己拼查询、自己解释口径，答得漂亮，却没人敢把它交给业务。这里的做法反过来：口径、范围和权限都收进语义模型，AI 只剩翻译一句话的工作。</p>
       </div>
 
       <table class="compare" data-reveal style="--i:2">
@@ -543,8 +543,13 @@
         <tbody>
           <tr>
             <th scope="row">口径</th>
-            <td class="is-ours" data-label="语义模型">「支出」「收入」「负债」都写成度量值，只有一种算法</td>
+            <td class="is-ours" data-label="语义模型">「销售额」「成本」「库存」都写成度量值，只有一种算法</td>
             <td data-label="连数据库">AI 每次自己拼 SQL、自己猜口径，同一个问题隔天再问可能换了算法</td>
+          </tr>
+          <tr>
+            <th scope="row">范围</th>
+            <td class="is-ours" data-label="语义模型">AI 只能调用白名单里的指标和维度，名单外的问题直说「模型里没有这个口径」</td>
+            <td data-label="连数据库">让 AI 自由拼查询，表越多越容易编出一个看着像的答案</td>
           </tr>
           <tr>
             <th scope="row">关联</th>
@@ -553,7 +558,7 @@
           </tr>
           <tr>
             <th scope="row">字段</th>
-            <td class="is-ours" data-label="语义模型">客户、毛利率、本月支出，都是业务上的说法</td>
+            <td class="is-ours" data-label="语义模型">客户、毛利率、在库数量，都是业务上的说法</td>
             <td data-label="连数据库">KUNNR、MANDT、ZTERR 这类原始字段，先得猜是什么</td>
           </tr>
           <tr>
@@ -568,7 +573,7 @@
           </tr>
           <tr>
             <th scope="row">速度</th>
-            <td class="is-ours" data-label="语义模型">列存预聚合，回答基本即时；交给 AI 的表和度量值只有十几个</td>
+            <td class="is-ours" data-label="语义模型">列存预聚合，回答基本即时</td>
             <td data-label="连数据库">动辄扫千万行；表越多，模型选错表的概率越高</td>
           </tr>
           <tr>
@@ -576,10 +581,15 @@
             <td class="is-ours" data-label="语义模型">每条回答附 DAX，数字不对能顺着公式查下去</td>
             <td data-label="连数据库">只有生成的 SQL，看着像对的，算没算错得自己验</td>
           </tr>
+          <tr>
+            <th scope="row">维护</th>
+            <td class="is-ours" data-label="语义模型">口径改一处，问答和报表同时生效；加指标只需在模型里加一个度量值</td>
+            <td data-label="连数据库">每个问题重写一遍查询，口径散落在各处，改一次要翻遍所有问答</td>
+          </tr>
         </tbody>
       </table>
 
-      <p class="compare-note" data-reveal>财务问数用的是个人数据，但做法和集团报表是同一套：先建模，再让 AI 在上面说话。</p>
+      <p class="compare-note" data-reveal>演示用的是个人记账数据，企业场景常见 SAP BW、ERP 与业务台账，做法一样：先对齐口径，再让 AI 在上面说话。</p>
     </div>
   </section>
 
