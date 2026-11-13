@@ -43,7 +43,7 @@
       "jobTitle": "Power BI 顾问",
       "description": "十年 Power BI 报表开发、语义模型与培训经验。",
       "url": "https://ipowerbi.icu/",
-      "image": "https://ipowerbi.icu/assets/avatar-192.png",
+      "image": "https://ipowerbi.icu/assets/about-portrait-960.webp",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "成都",
@@ -64,6 +64,7 @@
       ],
       "knowsLanguage": ["zh-CN"],
       "sameAs": [
+        "https://space.bilibili.com/510565383",
         "https://github.com/jevonzhu2008-star",
         "https://ipowerbi.icu/AIA-PowerBI-Portfolio/",
         "https://ipowerbi.mysxl.cn/"
@@ -113,17 +114,9 @@
       }
     },
     {
-      "@type": "FAQPage",
       "@id": "https://ipowerbi.icu/#faq",
+      "@type": "FAQPage",
       "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Power BI 是什么，适合什么规模的公司？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Power BI 是微软的分析与报表工具，把 Excel、数据库、云账单等数据接进来，做成可以交互的看板和移动端报表。从几个人的小团队到几千人的集团都能用，区别在于建模方式和发布治理。"
-          }
-        },
         {
           "@type": "Question",
           "name": "Power BI 报表顾问具体做什么？",
@@ -142,6 +135,38 @@
         },
         {
           "@type": "Question",
+          "name": "报价怎么谈？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "先把范围写清楚再谈价：接哪些数据源、做多少页、交付什么、验收怎么算，写成一页范围说明，双方确认后开始。中途加需求按增量单独算，不混进原来的报价里。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "需要我们这边准备什么？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "三样东西：数据源的访问方式（数据库、ERP 导出、云账单都可以）、要看的指标和口径、真正用这张报表的人。前两样决定能不能开工，第三样决定做完有没有人用。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "数据保密怎么约定？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "开工前把数据边界写进约定：用哪种访问方式、哪些字段需要脱敏、哪些人能看到结果。能在你的环境里做就在你的环境里做；需要带走样本时，只取脱敏后的部分。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "做完以后，团队自己能接手吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可以。交付时一并培训使用者，留下文档和口径说明；度量值集中在语义模型里管，改口径只改一处，不会散在每张报表里。后续要技能升级或做一次报表体检，也可以按段来做。"
+          }
+        },
+        {
+          "@type": "Question",
           "name": "人在成都，可以远程合作吗？",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -150,18 +175,10 @@
         },
         {
           "@type": "Question",
-          "name": "零基础可以学 Power BI 吗？",
+          "name": "Power BI 是什么，适合什么规模的公司？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "可以。培训从数据导入、Power Query 清洗讲到建模和 DAX，用学员手上的真实数据练习，不套模板。做过财务、运营、销售的人上手最快，因为最清楚报表要回答什么问题。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Power BI 和 Excel 有什么区别？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Excel 适合单人或小范围的计算和呈现；Power BI 强在数据量大、多源合并、口径统一和自动刷新。常见做法是 Excel 继续做录入和明细，Power BI 负责汇总与分发。"
+            "text": "Power BI 是微软的分析与报表工具，把 Excel、数据库、云账单等数据接进来，做成可以交互的看板和移动端报表。从几个人的小团队到几千人的集团都能用，区别在于建模方式和发布治理。"
           }
         },
         {
@@ -190,6 +207,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" type="image/webp"
+      imagesrcset="assets/shots/pf-overview-800.webp 800w, assets/shots/pf-overview-1600.webp 1600w"
+      imagesizes="(max-width: 720px) 72vw, 520px">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
@@ -233,9 +253,13 @@
       <div class="hero-text">
         <h1 class="mask decode" data-reveal data-decode>把数据<br>做成决策</h1>
         <p class="hero-sub" data-reveal style="--i:1">我是 Jevon Zhu，Power BI 报表顾问。</p>
+        <div class="hero-actions" data-reveal style="--i:2">
+          <a class="btn" href="#contact">聊聊你的报表 <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#site-portfolio">看 14 块公开看板</a>
+        </div>
       </div>
 
-      <div class="hero-visual" data-reveal style="--i:2" data-tilt>
+      <div class="hero-visual" data-reveal style="--i:3" data-tilt>
         <div class="deck">
           <div class="deck-card deck-card--a" aria-hidden="true">
             <img src="assets/shots/ip-home.jpg" width="900" height="562" alt="">
@@ -255,11 +279,11 @@
         </div>
       </div>
 
-      <dl class="hero-stats" data-reveal style="--i:3">
+      <dl class="hero-stats" data-reveal style="--i:4">
         <div><dt>从业</dt><dd><span data-count="10">10</span><span class="unit">年</span></dd></div>
-        <div><dt>合作行业</dt><dd><span data-count="6">6</span><span class="unit">类</span></dd></div>
         <div><dt>客户覆盖</dt><dd><span data-count="14">14</span><span class="unit">国</span></dd></div>
-        <div><dt>常用技术栈</dt><dd><span data-count="8">8</span><span class="unit">项</span></dd></div>
+        <div><dt>首版周期</dt><dd><span>2–4</span><span class="unit">周</span></dd></div>
+        <div><dt>公开看板</dt><dd><span data-count="14">14</span><span class="unit">块</span></dd></div>
       </dl>
     </div>
   </section>
@@ -600,18 +624,54 @@
     <div class="wrap">
       <div class="about-top">
         <h2 class="mask" data-reveal>关于</h2>
+        <figure class="about-portrait" data-reveal style="--i:1">
+          <picture>
+            <source type="image/webp"
+                    srcset="assets/about-portrait-480.webp 480w, assets/about-portrait-960.webp 960w"
+                    sizes="(max-width: 1080px) 72vw, 360px">
+            <img src="assets/about-portrait.jpg" width="960" height="960" loading="lazy"
+                 alt="Jevon Zhu 的黑白肖像照">
+          </picture>
+          <figcaption>Jevon Zhu，成都</figcaption>
+        </figure>
         <div class="about-body">
           <p class="about-lead" data-reveal>我做 Power BI 十年。十年里做的其实是一件事：把数据变成能用于决策的报表——先把它讲明白，再把它做出来，最后交付进一家每天都要用它的公司。</p>
           <p class="about-note" data-reveal style="--i:1">官网是讲的部分，作品集是做的部分，PBI 平台是交付的部分，智能问数是问的部分。四个站点合起来，才是一份完整的简历。</p>
+          <dl class="about-facts" data-reveal style="--i:2">
+            <div><dt>现居</dt><dd>成都</dd></div>
+            <div><dt>身份</dt><dd>世界 500 强公司 BI 开发者</dd></div>
+            <div><dt>频道</dt><dd><a href="https://space.bilibili.com/510565383" target="_blank" rel="noopener">B 站「人人都爱PowerBI」</a></dd></div>
+            <div><dt>行业</dt><dd>消费品、电子产品、工厂、网络教育、金融、矿业</dd></div>
+          </dl>
         </div>
       </div>
-      <dl class="about-facts" data-reveal style="--i:2">
-        <div><dt>现居</dt><dd>成都</dd></div>
-        <div><dt>身份</dt><dd>世界 500 强公司 BI 开发者</dd></div>
-        <div><dt>频道</dt><dd>B 站「人人都爱PowerBI」</dd></div>
-        <div><dt>行业</dt><dd>消费品、电子产品、工厂、网络教育、金融、矿业</dd></div>
-      </dl>
-      <div class="stack" data-reveal style="--i:3">
+      <div class="about-proof" data-reveal style="--i:3">
+        <h3>可以直接打开</h3>
+        <ul>
+          <li><a href="#site-portfolio">14 块 FinOps 看板</a></li>
+          <li><a href="#site-platform">平台登录页与工作台</a></li>
+          <li><a href="#site-finance">智能问数在线演示</a></li>
+          <li><a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教程与两个完整案例</a></li>
+        </ul>
+      </div>
+      <div class="about-voices" data-reveal style="--i:4">
+        <h3>客户原话</h3>
+        <ul>
+          <li>
+            <blockquote>以前云账单散在几个账号里，BU 之间口径不一致，说不清钱花在哪。现在预算 vs 实际、RI/SP 节省逐月能看，月度复盘直接拿这张看板开。</blockquote>
+            <cite>制造业 · 财务</cite>
+          </li>
+          <li>
+            <blockquote>集团这边数据分散在 SAP 和几个业务系统里，最难的是口径对齐。取数和语义模型理顺之后，各业务单元第一次能对着同一份数开会。</blockquote>
+            <cite>集团 · 信息中心</cite>
+          </li>
+          <li>
+            <blockquote>培训用的是我们自己的数据，不是模板案例。两天下来团队能自己改口径、加页面，不用每次都找人。</blockquote>
+            <cite>电子制造 · 数据分析</cite>
+          </li>
+        </ul>
+      </div>
+      <div class="stack" data-reveal style="--i:5">
         <h3>常用技术栈</h3>
         <ul class="stack-list">
           <li><strong>Power BI</strong><span>报表、语义模型、发布与权限</span></li>
@@ -707,6 +767,8 @@
           <strong class="qr-hint qr-hint--touch">长按图片保存，微信扫一扫添加</strong>
         </a>
       </div>
+
+      <p class="closing-alt" data-reveal style="--i:3">还没决定？<a href="#site-portfolio">先看 14 块公开看板</a>，看完再聊。</p>
 
       <footer class="foot">
         <div class="foot-top">

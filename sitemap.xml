@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ipowerbi.icu/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -12,13 +12,18 @@
       <image:caption>成都的 Power BI 顾问：报表开发、语义模型与培训</image:caption>
     </image:image>
     <image:image>
+      <image:loc>https://ipowerbi.icu/assets/about-portrait-960.webp</image:loc>
+      <image:title>Jevon Zhu 肖像</image:title>
+      <image:caption>Jevon Zhu，成都 Power BI 报表顾问</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://ipowerbi.icu/assets/shots/pf-overview-1600.webp</image:loc>
       <image:title>Power BI 作品集总览</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://ipowerbi.icu/AIA-PowerBI-Portfolio/</loc>
-    <lastmod>2026-11-06</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
