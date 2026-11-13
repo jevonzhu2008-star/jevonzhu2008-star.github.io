@@ -12,6 +12,9 @@
 
 param([string[]]$Urls)
 
+# Windows PowerShell 5.1 默认按本地代码页输出，中文会变问号
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
+
 $site = 'https://ipowerbi.icu'
 $root = Split-Path $PSScriptRoot -Parent
 $tokenFile = Join-Path $root '.baidu-token'
@@ -45,21 +48,17 @@ Write-Host "准备推送 $($Urls.Count) 个 URL："
 $Urls | ForEach-Object { Write-Host "  $_" }
 
 $uri = "http://data.zz.baidu.com/urls?site=$site&token=$token"
-$tmp = [System.IO.Path]::GetTempFileName()
 
-try {
-  [System.IO.File]::WriteAllLines($tmp, $Urls, (New-Object System.Text.UTF8Encoding($false)))
+# 直接传正文，不落临时文件：临时目录路径常含中文，curl 的 @file 读不了
+$body = ($Urls -join "`n")
 
-  # 百度接口是 http，走本机代理经常失败，这里强制直连
-  $result = & curl.exe -s --noproxy '*' --max-time 30 -X POST `
-                       --data-binary "@$tmp" -H 'Content-Type: text/plain' $uri
+# 百度接口是 http，走本机代理经常失败，这里强制直连
+$result = & curl.exe -s --noproxy '*' --max-time 30 -X POST `
+                     --data-binary $body -H 'Content-Type: text/plain' $uri
 
-  if (-not $result) {
-    Write-Host '推送失败：没有返回内容，检查网络或 token'
-    exit 1
-  }
-
-  Write-Host "百度推送返回：$result"
-} finally {
-  Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+if (-not $result) {
+  Write-Host '推送失败：没有返回内容，检查网络或 token'
+  exit 1
 }
+
+Write-Host "百度推送返回：$result"
