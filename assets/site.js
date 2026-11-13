@@ -203,6 +203,47 @@
     }
   }
 
+  /* ── 微信号复制 ───────────────────────────────────────── */
+  const copyButton = document.querySelector('.copy-btn');
+
+  if (copyButton) {
+    const copyStatus = document.querySelector('.copy-status');
+    const copyLabel = copyButton.textContent.trim();
+    let copyTimer = 0;
+
+    const copyDone = (ok) => {
+      copyButton.classList.toggle('is-done', ok);
+      copyButton.textContent = ok ? '已复制' : '请手动复制';
+      if (copyStatus) {
+        copyStatus.textContent = ok ? '微信号已复制到剪贴板' : '无法自动复制，请手动选中微信号';
+      }
+      window.clearTimeout(copyTimer);
+      copyTimer = window.setTimeout(() => {
+        copyButton.classList.remove('is-done');
+        copyButton.textContent = copyLabel;
+      }, 2200);
+    };
+
+    copyButton.addEventListener('click', async () => {
+      const text = copyButton.dataset.copy || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        copyDone(true);
+      } catch {
+        // 非安全上下文或浏览器不支持：退回选中文本，让用户手动复制
+        const target = copyButton.previousElementSibling;
+        if (target) {
+          const range = document.createRange();
+          range.selectNodeContents(target);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+        copyDone(false);
+      }
+    });
+  }
+
   /* ── 移动端菜单 ───────────────────────────────────────── */
   const navToggle = document.getElementById('nav-toggle');
   const navDrawer = document.getElementById('nav-drawer');

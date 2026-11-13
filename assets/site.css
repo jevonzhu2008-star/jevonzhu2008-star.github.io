@@ -1857,6 +1857,50 @@ html.nav-open body { overflow: hidden; }
   color: var(--dark-ink);
 }
 
+/* 微信号可直接复制，不必再走「长按二维码 → 打开微信」 */
+.contact-wechat {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(244, 244, 241, 0.28);
+  border-radius: var(--r-control);
+  background: transparent;
+  color: var(--dark-ink);
+  font-family: var(--cjk);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.copy-btn:hover {
+  background: rgba(244, 244, 241, 0.1);
+  border-color: rgba(244, 244, 241, 0.5);
+}
+
+.copy-btn.is-done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+@media (pointer: coarse) {
+  .copy-btn {
+    min-height: 44px;
+    padding-inline: 18px;
+  }
+}
+
 .contact-ways a {
   color: inherit;
   text-decoration: none;
