@@ -149,7 +149,7 @@
     spySections.forEach((item) => {
       const on = item === active;
       item.link.classList.toggle('is-active', on);
-      if (on) item.link.setAttribute('aria-current', 'true');
+      if (on) item.link.setAttribute('aria-current', 'location');
       else item.link.removeAttribute('aria-current');
     });
   };
@@ -163,6 +163,7 @@
       navToggle.setAttribute('aria-expanded', String(open));
       navToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
       navDrawer.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('nav-open', open);
     };
 
     navToggle.addEventListener('click', () => {

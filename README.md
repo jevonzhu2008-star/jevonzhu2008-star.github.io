@@ -2,13 +2,14 @@
 
 线上地址：<https://ipowerbi.icu/>
 
-三个站点的统一首页：
+四个站点的统一首页：
 
 - **人人都爱 Power BI** — <https://ipowerbi.mysxl.cn/>
 - **Power BI 作品集** — <https://ipowerbi.icu/AIA-PowerBI-Portfolio/>
 - **PBI 报表开发平台** — <https://ipowerbi.icu/L2-data-platform/>
+- **智能问数** — <https://app.ipowerbi.icu/>（登录页公开，目前需要口令访问）
 
-页面按「一屏一站」组织：首屏讲人，随后官网、作品集、平台各占一屏，接着是「做报表的方法」、关于和联系。亮色底、Power BI 黄作签名色、黑色胶囊按钮。
+页面按「一屏一站」组织：首屏讲人，随后官网、作品集、平台、智能问数各占一屏，接着是「做报表的方法」、关于和联系。亮色底、Power BI 黄作签名色、黑色胶囊按钮。
 
 ## 本地打开
 

@@ -21,11 +21,11 @@
   --soft: #f5f5f2;
   --lilac: #f3f2f7;
 
-  /* 墨色：中性无偏色，白底对比度 7:1 以上；--muted 用于次级说明，--faint 只做装饰 */
+  /* 墨色：中性无偏色，白底对比度 7:1 以上；--muted 用于次级说明，--faint 是最低一级文字（白底 5:1） */
   --ink: #141413;
   --ink-soft: #3d3d36;
   --muted: #57574f;
-  --faint: #8a8a82;
+  --faint: #6f6f68;
 
   /* 品牌黄：只出现在动作与区块底，文字一律压深 */
   --accent: #f2c811;
@@ -174,13 +174,15 @@ a { color: inherit; }
   color: var(--muted);
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.2s var(--ease);
+  padding-bottom: 3px;
+  transition: color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
 .nav-links a:hover,
 .nav-links a.is-active { color: var(--ink); }
 
-.nav-links a.is-active { font-weight: 600; }
+/* 当前区块只换颜色和下划线，不改字重，避免滚动时链接宽度跳动 */
+.nav-links a.is-active { box-shadow: inset 0 -2px 0 var(--accent); }
 
 .nav-cta {
   padding: 9px 20px;
@@ -249,6 +251,10 @@ a { color: inherit; }
 }
 
 .nav-drawer { display: none; }
+
+/* 抽屉打开时锁住背后页面，避免滑动菜单时页面跟着滚 */
+html.nav-open,
+html.nav-open body { overflow: hidden; }
 
 /* ── 首屏 ─────────────────────────────────────────────────── */
 
@@ -785,7 +791,7 @@ a { color: inherit; }
   transform: translate3d(calc(var(--mx) * 18px), calc(var(--my) * 14px), 0) translateZ(70px);
 }
 
-/* ── 站点二：作品集（扇形报表卡） ───────────────────────── */
+/* ── 站点二：作品集 ─────────────────────────────────────── */
 
 .stage--pf {
   aspect-ratio: 16 / 9.8;
@@ -808,63 +814,6 @@ a { color: inherit; }
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: #0b0b12;
-}
-
-.fan {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  transform: translateZ(40px);
-  pointer-events: none;
-}
-
-.fan-card {
-  --x: 0%;
-  --y: 30px;
-  --fr: 0deg;
-  position: absolute;
-  left: 50%;
-  bottom: 7%;
-  width: 32%;
-  margin: 0;
-  padding: 4px;
-  background: #fff;
-  border-radius: 11px;
-  box-shadow: 0 24px 46px -22px rgba(34, 22, 64, 0.4);
-  pointer-events: auto;
-  translate: calc(-50% + var(--x)) var(--y);
-  rotate: var(--fr);
-  scale: 0.92;
-  transition:
-    translate 0.85s var(--ease),
-    rotate 0.7s var(--ease),
-    scale 0.6s var(--ease),
-    opacity 0.6s var(--ease);
-  will-change: translate;
-}
-
-.fan-card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 900 / 475;
-  object-fit: cover;
-  border-radius: 7px;
-}
-
-.js .fan-card { opacity: 0; }
-
-.js .wipe.is-in .fan-card { opacity: 1; scale: 1; }
-.js .wipe.is-in .fan-card--1 { --x: -104%; --y: -6px; --fr: -10deg; transition-delay: 0.04s; }
-.js .wipe.is-in .fan-card--2 { --x: 0%; --y: 18px; --fr: 0deg; z-index: 2; transition-delay: 0.14s; }
-.js .wipe.is-in .fan-card--3 { --x: 104%; --y: -6px; --fr: 10deg; transition-delay: 0.24s; }
-
-@media (hover: hover) {
-  .js .stage--pf:hover .fan-card { transition-delay: 0s; }
-  .js .stage--pf:hover .fan-card--1 { --x: -124%; --fr: -14deg; }
-  .js .stage--pf:hover .fan-card--2 { --y: 4px; }
-  .js .stage--pf:hover .fan-card--3 { --x: 124%; --fr: 14deg; }
-  .js .stage--pf:hover .fan-card:hover { --y: -18px; scale: 1.07; z-index: 4; }
 }
 
 .stage-badge {
@@ -942,23 +891,6 @@ a { color: inherit; }
 }
 
 .stage--l2:hover .stage-glow { opacity: 1; }
-
-.window-scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 32%;
-  pointer-events: none;
-  background: linear-gradient(to bottom, transparent, rgba(167, 139, 250, 0.1) 55%, rgba(196, 181, 253, 0.3) 92%, transparent);
-  mix-blend-mode: screen;
-  animation: window-scan 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-
-@keyframes window-scan {
-  from { transform: translateY(-110%); }
-  to { transform: translateY(320%); }
-}
 
 .stage--l2 .stage-cursor { background: #c4b5fd; color: #140f1e; }
 
@@ -1049,6 +981,9 @@ a { color: inherit; }
 /* 站点一：黄色面板上的正文加深，保证对比度 */
 #site-ipowerbi .panel-desc,
 #site-ipowerbi .panel-facts dd { color: var(--on-accent); }
+#site-ipowerbi .panel-alt { color: var(--on-accent); }
+#site-ipowerbi .panel-alt a { color: var(--ink); text-decoration-color: var(--accent-ink); }
+#site-ipowerbi .panel-alt a:hover { text-decoration-color: var(--ink); }
 
 /* ── 方法 ─────────────────────────────────────────────────── */
 
@@ -1156,13 +1091,6 @@ a { color: inherit; }
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--ink-soft);
-}
-
-.about-stack {
-  margin-top: 32px;
-  font-family: var(--latin);
-  font-size: var(--fs-small);
-  color: var(--muted);
 }
 
 /* ── 服务 ─────────────────────────────────────────────────── */
@@ -1394,15 +1322,6 @@ a { color: inherit; }
   white-space: nowrap;
 }
 
-.inline-link {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--accent);
-}
-.inline-link:hover { text-decoration-color: var(--ink); }
-
 @media (max-width: 1080px) {
   .compare-head { grid-template-columns: 1fr; gap: 24px; }
   .compare-head h2,
@@ -1566,8 +1485,37 @@ a { color: inherit; }
 
 .closing-note {
   margin-top: 16px;
+  max-width: 34em;
   font-size: var(--fs-lead);
   color: var(--dark-muted);
+}
+
+/* 三条已有的合作事实，替访客回答「接下来会发生什么」 */
+.closing-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+  color: var(--dark-muted);
+}
+
+.closing-facts li {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.closing-facts li::before {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  translate: 0 -2px;
 }
 
 /* 联系：电话与邮件按行排列，二维码单独成块，主次分明 */
@@ -1594,7 +1542,7 @@ a { color: inherit; }
 
 .contact-ways dt {
   font-size: var(--fs-small);
-  color: var(--deep-muted);
+  color: var(--dark-muted);
 }
 
 .contact-ways dd {
@@ -1648,6 +1596,20 @@ a { color: inherit; }
 .contact-qr strong {
   font-size: var(--fs-body);
   font-weight: 500;
+  text-align: center;
+}
+
+.qr-hint--touch { display: none; }
+
+/* 触屏设备上没法扫自己屏幕上的码，换成保存提示 */
+@media (hover: none) {
+  .qr-hint--desk { display: none; }
+  .qr-hint--touch {
+    display: block;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    max-width: 16ch;
+  }
 }
 
 @media (max-width: 820px) {
@@ -1793,7 +1755,13 @@ a { color: inherit; }
     width: 100%;
     transform: none;
   }
-  .stage--pf .stage-badge { display: none; }
+  .stage--pf .stage-badge {
+    left: 4%;
+    right: auto;
+    top: auto;
+    bottom: 4%;
+    transform: none;
+  }
 
   .hero-sub { max-width: 42ch; }
 
@@ -1903,9 +1871,20 @@ a { color: inherit; }
   .chip--b { right: -10%; width: 38%; }
 
   .stage-tag,
-  .stage-badge { display: none; }
+  .stage-badge {
+    font-size: 11px;
+    padding: 6px 11px 7px;
+    transform: none;
+  }
+  .stage-tag { left: 10%; bottom: 7%; }
+  .stage-badge { left: 4%; top: 4%; }
+  .stage--pf .stage-badge { bottom: 4%; }
 
-  .fan-card { width: 34%; }
+  /* 行内次级动作加高点击区，不改排版 */
+  .panel-alt a {
+    padding-block: 13px;
+    margin-block: -13px;
+  }
 
   .foot-top { align-items: flex-start; flex-direction: column; gap: 18px; }
 }
@@ -1923,8 +1902,6 @@ a { color: inherit; }
   .stage--ip .window { left: 8%; width: 84%; }
   .stage--pf .window { left: 4%; width: 92%; }
   .stage--l2 .window { left: 5%; width: 90%; }
-
-  .fan-card { width: 37%; }
 }
 
 @media (max-width: 380px) {
@@ -1949,13 +1926,11 @@ a { color: inherit; }
   .js [data-reveal].wipe .stage { scale: 1; transition: none; }
 
   .stage-cursor { display: none; }
-  .window-scan { display: none; }
   .stage-glow { opacity: 0.55; }
 
   .window,
   .window-glare,
   .chip,
-  .fan-card,
   .deck,
   .deck-card { transition: none; }
 
