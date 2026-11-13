@@ -132,9 +132,15 @@
   }
 
   /* ── 当前站点 ─────────────────────────────────────────── */
-  const spyLinks = Array.from(document.querySelectorAll('[data-spy]'));
+  const spyLinks = Array.from(document.querySelectorAll('[data-spy], [data-spy-group]'));
   const spySections = spyLinks
-    .map((link) => ({ link, el: document.getElementById(link.dataset.spy) }))
+    .map((link) => {
+      const ids = String(link.dataset.spy || link.dataset.spyGroup || '')
+        .split(/\s+/)
+        .filter(Boolean);
+      const el = ids.map((id) => document.getElementById(id)).find(Boolean) || null;
+      return { link, el };
+    })
     .filter((item) => item.el);
 
   const updateSpy = () => {
@@ -149,10 +155,53 @@
     spySections.forEach((item) => {
       const on = item === active;
       item.link.classList.toggle('is-active', on);
+      if (item.link.tagName !== 'A') return;
       if (on) item.link.setAttribute('aria-current', 'location');
       else item.link.removeAttribute('aria-current');
     });
   };
+
+  /* ── 「作品」下拉：四个站点收进一个入口 ───────────────── */
+  const navMore = document.querySelector('.nav-more');
+
+  if (navMore) {
+    const moreToggle = navMore.querySelector('.nav-more-toggle');
+    const moreMenu = navMore.querySelector('.nav-more-menu');
+    const moreOpen = () => moreToggle.getAttribute('aria-expanded') === 'true';
+    const setMore = (open) => {
+      moreToggle.setAttribute('aria-expanded', String(open));
+      moreMenu.hidden = !open;
+      navMore.classList.toggle('is-open', open);
+    };
+
+    moreToggle.addEventListener('click', () => setMore(!moreOpen()));
+
+    document.addEventListener('click', (event) => {
+      if (moreOpen() && !navMore.contains(event.target)) setMore(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !moreOpen()) return;
+      setMore(false);
+      moreToggle.focus();
+    });
+
+    moreMenu.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setMore(false);
+    });
+
+    // 指针设备悬停即开，触屏仍靠点击
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let closeTimer = 0;
+      navMore.addEventListener('mouseenter', () => {
+        window.clearTimeout(closeTimer);
+        setMore(true);
+      });
+      navMore.addEventListener('mouseleave', () => {
+        closeTimer = window.setTimeout(() => setMore(false), 140);
+      });
+    }
+  }
 
   /* ── 移动端菜单 ───────────────────────────────────────── */
   const navToggle = document.getElementById('nav-toggle');

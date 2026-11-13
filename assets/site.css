@@ -169,7 +169,7 @@ a { color: inherit; }
   margin-left: auto;
 }
 
-.nav-links a {
+.nav-links > a {
   font-size: var(--fs-small);
   color: var(--muted);
   text-decoration: none;
@@ -178,11 +178,99 @@ a { color: inherit; }
   transition: color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
-.nav-links a:hover,
-.nav-links a.is-active { color: var(--ink); }
+.nav-links > a:hover,
+.nav-links > a.is-active { color: var(--ink); }
 
 /* 当前区块只换颜色和下划线，不改字重，避免滚动时链接宽度跳动 */
-.nav-links a.is-active { box-shadow: inset 0 -2px 0 var(--accent); }
+.nav-links > a.is-active { box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* ── 「作品」下拉：四个站点收进一个入口 ───────────────────── */
+.nav-more {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 0 3px;
+  background: none;
+  border: 0;
+  font-family: inherit;
+  font-size: var(--fs-small);
+  line-height: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
+
+.nav-more-toggle:hover,
+.nav-more.is-open .nav-more-toggle { color: var(--ink); }
+
+.nav-more-toggle.is-active {
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.nav-caret {
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  rotate: 45deg;
+  translate: 0 -2px;
+  transition: rotate 0.2s var(--ease), translate 0.2s var(--ease);
+}
+
+.nav-more.is-open .nav-caret {
+  rotate: -135deg;
+  translate: 0 1px;
+}
+
+.nav-more-menu {
+  position: absolute;
+  top: calc(100% + 26px);
+  right: 0;
+  left: auto;
+  z-index: 30;
+  width: 318px;
+  max-width: calc(100vw - 2 * var(--gutter));
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid rgba(20, 20, 19, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 26px 50px -30px rgba(16, 16, 16, 0.42);
+}
+
+.nav-more-menu[hidden] { display: none; }
+
+.nav-more-menu a {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  white-space: normal;
+  transition: background 0.15s var(--ease);
+}
+
+.nav-more-menu a:hover,
+.nav-more-menu a:focus-visible { background: var(--soft); }
+
+.nav-more-menu strong {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.nav-more-menu span {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
 
 .nav-cta {
   padding: 9px 20px;
@@ -2018,6 +2106,15 @@ html.nav-open body { overflow: hidden; }
   }
 
   .nav-drawer > nav { display: grid; }
+
+  .nav-drawer-label {
+    margin: 4px 0 0;
+    padding: 12px 2px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
 
   .nav-drawer a {
     padding: 14px 2px;

@@ -220,10 +220,31 @@
   <a class="wordmark" href="#top"><img class="wordmark-avatar" src="assets/avatar-96.png" srcset="assets/avatar-192.png 2x" alt="" width="26" height="26">JEVON ZHU</a>
   <nav class="nav-links" aria-label="页面导航">
     <a href="#services" data-spy="services">服务</a>
-    <a href="#site-ipowerbi" data-spy="site-ipowerbi">官网</a>
-    <a href="#site-portfolio" data-spy="site-portfolio">作品集</a>
-    <a href="#site-platform" data-spy="site-platform">开发平台</a>
-    <a href="#site-finance" data-spy="site-finance">智能问数</a>
+    <div class="nav-more">
+      <button class="nav-more-toggle" id="nav-more-toggle" type="button"
+              aria-expanded="false" aria-controls="nav-more-menu"
+              data-spy-group="site-ipowerbi site-portfolio site-platform site-finance">
+        作品<span class="nav-caret" aria-hidden="true"></span>
+      </button>
+      <div class="nav-more-menu" id="nav-more-menu" hidden>
+        <a href="#site-ipowerbi">
+          <strong>官网</strong>
+          <span>教学与咨询，两个端到端的完整案例</span>
+        </a>
+        <a href="#site-portfolio">
+          <strong>作品集</strong>
+          <span>FinOps 湖仓案例，14 块公开看板</span>
+        </a>
+        <a href="#site-platform">
+          <strong>开发平台</strong>
+          <span>集团报表工作台，需项目账号</span>
+        </a>
+        <a href="#site-finance">
+          <strong>智能问数</strong>
+          <span>建在语义模型上的 AI 问数</span>
+        </a>
+      </div>
+    </div>
     <a href="#about" data-spy="about">关于</a>
   </nav>
   <a class="nav-cta" href="#contact">联系</a>
@@ -234,6 +255,7 @@
   <div class="nav-drawer" id="nav-drawer">
     <nav aria-label="移动端导航">
       <a href="#services">服务</a>
+      <p class="nav-drawer-label">作品</p>
       <a href="#site-ipowerbi">官网</a>
       <a href="#site-portfolio">作品集</a>
       <a href="#site-platform">开发平台</a>
