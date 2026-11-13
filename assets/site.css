@@ -1599,14 +1599,32 @@ html.nav-open body { overflow: hidden; }
   .compare-sec { padding: 96px 0; }
 
   .compare { display: block; margin-top: 40px; }
-  .compare thead { display: none; }
   .compare tbody { display: block; }
+
+  /* 表头缩成一条图例：列名与黄色「现在用的」在手机上仍然可见 */
+  .compare thead { display: block; }
+  .compare thead tr {
+    display: flex;
+    gap: 12px;
+    padding: 0 0 12px;
+    border-top: 0;
+    border-bottom: 1px solid rgba(20, 20, 19, 0.3);
+  }
+  .compare thead th {
+    flex: 1 1 0;
+    padding: 0;
+    border: 0;
+  }
+  .compare thead th:first-child { display: none; }
 
   .compare tr {
     display: block;
     padding: 20px 0;
     border-top: 1px solid rgba(20, 20, 19, 0.14);
   }
+
+  /* 图例下面那条线已经由 thead 画了，首行不再重复 */
+  .compare tbody tr:first-child { border-top: 0; padding-top: 16px; }
 
   .compare tbody th {
     display: block;
@@ -1945,10 +1963,21 @@ html.nav-open body { overflow: hidden; }
 .foot a {
   color: var(--dark-muted);
   text-decoration: none;
+  padding-block: 4px;
   transition: color 0.2s var(--ease);
 }
 
 .foot a:hover { color: var(--dark-ink); }
+
+/* 触屏上页脚链接要有足够点击高度 */
+@media (pointer: coarse) {
+  .foot nav { gap: 22px; }
+  .foot nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
 
 .foot-copy {
   margin-top: 18px;
