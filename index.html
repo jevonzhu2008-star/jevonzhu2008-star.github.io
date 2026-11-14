@@ -790,7 +790,7 @@
           </div>
         </dl>
 
-        <a class="contact-qr" href="assets/wechat-qr.webp" target="_blank" rel="noopener">
+        <a class="contact-qr" href="assets/wechat-qr.webp" target="_blank" rel="noopener" data-track="wechat_qr">
           <span>微信</span>
           <img src="assets/wechat-qr.webp" alt="Jevon Zhu 的微信二维码，扫码添加好友" width="144" height="144" loading="lazy">
           <strong class="qr-hint qr-hint--desk">扫码添加</strong>
@@ -817,5 +817,15 @@
 </main>
 
 <script src="assets/site.js"></script>
+
+<!-- 访问统计：填入各自后台给的 ID，留空就不加载、不发任何请求 -->
+<script>
+window.SITE_ANALYTICS = {
+  ga4: '',     // Google Analytics 4 衡量 ID，形如 G-XXXXXXXXXX
+  baidu: '',   // 百度统计代码里 hm.js? 后面那串，通常 32 位
+  clarity: ''  // Microsoft Clarity 项目 ID，十位左右的字母数字
+};
+</script>
+<script src="assets/analytics.js" defer></script>
 </body>
 </html>

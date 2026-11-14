@@ -28,6 +28,8 @@ ca8fb82aa608eb6566678430c4a768a8.txt   IndexNow 密钥，Bing 主动推送验证
 scripts/indexnow.ps1  上线后把 URL 推给 Bing / Yandex
 assets/site.css       全部样式
 assets/site.js        入场动画、导航高亮、移动端菜单、宣传片播放
+assets/analytics.js   GA4 / 百度统计 / Clarity 加载器（ID 在 index.html 底部）
+_content/             内容营销计划与案例研究模板（下划线开头，GitHub Pages 不会发布）
 assets/fonts/         自托管 Manrope 可变字体
 assets/og-cover.jpg   社交分享卡片（1200×630）
 assets/wechat-qr.webp 微信二维码（从名片图裁切，联系区使用）
@@ -45,6 +47,32 @@ assets/shots/promo-poster.webp  宣传片封面帧
 - GitHub Pages：把整个目录推到仓库根目录，或 `docs/` 并在仓库设置里指定。
 - `404.html`、`robots.txt`、`sitemap.xml` 必须放在站点根目录才会生效。
 - 仓库根目录的 `CNAME` 已绑定 `ipowerbi.icu`，GitHub Pages 会把旧地址 `jevonzhu2008-star.github.io` 301 到新域名。三个站点的绝对链接统一用 `https://ipowerbi.icu/`。
+
+## 访问统计
+
+三个后台都用同一套代码接：ID 填在 `index.html` 底部的 `window.SITE_ANALYTICS`，留空就不加载、不发请求。
+
+```js
+window.SITE_ANALYTICS = {
+  ga4: '',     // Google Analytics 4 衡量 ID，形如 G-XXXXXXXXXX
+  baidu: '',   // 百度统计 hm.js? 后面那串，通常 32 位
+  clarity: ''  // Microsoft Clarity 项目 ID，十位左右的字母数字
+};
+```
+
+- 脚本在页面 `load` 之后空闲时才注入，不影响首屏；本地预览和开了 Do Not Track 的访问直接跳过。
+- Meta Pixel 没接：它是给 Facebook / Instagram 广告投放做转化归因的，站点不投 Meta 广告，装了只是多一个追踪器。
+- 三个后台都在国内可访问；Clarity 有会话录制和热力图，敏感页面（如智能问数工作台）不要复用这段代码。
+
+已埋的转化事件（GA4 事件名 / 百度统计事件）：
+
+| 动作 | GA4 | 百度统计 | Clarity |
+| --- | --- | --- | --- |
+| 点「复制」微信号 | `wechat_copy` | `wechat_copy` | `wechat_copy` |
+| 点开微信二维码 | `wechat_qr_open` | `wechat_qr_open` | `wechat_qr_open` |
+| 点去外部站点（作品集、平台、智能问数等） | `outbound_click`（带域名） | `outbound_click` | `outbound_click` |
+
+内容里带链接时统一加 UTM，GA4 里就能按来源看转化，规范见 `_content/内容营销计划.md`。
 
 ## 搜索引擎收录
 
