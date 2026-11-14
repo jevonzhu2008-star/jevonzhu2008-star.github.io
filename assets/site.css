@@ -833,7 +833,7 @@ html.nav-open body { overflow: hidden; }
   .stage:hover .stage-cursor { --cs: 1; opacity: 1; }
 }
 
-/* ── 站点一：官网（黄底，卡组散开） ─────────────────────── */
+/* ── 站点一：教学站（黄底，卡组散开） ───────────────────── */
 
 .stage--ip {
   aspect-ratio: 16 / 10.4;

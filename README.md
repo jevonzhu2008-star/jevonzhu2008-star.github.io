@@ -9,7 +9,7 @@
 - **PBI 报表开发平台** — <https://ipowerbi.icu/L2-data-platform/>
 - **智能问数** — <https://app.ipowerbi.icu/>（登录页公开，目前需要口令访问）
 
-页面按「一屏一站」组织：首屏讲人，随后官网、作品集、平台、智能问数各占一屏，接着是「做报表的方法」、关于和联系。亮色底、Power BI 黄作签名色、黑色胶囊按钮。
+页面按「一屏一站」组织：首屏讲人，随后教学站、作品集、平台、智能问数各占一屏，接着是「做报表的方法」、关于和联系。亮色底、Power BI 黄作签名色、黑色胶囊按钮。
 
 ## 本地打开
 
@@ -120,7 +120,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\baidu-push.ps1
 
 根站绑定自定义域名后，同在 `jevonzhu2008-star.github.io` 下的项目站点会自动跟随到新域名，旧地址由 GitHub 301 过去。
 
-仍待办：官网 `ipowerbi.mysxl.cn` 还在第三方平台，内容不在本仓库，视觉和加载方式由平台决定。把官网迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css`，三站才算真正同一套视觉。需要 mysxl 站点的导出或原稿。
+仍待办：教学站 `ipowerbi.mysxl.cn` 还在第三方平台，内容不在本仓库，视觉和加载方式由平台决定。把教学站迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css`，三站才算真正同一套视觉。需要 mysxl 站点的导出或原稿。
 
 ## 修改
 
