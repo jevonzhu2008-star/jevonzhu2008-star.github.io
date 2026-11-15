@@ -1427,7 +1427,7 @@ html.nav-open body { overflow: hidden; }
   color: var(--ink-soft);
 }
 
-/* 技术栈：一行一个工具，短说明跟着名字走，避免变成关键词列表 */
+/* 能力与技术：先写业务上能感知到的结果，技术名词压到第二层 */
 .stack {
   margin-top: 80px;
   padding-top: 32px;
@@ -1442,44 +1442,94 @@ html.nav-open body { overflow: hidden; }
   color: var(--muted);
 }
 
-.stack-list {
+.stack-value {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 28px 32px;
-  margin: 28px 0 0;
+  margin: 24px 0 0;
   padding: 0;
   list-style: none;
 }
 
-.stack-list li {
+.stack-value li {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.stack-list strong {
+.stack-value strong {
   font-size: var(--fs-body);
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-.stack-list span {
+.stack-value span {
   font-size: var(--fs-small);
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* 第二层只服务要评估方案的人：同列宽，字号和颜色各退一级 */
+.stack-tech {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(20, 20, 19, 0.08);
+}
+
+.stack-tech h4 {
+  font-family: var(--latin);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+}
+
+.stack-tech ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px 32px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stack-tech li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stack-tech strong {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stack-tech span {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--faint);
 }
 
 @media (max-width: 1080px) {
   .stack { margin-top: 56px; }
 
-  .stack-list {
+  .stack-value,
+  .stack-tech ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
   }
 }
 
 @media (max-width: 430px) {
-  .stack-list { grid-template-columns: 1fr; }
+  .stack-value { grid-template-columns: 1fr; }
+
+  /* 第二层是辅助信息，手机上也保持两列，避免拉出一长条 */
+  .stack-tech ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 20px;
+  }
 }
 
 /* 技术栈挪到关于之后，间距按新位置收紧 */
