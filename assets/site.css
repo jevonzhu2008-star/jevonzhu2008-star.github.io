@@ -1322,16 +1322,17 @@ html.nav-open body { overflow: hidden; }
 
 .about-proof ul {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px 32px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px 28px;
   margin: 18px 0 0;
   padding: 0;
   list-style: none;
 }
 
-/* 四个入口并排会挤出省略，中窄屏切成 2×2 */
+/* 五个入口等宽一行；中窄屏切两列时让末项占满整行，避免落单 */
 @media (max-width: 1080px) {
   .about-proof ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-proof li:last-child { grid-column: 1 / -1; }
 }
 
 @media (max-width: 560px) {
