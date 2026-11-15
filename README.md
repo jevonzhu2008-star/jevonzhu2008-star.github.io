@@ -46,7 +46,7 @@ assets/shots/promo-poster.webp  宣传片封面帧
 
 - GitHub Pages：把整个目录推到仓库根目录，或 `docs/` 并在仓库设置里指定。
 - `404.html`、`robots.txt`、`sitemap.xml` 必须放在站点根目录才会生效。
-- 仓库根目录的 `CNAME` 已绑定 `ipowerbi.icu`，GitHub Pages 会把旧地址 `jevonzhu2008-star.github.io` 301 到新域名。三个站点的绝对链接统一用 `https://ipowerbi.icu/`。
+- 仓库根目录的 `CNAME` 已绑定 `ipowerbi.icu`，GitHub Pages 会把旧地址 `jevonzhu2008-star.github.io` 301 到新域名。各站点的绝对链接统一用 `https://ipowerbi.icu/`。
 
 ## 访问统计
 
@@ -110,9 +110,9 @@ powershell -ExecutionPolicy Bypass -File .\scripts\baidu-push.ps1
 
 必应和谷歌按上面的清单提交，通常几天到两周内收录。
 
-## 域名与三站统一
+## 域名与四站统一
 
-`https://ipowerbi.icu/` 是三个站点的统一入口：
+`https://ipowerbi.icu/` 是四个站点的统一入口（其中教学站托管在第三方平台 `ipowerbi.mysxl.cn`）：
 
 - 本站：`https://ipowerbi.icu/`
 - 作品集：`https://ipowerbi.icu/AIA-PowerBI-Portfolio/`
@@ -120,12 +120,12 @@ powershell -ExecutionPolicy Bypass -File .\scripts\baidu-push.ps1
 
 根站绑定自定义域名后，同在 `jevonzhu2008-star.github.io` 下的项目站点会自动跟随到新域名，旧地址由 GitHub 301 过去。
 
-仍待办：教学站 `ipowerbi.mysxl.cn` 还在第三方平台，内容不在本仓库，视觉和加载方式由平台决定。把教学站迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css`，三站才算真正同一套视觉。需要 mysxl 站点的导出或原稿。
+仍待办：教学站 `ipowerbi.mysxl.cn` 还在第三方平台，内容不在本仓库，视觉和加载方式由平台决定。把教学站迁进本仓库的子路径（如 `/ipowerbi/`），复用 `assets/site.css`，四站才算真正同一套视觉。需要 mysxl 站点的导出或原稿。
 
 ## 修改
 
 - **换截图**：重截 16:10 的 1600×1000 原图，导出 `-1600.webp`、`-800.webp` 两档（小图单档）；jpg 兜底保持同名同比例。`<img>` 上的 `width`/`height` 只是占位比例，跟着改成 1600×1000 即可。
-- **改文案**：首屏在 `.hero`，三站在 `.panel`，工作方法在 `.steps`，关于在 `.about`。
+- **改文案**：首屏在 `.hero`，四个站点在 `.panel`，工作方法在 `.steps`，关于在 `.about`。
 - **换链接**：按钮和帧的 `<a href>` 指向对应页面；公开报表用的是 `app.powerbi.com/view` 的公开地址。
 - **换分享卡片**：`assets/og-cover.jpg` 固定 1200×630，改文案后重出一张，并同步 `index.html` 里的 `og:image` / `twitter:image`。
 
