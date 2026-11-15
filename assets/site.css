@@ -406,6 +406,16 @@ html.nav-open body { overflow: hidden; }
   text-wrap: pretty;
 }
 
+/* 身份与行业放在受众句之后，先回答「给谁做」，再说「我是谁」 */
+.hero-id {
+  margin-top: 14px;
+  max-width: 34em;
+  font-size: var(--fs-small);
+  line-height: 1.75;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
 /* 首屏两个动作：联系为主，作品集为辅 */
 .hero-actions {
   display: flex;
@@ -511,6 +521,35 @@ html.nav-open body { overflow: hidden; }
   background: var(--accent);
   border-radius: var(--r);
   perspective: 1200px;
+}
+
+/* 1366×768 这类低高度笔记本：收紧首屏节奏，别把数据条推到折叠线下 */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .hero {
+    align-items: flex-start;
+    padding: 48px 0 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.25rem, 6.6vw, 5rem);
+  }
+
+  .hero-sub {
+    margin-top: 18px;
+  }
+
+  .hero-id {
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    margin-top: 22px;
+  }
+
+  .hero-stats {
+    margin-top: 16px;
+  }
 }
 
 .deck {
@@ -1151,6 +1190,17 @@ html.nav-open body { overflow: hidden; }
   color: var(--ink-soft);
 }
 
+/* 跳过这一步的代价：收一档字号，靠左侧细线区分 */
+.steps .step-cost {
+  margin-top: 14px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(20, 20, 19, 0.14);
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
 /* ── 关于 ─────────────────────────────────────────────────── */
 
 .about {
@@ -1357,6 +1407,15 @@ html.nav-open body { overflow: hidden; }
 .about-voices cite {
   font-style: normal;
   font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+/* 引用下方的项目背景：补上系统、交付范围，别只留一个行业名 */
+.voice-context {
+  padding-top: 10px;
+  border-top: 1px solid rgba(20, 20, 19, 0.12);
+  font-size: var(--fs-small);
+  line-height: 1.6;
   color: var(--muted);
 }
 
