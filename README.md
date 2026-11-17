@@ -52,7 +52,7 @@ assets/shots/promo-poster.webp  宣传片封面帧
 
 - 源：`公众号工作流/drafts/<日期>/article.md`（frontmatter + Markdown）和同目录的 `cover.jpg`、`imgs/`。
 - 生成器：`公众号工作流/scripts/sync_site.py`。
-- 自动：`run_daily.ps1` 最后一步（步骤 9）调用 `sync_site.py --all --push`，生成后自动提交、推送到本仓库；GitHub Pages 收到推送后上线。
+- 自动：`render.py` 排完版（封面与正文图就绪）就同步一次；`run_daily.ps1` 第 9 步再兜底一次。同步会生成页面、提交并推送到本仓库，GitHub Pages 收到推送后上线。
 - 手动补跑（在公众号工作流目录）：
 
 ```powershell
