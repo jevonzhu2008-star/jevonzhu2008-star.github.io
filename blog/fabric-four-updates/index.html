@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fabric 这周四条更新：接入变简单，治理更难 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Fabric 四条更新全在拆边界：跨租户共享、私有链路、SQL 池统一。接入变简单了，治理反而更贵。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/fabric-four-updates/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/fabric-four-updates/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fabric 这周四条更新：接入变简单，治理更难 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Fabric 四条更新全在拆边界：跨租户共享、私有链路、SQL 池统一。接入变简单了，治理反而更贵。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/fabric-four-updates/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/fabric-four-updates/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fabric 这周四条更新：接入变简单，治理更难 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Fabric 四条更新全在拆边界：跨租户共享、私有链路、SQL 池统一。接入变简单了，治理反而更贵。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/fabric-four-updates/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fabric 这周四条更新：接入变简单，治理更难",
+  "description": "Fabric 四条更新全在拆边界：跨租户共享、私有链路、SQL 池统一。接入变简单了，治理反而更贵。",
+  "datePublished": "2026-11-10",
+  "dateModified": "2026-11-10",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/fabric-four-updates/cover.webp",
+  "keywords": "Fabric、Power BI、数据治理、企业架构",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/fabric-four-updates/"
+  },
+  "wordCount": 3713
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Fabric 这周四条更新：接入变简单，治理更难</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-10">2026 年 11 月 10 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>9 分钟读完</span>
+        </p>
+        <h1 class="article-title">Fabric 这周四条更新：接入变简单，治理更难</h1>
+        <p class="article-lead">Fabric 四条更新全在拆边界：跨租户共享、私有链路、SQL 池统一。接入变简单了，治理反而更贵。</p>
+        <ul class="post-tags"><li>Fabric</li><li>Power BI</li><li>数据治理</li><li>企业架构</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Fabric 这周四条更新：接入变简单，治理更难" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>Fabric 这周四条更新，没有一条是给分析师看的。</p>
+<p>没有新图表，没有新 DAX 函数，也没有 Copilot 的新按钮。四条分别是：跨租户共享数据的 IQ Share（预览）、Eventstream 自定义端点支持私有链路（预览）、SQL 池配置统一，以及微软连续第六年进 Gartner 数据集成魔力象限 Leader。</p>
+<p>四条放在一起，方向一致：Fabric 在降低「把数据接进来」的成本。跨组织、跨网络、跨工作负载，三道边界各拆一道。</p>
+<p>同一批素材里还有一篇不是微软写的。Prologika 的 Teo Lachev 在 10 月 23 日问了一句：业务逻辑到底该放哪一层。这篇跟前面四条没有直接关系，但它是前四条的反面——平台把接入做成默认，治理就变成了自选动作。</p>
+<h2 id="一-跨租户-共享的不只是数据-还有说明书">一、跨租户：共享的不只是数据，还有说明书</h2>
+<p>IQ Share 现在预览。可以把整个 Lakehouse、Warehouse 和 Mirrored Items 共享给另一个 Fabric 租户里的接收方。</p>
+<p>技术上不新。跨租户走 shortcut，数据不复制，留在生产方租户里。对方那边新加的表，会自动出现。这些是管道，早就有。</p>
+<p>新的地方有两处。一是上下文跟着数据走。Lakehouse 里可以放 markdown 文件，写业务定义、假设、使用说明。接收方配下游分析或 AI 时，能直接读。二是共享有了生命周期。接收、撤回、到期时间都有。所有共享关系可以在 OneLake Catalog 里集中看。API 和 CI/CD 也能创建和接受共享。</p>
+<p>我的看法：这是把「共享」从一次性动作，变成一段有开始有结束的关系。</p>
+<p>对企业之间很有用。给供应商共享库存湖仓，给客户交付带数据字典的仓库，跟外部顾问做限时的联合财务分析。这些场景原来靠导出、拷贝、对账。现在靠一条 shortcut 加一份说明书。</p>
+<p>但说明书只是说明书。接收方看不看，系统不管。你写错了口径，也不会报错。跨租户之前，合规问题先摆到桌面上。数据出境、行业监管、对方租户的权限模型，这些不是预览功能能替你回答的。</p>
+<p>跨租户解决的是组织边界。还有一道，是网络边界。</p>
+<h2 id="二-私有链路-内网应用不用再开公网口子">二、私有链路：内网应用不用再开公网口子</h2>
+<p>Eventstream 的自定义端点，现在支持 workspace 级的私有链路，预览。</p>
+<p>场景很具体：有些应用跑在没有公网路由的网段里，比如工厂产线、金融机构的内网系统。它们要把实时事件发到 Fabric。以前只有两个选择——开个公网口子，或者干脆不接。</p>
+<p>现在有第三个。这类应用本来就没有托管连接器可用。走自定义端点，用 Kafka、AMQP 客户端或者 Event Hubs SDK，把事件推到自己 workspace 的私有链路里。链路按 workspace 走。一个 workspace 映射到一个虚拟网络，有自己的 private link service。多个虚拟网络可以用各自的私有端点连进来。反过来，一个虚拟网络也能连多个 workspace。</p>
+<p>我的看法：这条最像「给甲方 IT 看的更新」。</p>
+<p>制造业、金融的内网系统，数据出不了网是常态。以前为了一条实时流，网络和安全要开三次会。现在网络架构不用动，应用侧改一下连接地址。FQDN 由 workspace ID 拼出来，在虚拟网络里解析成私有 IP。</p>
+<p>代价在运维。私有链路是 workspace 级的。workspace 一多，private link service 和 private endpoint 的对应关系就得有人画图。预览阶段，先拿一条非关键链路试点，别一上来就挂生产。</p>
+<p>网络通了，接下来是算力怎么分。</p>
+<h2 id="三-sql-池统一-一条要看日期的更新">三、SQL 池统一：一条要看日期的更新</h2>
+<p>SQL 池是 Fabric Data Warehouse 自带的工作负载管理能力。以前分内置池和自定义池两套配置模型，现在统一成一套，UI 和 API 都走同一个配置。</p>
+<p>这条更新没有新功能，只有日期和默认值。</p>
+<p>第一个日期是 2026 年 12 月中。<code>customSQLPoolsEnabled</code> 这个标志停用。以前可以用它取已经失效的池配置。之后 GET API 只返回当前有效的配置，失效配置在 UI 和 API 里都不再出现。</p>
+<p>第二个是 2027 年 1 月。新 workspace 默认用统一的单池配置。一个读优化的池，能访问 100% 的可用算力，服务所有工作负载。老 workspace 保持现有配置和行为，不需要迁移。官方文档会跟 1 月的发布一起更新。</p>
+<p>真正要盯的是配额，而且只影响新 workspace。现在默认是 SELECT 和非 SELECT 各 50%。新默认下，两类都能用到 100%。查询可能更快，算力消耗也可能更高。新 workspace 默认打开 Optimize for Reads。跑大批量写入、又不太复用缓存的场景，要重新评估这个开关。</p>
+<p>我的看法：这不是迁移，是默认值变更。</p>
+<p>做了 10 年报表。功能下线没事、默认值一变就出事，这种事见过太多次。两类人要动。写 API 集成和自动化的，12 月中之前把 <code>customSQLPoolsEnabled</code> 的逻辑去掉，改成直接读池配置。管容量的，1 月以后新建 workspace 之前，先把预算重算一遍。从 50/50 到「谁先跑谁吃满」，隔离换成了弹性。吵闹邻居的问题，从平台回到了你的治理流程。</p>
+<h2 id="四-gartner-六连冠-通稿要读它选择讲什么">四、Gartner 六连冠：通稿要读它选择讲什么</h2>
+<p>微软连续第六年进 Gartner 数据集成工具魔力象限的 Leader。评估的两个维度是愿景完整性和执行能力。参评的工具包括 Fabric、Azure Data Factory、SSIS、Power Query 和 Azure Synapse Analytics。</p>
+<p>这是通稿。结论不用看，六连冠说明不了你的项目会成功。</p>
+<p>有用的是它反复强调的几件事：开放生态、实时数据、数据治理。开放这条最具体。Mirroring、OneLake shortcuts、对接 Apache Spark 和 Apache Airflow、跟 dbt 合作做原生转换。翻译过来就一句：不要求你把数据搬过来。</p>
+<p>评级是给采购看的，架构判断还是得自己做。但它和前三条更新指向同一个方向，这一点值得记。</p>
+<p>四条更新讲完了。有一件事它们都没回答：逻辑放哪。</p>
+<h2 id="五-反面-业务逻辑到底放哪一层">五、反面：业务逻辑到底放哪一层</h2>
+<p>Prologika 的 Teo Lachev 在 10 月 23 日写了一篇短文。他正在做一个 Qlik 到 Power BI 的迁移，一个挺复杂的财务看板。每次觉得快做完了，又从 Qlik 里挖出一条业务规则：计算口径、维度表里的占位行、分摊覆盖。</p>
+<p>于是他列了一张表。</p>
+<p>能物化的，放 ETL 和星型模型表。数据质量问题、自定义分类、分摊、可以提前算好的计算，都归这里。</p>
+<p>计算列优先放 ETL。原因有两个：业务逻辑集中在一处；Direct Lake 表对计算列支持有限，他的原文写的是不支持。</p>
+<p>终端用户的调整，放语义模型。元数据、层次结构、显示文件夹、自定义排序，都算这一类。</p>
+<p>度量值、RLS 和 OLS，也放语义模型。</p>
+<p>纯展示的东西，比如某张报表用的字段参数，可以只放报表里。如果 Excel 这类客户端也要用，再挪回语义模型。</p>
+<p>他的经验法则：能复用的业务逻辑，尽量往上游物化；依赖运行时上下文的，留在语义模型；只跟某个展示有关的，留在报表层。</p>
+<p>我的看法：这张表比前面四条更新都值钱。</p>
+<p>多数团队的默认不是这张表。默认是「能在 DAX 里写就在 DAX 里写」，因为快。快有代价：口径散在几十张报表里，换工具的时候要重新挖一遍。Teo 说的就是这个。过度依赖语义模型和 Power Query，逻辑会去中心化。哪天不用 Power BI 了，反推规则的成本高得离谱。</p>
+<p>更关键的是顺序。边界拆得越多，这个问题越尖锐。数据可以零拷贝跨租户进来，内网应用可以直连进来，新 workspace 默认吃满算力。每一步都在降低「接进来」的成本，没有一步回答「这个数算在哪」。</p>
+<h2 id="四条更新和一篇反面">四条更新和一篇反面</h2>
+<p>四条微软更新，三条讲接入，一条讲配额。接入的成本在降，治理的成本在升。</p>
+<p>IQ Share 里的 markdown 是「说明」，Teo 的分层表是「约束」。说明可以忽略，约束不能。这一组素材里，只有一篇在讲约束，偏偏它不是微软写的。</p>
+<p>SQL 池的变化也是同一个逻辑。50/50 是隔离，100/100 是弹性。弹性对跑批友好，对账单不友好。平台把选择权交回来，代价是你要自己定规则。</p>
+<p>Gartner 把「开放」写进理由，说明微软的差异化不在功能多，而在接入少。接入越少，平台越像高速公路。高速公路不负责你车里的货对不对。</p>
+<p>把时间线排一下：10 月 23 日 Prologika 问逻辑放哪，10 月 29 日私有链路，11 月 4 日 IQ Share，11 月 9 日 SQL 池和 Gartner。两周半，四条更新，一个方向。Fabric 正在从分析平台，变成企业之间的数据交换平台。交换越频繁，口径分叉的概率越高。</p>
+<h2 id="我的判断">我的判断</h2>
+<p><strong>必看</strong>：SQL 池统一。有硬日期，12 月中之前检查 API 集成，1 月以后重算新 workspace 的容量预算。这条优先级最高。</p>
+<p><strong>可选</strong>：Eventstream 私有链路。内网应用多、实时需求明确的团队可以试点。预览阶段别挂关键链路。</p>
+<p><strong>观望</strong>：IQ Share。功能方向对，但跨租户先过合规。预览阶段别当生产依赖。</p>
+<p><strong>不用看</strong>：Gartner 通稿。给采购看的，不是给你看的。</p>
+<p><strong>现在就做</strong>：把 Teo 的分层表抄下来，写进自己项目的建模规范。这件事不需要等任何版本，也不需要预览资格。</p>
+<p>Fabric 在把接入做成默认，治理没有默认值。这一周真正该记的不是四条更新，是这句话。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一-跨租户-共享的不只是数据-还有说明书">一、跨租户：共享的不只是数据，还有说明书</a></li><li><a href="#二-私有链路-内网应用不用再开公网口子">二、私有链路：内网应用不用再开公网口子</a></li><li><a href="#三-sql-池统一-一条要看日期的更新">三、SQL 池统一：一条要看日期的更新</a></li><li><a href="#四-gartner-六连冠-通稿要读它选择讲什么">四、Gartner 六连冠：通稿要读它选择讲什么</a></li><li><a href="#五-反面-业务逻辑到底放哪一层">五、反面：业务逻辑到底放哪一层</a></li><li><a href="#四条更新和一篇反面">四条更新和一篇反面</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav" aria-label="上下篇"><a href="../../blog/ai-dax-acceptance/"><span class="dir">← 上一篇</span><strong>AI 写 DAX 已经及格，难的是验收</strong></a><a class="next" href="../../blog/semantic-model-open-both-ends/"><span class="dir">下一篇 →</span><strong>语义模型两头被打开：这 5 条更新指向同一件事</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

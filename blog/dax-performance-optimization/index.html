@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/dax-performance-optimization/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/dax-performance-optimization/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DAX 性能优化：6 个技巧和前后对比",
+  "description": "DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。",
+  "datePublished": "2026-11-17",
+  "dateModified": "2026-11-17",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/dax-performance-optimization/cover.webp",
+  "keywords": "DAX 性能优化、Power BI、DAX、性能优化、DAX Studio、VertiPaq",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/dax-performance-optimization/"
+  },
+  "wordCount": 3376
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>DAX 度量值跑得慢？先定位，再改这 6 处</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-17">2026 年 11 月 17 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>8 分钟读完</span>
+        </p>
+        <h1 class="article-title">DAX 度量值跑得慢？先定位，再改这 6 处</h1>
+        <p class="article-lead">DAX 慢，多半不是公式写法，是没定位。6 个技巧，每个给前后对比。</p>
+        <ul class="post-tags"><li>Power BI</li><li>DAX</li><li>性能优化</li><li>DAX Studio</li><li>VertiPaq</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="DAX 度量值跑得慢？先定位，再改这 6 处" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>DAX 性能优化的第一步不是改公式，是量。同一张报表卡，可能是 DAX 查询慢，可能是视觉对象太多，也可能是模型里有一列根本不该进来。改错地方，公式写得再漂亮也没用。</p>
+<p>这篇按「先定位、再改写、最后看模型」的顺序讲 6 个技巧。每个都给改前和改后的写法，你能直接对照自己手上的度量值。要有人帮你把整份报表过一遍，<a href="../../#services">服务</a> 页写了范围；只是想先把手上的慢查询压下去，照着做就行，卡住了从 <a href="../../#contact">联系</a> 页找我。</p>
+<h2 id="先定位-performance-analyzer-看的是两段时间">先定位：Performance Analyzer 看的是两段时间</h2>
+<p>视图 → 性能分析器 → 开始记录 → 刷新页面或单个视觉对象。每一行有两列关键数字：DAX 查询时间和视觉对象显示时间。</p>
+<ul>
+<li>DAX 查询时间高：引擎在算，往下看公式和模型。</li>
+<li>视觉对象显示时间高、DAX 时间低：数据早就回来了，卡在渲染。多半是表格列太多、卡片堆太密、一页刷十几个视觉对象。</li>
+<li>两者都低但页面还是慢：查网络、网关、容量，不是 DAX。</li>
+</ul>
+<p>定位到具体视觉对象后，把它的 DAX 查询复制到 DAX Studio，打开 Server Timings，再点 Clear Cache。看两个数：FE（Formula Engine，公式引擎，单线程）和 SE（Storage Engine，存储引擎，多线程）。SE 时间长，通常是扫描的数据量太大；FE 时间长，通常是公式结构复杂、迭代次数多。</p>
+<p>注意一点：不清缓存，第二次测的是缓存结果，数字会好看到失真。</p>
+<img alt="先定位：Performance Analyzer 看的是两段时间" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="技巧-1-能算一次的-别算两次">技巧 1：能算一次的，别算两次</h2>
+<p>同一个表达式在一次求值里被引用多次，用 VAR 收起来。</p>
+<p>改前：</p>
+<pre><code class="language-dax">同比增长率 =
+DIVIDE(
+    [销售额] - CALCULATE([销售额], SAMEPERIODLASTYEAR('日期'[Date])),
+    CALCULATE([销售额], SAMEPERIODLASTYEAR('日期'[Date]))
+)
+</code></pre>
+<p>改后：</p>
+<pre><code class="language-dax">同比增长率 =
+VAR 本期 = [销售额]
+VAR 同期 = CALCULATE([销售额], SAMEPERIODLASTYEAR('日期'[Date]))
+RETURN DIVIDE(本期 - 同期, 同期)
+</code></pre>
+<p>公式引擎不用把同一个 <code>CALCULATE</code> 解析两遍，公式也读得懂。</p>
+<p><strong>注意</strong>：VAR 不是缓存。它只在当前这一次求值里生效，不会跨行、跨视觉对象复用。别指望加几个 VAR 就把慢查询救回来——它解决的是重复计算和可读性，不是数据量。</p>
+<h2 id="技巧-2-迭代器只迭代该迭代的行">技巧 2：迭代器只迭代该迭代的行</h2>
+<p>SUMX、AVERAGEX、MAXX 都是迭代器：对一张表逐行算，再把结果聚合。慢不慢，取决于你喂给它多少行。</p>
+<p>改前：</p>
+<pre><code class="language-dax">大单销售额 =
+SUMX(
+    FILTER(Sales, Sales[Amount] &gt; 1000),
+    Sales[Amount] * Sales[Qty]
+)
+</code></pre>
+<p><code>FILTER</code> 会先把整张 Sales 物化成一张新表，再逐行迭代。</p>
+<p>改后：</p>
+<pre><code class="language-dax">大单销售额 =
+CALCULATE(
+    SUMX(Sales, Sales[Amount] * Sales[Qty]),
+    Sales[Amount] &gt; 1000
+)
+</code></pre>
+<p>布尔条件交给 <code>CALCULATE</code>，引擎会把它翻译成对 <code>Sales[Amount]</code> 这一列的筛选，不用先造表。</p>
+<p><strong>注意</strong>：条件跨两张表、或者需要 <code>OR</code> 组合时，<code>FILTER</code> 仍然是对的写法。但把它套在最小那张表上，别套事实表。</p>
+<img alt="技巧 2：迭代器只迭代该迭代的行" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="技巧-3-计算列-度量值-power-query-选对计算发生的层">技巧 3：计算列、度量值、Power Query，选对计算发生的层</h2>
+<p>计算列在刷新时算一次，按行存进 VertiPaq，占内存；度量值在查询时按视觉对象的粒度算，不占存储。事实表上的计算列，几百万行就是几百万次计算，还会抬高模型体积。</p>
+<p>改前，在 Sales 事实表加计算列：</p>
+<pre><code class="language-dax">利润 = Sales[Amount] - Sales[Cost]
+</code></pre>
+<p>改后，改成度量值：</p>
+<pre><code class="language-dax">利润 = SUM(Sales[Amount]) - SUM(Sales[Cost])
+</code></pre>
+<p>度量值只算当前视觉对象需要的那些行。</p>
+<p><strong>什么时候该用计算列</strong>：这一列要拿来切片、分组、做关系键，度量值做不到。即便这样，也先看 Power Query 能不能做——能在刷新前的 M 里算完的，别留到 DAX。</p>
+<p><strong>注意</strong>：<code>SUM(A) - SUM(B)</code> 和逐行相减再求和的结果一样，但涉及除法、空值、单位换算时，先确认口径再换。</p>
+<h2 id="技巧-4-别在度量值里做模型该做的事">技巧 4：别在度量值里做模型该做的事</h2>
+<p>有些慢，改公式救不回来，问题在模型。</p>
+<ul>
+<li><strong>高基数无用列</strong>：订单号、时间戳、备注，基数几十万上百万，压缩率极低。不用就删。</li>
+<li><strong>双向关系</strong>：筛选器传播路径变多，查询计划变复杂。需要时用 <code>CROSSFILTER</code> 在单个度量值里局部打开：</li>
+</ul>
+<pre><code class="language-dax">按客户看销售额 =
+CALCULATE(
+    [销售额],
+    CROSSFILTER(Customer[CustomerKey], Sales[CustomerKey], BOTH)
+)
+</code></pre>
+<ul>
+<li><strong>没标记的日期表</strong>：时间智能函数会退化成逐行扫描。日期表要连续、无重复、标记为日期表。</li>
+<li><strong>事实表直接对事实表建关系</strong>：先想清楚粒度，多数情况该补一张维度。</li>
+</ul>
+<p>之前做的 FinOps 看板有 27 个业务单元、28 个 RLS 角色，这种模型里双向关系尤其要克制：每多一条，RLS 的筛选就要多传播一次。</p>
+<img alt="技巧 4：别在度量值里做模型该做的事" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="技巧-5-把筛选条件写简单-让引擎少猜">技巧 5：把筛选条件写简单，让引擎少猜</h2>
+<p><code>CALCULATE</code> 的筛选参数越简单，引擎越容易走索引式扫描。</p>
+<p>改前：</p>
+<pre><code class="language-dax">华东销售额 =
+CALCULATE(
+    [销售额],
+    FILTER(ALL(Region), Region[RegionName] = "华东")
+)
+</code></pre>
+<p>改后：</p>
+<pre><code class="language-dax">华东销售额 =
+CALCULATE(
+    [销售额],
+    Region[RegionName] = "华东"
+)
+</code></pre>
+<p>第二种是列筛选，引擎直接定位；第一种先解除筛选、再物化、再过滤。</p>
+<p><strong>注意</strong>：需要保留外部切片器时加 <code>KEEPFILTERS</code>；需要跨表条件时才回到 <code>FILTER</code>。</p>
+<h2 id="技巧-6-direct-lake-慢-先查表是怎么写的">技巧 6：Direct Lake 慢，先查表是怎么写的</h2>
+<p>如果模型是 Direct Lake，DAX 可能根本不是瓶颈。</p>
+<p>Data Mozart 上个月做过一组测试：同一个 5 亿行的数据集，写成七张 Delta 表，每张只改一个变量——文件数、row group 大小、V-Order、分区方式。然后用同一个 Direct Lake 模型跑同样的查询。结果很直接：数据进内存之后，七张表都在半秒内返回；差别全在冷查询，也就是把数据读进内存那一次，从 0.8 秒到 14 秒不等。</p>
+<p>所以 Direct Lake 报表第一次打开慢、后面快，先查这几件事：</p>
+<ol>
+<li>表是不是小文件太多，或者单个文件太大。</li>
+<li>有没有开 V-Order。</li>
+<li>分区键是不是和常用筛选对得上。</li>
+<li>容量有没有触发 guardrail，导致表被踢出内存。</li>
+</ol>
+<p>这些都不是 DAX 能解决的。改公式之前，先确认慢在哪一层。</p>
+<img alt="技巧 6：Direct Lake 慢，先查表是怎么写的" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>用了 VAR，为什么没变快？</strong></p>
+<p>VAR 只避免同一次求值里的重复计算，不会减少扫描的行数。如果瓶颈是 SE 时间，也就是读数据的量，VAR 帮不上。先看 Server Timings 里 FE 和 SE 谁占大头。</p>
+<p><strong>计算列一定比度量值慢吗？</strong></p>
+<p>不是一定，但代价不同。计算列在刷新时算、按行存、占内存；度量值在查询时算、不占存储。事实表上的高基数计算列最容易拖慢模型。维度表上几十行的计算列，影响可以忽略。</p>
+<p><strong>DAX Studio 里 FE 和 SE 分别是什么？</strong></p>
+<p>FE 是公式引擎，负责解析公式、做上下文转换和迭代，单线程；SE 是存储引擎，负责扫描和聚合 VertiPaq 数据，多线程。SE 时间长说明读得太多，FE 时间长说明算得太碎。</p>
+<p><strong>报表第一次打开慢，第二次快，是 DAX 问题吗？</strong></p>
+<p>多数不是。第一次要把数据读进内存，后面命中缓存。Import 模型看容量和内存，Direct Lake 看表文件和 framing。这种情况改 DAX 基本无效。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>优先级排一下：</p>
+<p><strong>必学</strong>：Performance Analyzer 和 DAX Studio 的 Server Timings。不会量，就只能猜。这两个工具半小时能上手，收益比背二十个函数大。</p>
+<p><strong>必学</strong>：VAR。哪怕不提速，公式的可读性也值回票价。团队协作里，一条能一眼看懂的度量值比省 50 毫秒重要。</p>
+<p><strong>可选</strong>：SUMX、FILTER 的改写。数据量在百万行以下、页面响应在 2 秒以内，别折腾。到了千万行、或者 SE 时间明显偏高，再按第 2、5 条改。</p>
+<p><strong>优先级最高但最容易被跳过</strong>：模型层。删无用列、克制双向关系、标记日期表，这三件事的收益通常比改十条公式大。想先看一份模型检查清单，<a href="../../blog/">博客</a> 里有更细的拆解。</p>
+<p>什么情况下别做：报表只有几十万行、刷新和打开都在 2 秒内，优化是浪费。Direct Lake 冷查询慢，也别从 DAX 下手——先去看 Delta 表是怎么写的。</p>
+<p>你手上最慢的那个视觉对象，DAX 查询时间和显示时间各是多少？先看这两个数，再决定改哪里。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#先定位-performance-analyzer-看的是两段时间">先定位：Performance Analyzer 看的是两段时间</a></li><li><a href="#技巧-1-能算一次的-别算两次">技巧 1：能算一次的，别算两次</a></li><li><a href="#技巧-2-迭代器只迭代该迭代的行">技巧 2：迭代器只迭代该迭代的行</a></li><li><a href="#技巧-3-计算列-度量值-power-query-选对计算发生的层">技巧 3：计算列、度量值、Power Query，选对计算发生的层</a></li><li><a href="#技巧-4-别在度量值里做模型该做的事">技巧 4：别在度量值里做模型该做的事</a></li><li><a href="#技巧-5-把筛选条件写简单-让引擎少猜">技巧 5：把筛选条件写简单，让引擎少猜</a></li><li><a href="#技巧-6-direct-lake-慢-先查表是怎么写的">技巧 6：Direct Lake 慢，先查表是怎么写的</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/sap-bw-powerbi-connection/"><span class="dir">← 上一篇</span><strong>SAP BW 接 Power BI：6 个坑和一份清单</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fabric 这周五条更新：入口在变，地基没变 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Fabric 五条更新：入口从报表扩散到应用、Agent 和聊天，但权限与业务逻辑必须留在原地。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/fabric-five-updates/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/fabric-five-updates/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fabric 这周五条更新：入口在变，地基没变 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Fabric 五条更新：入口从报表扩散到应用、Agent 和聊天，但权限与业务逻辑必须留在原地。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/fabric-five-updates/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/fabric-five-updates/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fabric 这周五条更新：入口在变，地基没变 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Fabric 五条更新：入口从报表扩散到应用、Agent 和聊天，但权限与业务逻辑必须留在原地。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/fabric-five-updates/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fabric 这周五条更新：入口在变，地基没变",
+  "description": "Fabric 五条更新：入口从报表扩散到应用、Agent 和聊天，但权限与业务逻辑必须留在原地。",
+  "datePublished": "2026-11-06",
+  "dateModified": "2026-11-06",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/fabric-five-updates/cover.webp",
+  "keywords": "Power BI、Microsoft Fabric、OneLake、Fabric Apps、Copilot",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/fabric-five-updates/"
+  },
+  "wordCount": 3561
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Fabric 这周五条更新：入口在变，地基没变</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-06">2026 年 11 月 6 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>9 分钟读完</span>
+        </p>
+        <h1 class="article-title">Fabric 这周五条更新：入口在变，地基没变</h1>
+        <p class="article-lead">Fabric 五条更新：入口从报表扩散到应用、Agent 和聊天，但权限与业务逻辑必须留在原地。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Microsoft Fabric</li><li>OneLake</li><li>Fabric Apps</li><li>Copilot</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Fabric 这周五条更新：入口在变，地基没变" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>报表正在从终点变成起点。</p>
+<p>这是我看完 Fabric 这周五条更新后的第一反应。</p>
+<p>四条在开新入口。Fabric Apps 的连接器、Org apps、OneLake 的 MCP 服务、M365 Copilot 里的数据问答。</p>
+<p>第五条在补地基。OneLake 安全对 Eventhouse 的支持，正式可用。</p>
+<p>五篇文章，四天发完。四篇来自微软 Fabric 博客，一篇来自 Chris Webb。表面是五个功能。放在一起，是同一个动作：把「看数据」的地方从报表里拆出去，同时把权限和业务逻辑按住不动。</p>
+<p>Chris Webb 那篇里有句话，可以当这五条的注脚：变的是前端，没变的是语义模型。</p>
+<h2 id="地基-权限从引擎里搬出来">地基：权限从引擎里搬出来</h2>
+<p>先说第五条。它是另外四条成立的前提。</p>
+<p>11 月 4 日，微软宣布 Eventhouse 对 OneLake 安全的支持正式可用（GA）。</p>
+<p>一句话概括：权限在 OneLake 上定义一次。Eventhouse 的外部表查询受保护数据时，自动按查询者的有效权限过滤。</p>
+<p>对象级、列级、行级，三层都管。</p>
+<p>对象级管你能访问哪些表。列级管敏感字段。行级管你只能看到被授权的行。三层都不用在 KQL 里重写。</p>
+<p>为什么说它是前提？入口越多，权限越不能各写一套。</p>
+<p>一个 Lakehouse，Power BI 读，KQL 查，应用通过 SQL 端点查。每多一个入口，就多一份可能漂移的规则。</p>
+<p>我做过一个 FinOps 看板，27 个业务单元、28 个 RLS 角色。那还只是一个语义模型。如果同一份权限要在三个引擎里各维护一遍，问题不是工作量乘三，是没人能保证三份还一样。</p>
+<p>这次 GA 有一条边界，必须单独拎出来。</p>
+<p>在 Eventhouse 建外部表，不等于拿到它引用的数据权限。外部表是查询入口，不是绕过安全的旁路。</p>
+<p>控制按查询者的权限套，不按建表人的。</p>
+<p>原文建议上线前用一个有代表性的数据使用者去验证。我的补充是：别用管理员账号。管理员看什么都是全的，行级过滤有没有生效，根本试不出来。</p>
+<p>还有一点要说明。这次接上的是 Eventhouse 外部表这一种消费方式，不是 OneLake 安全的全部。它的意义不在覆盖面，在示范：权限可以离开引擎，住在数据旁边。</p>
+<p>入口可以多，权限只能有一个出处。这是五条更新共同的底线。</p>
+<h2 id="前门一-报表旁边-多了一个-做事-的地方">前门一：报表旁边，多了一个「做事」的地方</h2>
+<p>11 月 4 日和 3 日，微软发了两篇 Fabric Apps 的文章。一篇讲连接器，一篇讲 Org apps。</p>
+<p>分开看是产品更新。合起来看是一句话：报表负责让你看见问题，应用负责让你把问题处理掉。</p>
+<p>连接器那篇写得很具体。Fabric Apps 能连四类数据：</p>
+<table>
+<thead>
+<tr>
+<th>数据源</th>
+<th>连接器</th>
+<th>允许的操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lakehouse SQL 分析端点</td>
+<td>fabric-sqlanalytics</td>
+<td>读</td>
+</tr>
+<tr>
+<td>Warehouse</td>
+<td>fabric-warehouse</td>
+<td>读、增、改、删</td>
+</tr>
+<tr>
+<td>Fabric 里的 SQL 数据库</td>
+<td>fabric-sqldatabase</td>
+<td>读、增、改、删</td>
+</tr>
+<tr>
+<td>Power BI 语义模型</td>
+<td>fabric-semanticmodel</td>
+<td>executeQuery</td>
+</tr>
+</tbody>
+</table>
+<p>四类数据，四种权限边界。原文还提醒，只申请场景需要的操作。</p>
+<p>原文还给了一个电信运营商的场景。网络遥测在 Lakehouse，故障工单在 SQL 数据库，可用率指标在语义模型。工程师在一个应用里定位受影响的小区，判断是拥塞、设备还是断电。然后直接建工单、派下一步。</p>
+<p>这个场景的重点不是「又多了个低代码工具」。重点是它承认了一件事：很多决策不在报表里完成。</p>
+<p>报表告诉你哪个门店没达标。接下来的选方案、派人、跟踪，发生在别的地方。Org apps 就是把这两段接起来。</p>
+<p>同一个入口里，一边是 Power BI 报表和实时看板。另一边是可以操作的 Fabric App。</p>
+<p>原文举的零售例子很典型。区域经理看到某家店销售没达标，库存还压着。他打开同一个 Org app 里的 Store Action Planner。确认异常，选应对，指派负责人，跟踪计划。</p>
+<p>我的看法是，这对做 BI 的人是个信号。交付物的单位正在从「一张报表」变成「一个入口加一段流程」。你可以继续只做可视化，但业务方迟早会问：看完之后呢？</p>
+<p>还有一个容易被忽略的细节。连接器连语义模型，只给了 executeQuery 一个操作。原文还提醒，只读的库存应用不该申请写权限。</p>
+<p>这等于说，应用消费模型，不重写业务逻辑。口径还是留在语义模型里。</p>
+<h2 id="前门二-agent-和聊天-绕过报表直接问">前门二：Agent 和聊天，绕过报表直接问</h2>
+<p>另外两条更远一点，方向一致。</p>
+<p>11 月 3 日，微软发了一篇 OneLake 的文章。标题就把比喻挑明了：OneLake 是文件系统，Fabric 引擎是程序，AI 的提示词是终端。</p>
+<p>配套的动作有三个。OneLake 提供远程托管的 MCP 服务器（预览），Agent 不用在本地装服务。Fabric Core MCP 增加了管理快捷方式和 OneLake 安全的工具。还有一个端点发现 API（预览）。它告诉 Agent，每个数据项有哪些引擎、该怎么连。</p>
+<p>原文举了个例子。让 Agent 用一条提示词，把一个镜像数据库的工作区、表结构、底层文件、复制健康度都写出来。</p>
+<p>另一个例子是问「2020 年汉普郡卖了多少套房」。Agent 自己找到镜像数据，给出 18,193 套。如果把公寓也算上，是 21,452 套。</p>
+<p>这里的关键不是 Agent 会写查询。是它要干对，得有两样东西：元数据，和权限。端点发现解决前者，OneLake 安全解决后者。</p>
+<p>所以第一篇的 GA 和这一篇的预览，是一套东西的两头。</p>
+<p>那个文件系统的比喻，还可以再想一层。谁都能装程序，但能不能读文件，由文件系统说了算。Agent 也一样。它能写什么查询，由权限说了算。</p>
+<p>11 月 1 日，Chris Webb 写了另一条路，更务实。他的建议是：想让业务用户用自然语言问数据，别一上来就做 Data Agents 或 Ontologies。先用 M365 Copilot 与 Power BI 语义模型的集成。这个集成已经 GA。</p>
+<p>他讲了一个我很认同的判断：变的是前端，没变的是语义模型。以前在报表侧边栏里问，现在在 M365 Copilot 的桌面端、浏览器、Excel 里问。同义词、AI Instructions、业务逻辑，都还在原来的语义模型里。之前为 Power BI Copilot 做的准备没有白费。</p>
+<p>他还说，如果你去年试过 Power BI Copilot 觉得不行，可以再试一次，答案质量好了很多。公司如果已经有 Copilot Business Premium 许可，用它是显而易见的选择。</p>
+<p>两条路的分量不一样。M365 Copilot 是 GA，今天就能用。OneLake MCP 和端点发现是预览，演示很漂亮，生产要等。原文自己也没藏这一点。</p>
+<h2 id="五条放在一起看">五条放在一起看</h2>
+<p>单看每一条，都是常规产品更新。放在一起，能看出三层东西。</p>
+<p>先看分工。这五条不在同一个平面上。</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>这周的动作</th>
+<th>它决定什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>权限</td>
+<td>OneLake 安全支持 Eventhouse（GA）</td>
+<td>谁能看到哪些行、哪些列</td>
+</tr>
+<tr>
+<td>语义</td>
+<td>Power BI 语义模型（Copilot 从这里取数，应用可 executeQuery）</td>
+<td>一个指标到底是什么意思</td>
+</tr>
+<tr>
+<td>行动</td>
+<td>Fabric Apps + Org apps</td>
+<td>看见问题之后做什么</td>
+</tr>
+<tr>
+<td>对话与代理</td>
+<td>M365 Copilot（GA）、OneLake MCP（预览）</td>
+<td>用什么方式问数据</td>
+</tr>
+</tbody>
+</table>
+<p>再看取舍。入口越多，治理成本越高。微软的解法不是限制入口，而是把权限和语义往下压，压到所有入口都必须经过的地方。</p>
+<p>这个解法成立的前提，是底层真的强制执行。第一篇那条「建表不等于授权」，就是证明。第二篇只给必要的连接器操作，也是同一个思路。</p>
+<p>还有成熟度。地基是 GA，聊天是 GA，应用和 Org apps 已经可用，Agent 那一层还是预览。这五条不能当成一个整包去落地。</p>
+<p>当路线图看，顺序很清楚：先有统一的权限和语义，再谈入口。单看任何一条，你看到的是一个功能。五条放在一起，你看到的是一次入口迁移。</p>
+<h2 id="我的判断">我的判断</h2>
+<p><strong>架构上必学，产品上分开看。</strong></p>
+<p>必学的部分：入口会继续变多，这是确定的。今天多的是应用和聊天，明天是 Agent。每多一个入口，都会有人问「权限在哪定义」「口径在哪定义」。这两个问题答不上来，入口越多越乱。</p>
+<p>语义模型和权限治理，不是后台工作，是这轮变化里最值钱的部分。</p>
+<p>具体分三档。</p>
+<p>语义模型和权限梳理：现在就做。把核心指标的口径收进语义模型，把跨引擎的权限收敛到一个出处。不依赖任何预览功能。</p>
+<p>Fabric Apps 和 Org apps：有明确的「看完要做事」的流程再上。没有流程，做出来只是一个更难维护的报表。先挑一个异常处理场景，把「看见—判断—行动」走完一次。</p>
+<p>OneLake MCP 和端点发现：观望。全是预览，可以拿非核心数据试，别接生产权限。</p>
+<p>OneLake 安全：多引擎才评估。只有一个 Power BI 入口的团队，这次 GA 没有直接影响。两个以上引擎查同一份数据，挑一个非核心数据集，把三层控制各验一遍。</p>
+<p>再说一句给做 Power BI 的人。这五条里，没有一条在削弱语义模型。报表、应用、聊天、Agent，四个入口都要经过它。</p>
+<p>前端在商品化，模型和治理在升值。你花在口径和权限上的时间，不会白花。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#地基-权限从引擎里搬出来">地基：权限从引擎里搬出来</a></li><li><a href="#前门一-报表旁边-多了一个-做事-的地方">前门一：报表旁边，多了一个「做事」的地方</a></li><li><a href="#前门二-agent-和聊天-绕过报表直接问">前门二：Agent 和聊天，绕过报表直接问</a></li><li><a href="#五条放在一起看">五条放在一起看</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav" aria-label="上下篇"><a href="../../blog/get-data-redesign/"><span class="dir">← 上一篇</span><strong>Get Data 改版：386 条反馈里，24 人卡在同一处</strong></a><a class="next" href="../../blog/onelake-security-eventhouse-ga/"><span class="dir">下一篇 →</span><strong>OneLake 安全 GA：RLS 只定义一次，跨引擎生效</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

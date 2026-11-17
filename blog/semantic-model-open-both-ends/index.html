@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>语义模型两头被打开：这 5 条更新指向同一件事 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="语义模型正从计算中心变成契约层。五条更新看同一个方向：下面管好 Delta 文件，上面守住访问边界。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/semantic-model-open-both-ends/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/semantic-model-open-both-ends/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语义模型两头被打开：这 5 条更新指向同一件事 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="语义模型正从计算中心变成契约层。五条更新看同一个方向：下面管好 Delta 文件，上面守住访问边界。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/semantic-model-open-both-ends/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/semantic-model-open-both-ends/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="语义模型两头被打开：这 5 条更新指向同一件事 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="语义模型正从计算中心变成契约层。五条更新看同一个方向：下面管好 Delta 文件，上面守住访问边界。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/semantic-model-open-both-ends/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "语义模型两头被打开：这 5 条更新指向同一件事",
+  "description": "语义模型正从计算中心变成契约层。五条更新看同一个方向：下面管好 Delta 文件，上面守住访问边界。",
+  "datePublished": "2026-11-12",
+  "dateModified": "2026-11-12",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/semantic-model-open-both-ends/cover.webp",
+  "keywords": "Power BI、语义模型、Direct Lake、Microsoft Fabric、MCP",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/semantic-model-open-both-ends/"
+  },
+  "wordCount": 4201
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>语义模型两头被打开：这 5 条更新指向同一件事</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-12">2026 年 11 月 12 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>11 分钟读完</span>
+        </p>
+        <h1 class="article-title">语义模型两头被打开：这 5 条更新指向同一件事</h1>
+        <p class="article-lead">语义模型正从计算中心变成契约层。五条更新看同一个方向：下面管好 Delta 文件，上面守住访问边界。</p>
+        <ul class="post-tags"><li>Power BI</li><li>语义模型</li><li>Direct Lake</li><li>Microsoft Fabric</li><li>MCP</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="语义模型两头被打开：这 5 条更新指向同一件事" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>这五条更新放在一起，第一眼看不出关系。一条讲湖仓表怎么写，一条讲跨工作区的访问策略，一条讲用 Claude 建看板，一条讲全文索引，最后一条是 Reddit 上的求助帖。</p>
+<p>但它们指的是同一个位置：<strong>语义模型</strong>（semantic model）。</p>
+<p>过去十年，语义模型是中心。数据导进来，计算在这里，报表连着它，所有问题都围着它转。</p>
+<p>现在两头同时往外拉。下面，数据沉到 Delta 表里，模型只是读；上面，Claude 这类客户端绕过报表直接调模型。</p>
+<p>模型没有消失。它变成了中间那一层契约。而契约的价值，取决于两头守不守得住。</p>
+<h2 id="慢的地方-不在模型里">慢的地方，不在模型里</h2>
+<p>Data Mozart 上个月做了个测试，值得每个做 Direct Lake 的人看一遍。</p>
+<p>他拿一个 5 亿行的数据集，写成七张 Delta 表。每张相对基准只改一个变量：文件数量、row group 大小（Parquet 的行组）、V-Order（Parquet 的一种写入排序优化）、分区方式。然后用同一个 Direct Lake on OneLake 模型，跑同一批查询。</p>
+<p>结果很干净。数据一旦进了内存，七张表全都在半秒内返回。差别全在冷查询——也就是把数据载进内存的那一次——0.8 秒到 14 秒，落点完全由表是怎么写的决定。</p>
+<p>14 除以 0.8，17 倍多。这个倍数不是 DAX 能补回来的。</p>
+<p>他还列了三种在现场反复出现的症状：一天里第一批查询特别慢；某个视觉对象因为表触碰容量上限（guardrail）直接报错；ETL 改动没动一个数字，报表却慢了。</p>
+<p>三种症状，一个位置。不是模型，是模型底下那层文件。</p>
+<p>这里有个容易混的点：Direct Lake 有两种。Direct Lake on SQL 在碰到 guardrail、T-SQL 视图或不支持的特性时会回落到 DirectQuery，表现是突然掉下悬崖——在查询计划里能看到引擎切换。Direct Lake on OneLake 永不回落，表现是慢慢变差——文件布局、转码成本、内存占用一点点累积，最后一起还账。</p>
+<p>一个是断崖，一个是滑坡。排查方式完全不同。</p>
+<p>我的看法：Direct Lake 项目里，性能调优的交付物变了。以前交付的是 DAX 和模型关系，现在要多一份 ETL 写文件的验收标准——文件数控制在多少、row group 多大、V-Order 开不开。这些参数以前是数据工程的事，现在直接决定报表体验。把它们写进交付清单，比事后打开 DAX Studio 便宜得多。</p>
+<h2 id="进来的那条路-加参数没用">进来的那条路，加参数没用</h2>
+<p>往下再走一层，是数据怎么进来。</p>
+<p>Reddit 的 r/MicrosoftFabric 有个帖子，贴了完整的测试数据。123M 行、约 32GB 的表，从本地 SQL Server 经 OnPrem Gateway 进 lakehouse，用了 Dynamic Range Partitioning。</p>
+<p>并行度设 Auto，实际跑了 4，10 分 14 秒。设 4，实际 4，10 分 18 秒。设 20，实际只用了 5，10 分 11 秒。</p>
+<p>三次吞吐都在 52–53 MB/s。把三个任务并行跑，整条管道 20–21 分钟，接近单表的两倍——说明它们并没有真的并行起来。</p>
+<p>换成 Copy Job 试，17 分钟。</p>
+<p>发帖人问得很直接：官方说 Copy Job 和 Copy Activity 是同一套引擎，为什么慢这么多？并行度设 20，为什么只用了 5？</p>
+<p>这两个问题，帖子里没人给出确定答案。这条素材的价值不在答案，在于它把「瓶颈在网关和源端」这件事量化了：52 MB/s 是个天花板，你把参数从 4 调到 20，天花板一动不动。</p>
+<p>我的看法：这类问题不该在参数层面解决。网关、源库、网络带宽，三者的最小值决定上限。他提到表级 CDC 没开、只在库级开了——这本身就是个信号。真要提速，先把增量做起来，比调并行度实在。</p>
+<h2 id="模型内部-也开始为外部客户端准备">模型内部，也开始为外部客户端准备</h2>
+<p>Chris Webb 上个月写了全文索引的实测。</p>
+<p>9 月版本引入 full-text indexing，可以按列开启。开启时可以选择在 Full refresh 或 Indexes 类型的刷新时重建索引。配套的是两个新 DAX 函数：<code>TextContains()</code> 和 <code>TextSimilarity()</code>。</p>
+<p>他拿英国土地登记局（UK Land Registry）的成交价格数据测。Street 列有 73,206 个不同值，整张表 160,257 行。刷新时用 Profiler 抓 trace，抓到一对 Progress Report Begin/End 事件，子类是 Tabular Object Processing。</p>
+<p>索引构建耗时 1392 毫秒，CPU 时间 484 毫秒。</p>
+<p>短字符串、七万多个不同值，1.4 秒。不算慢。但 Chris 也提到文档里的警告：给太多文本列加全文索引，刷新时间会显著变长。长字符串、高基数的列，数字一定往上走。</p>
+<p>这篇真正值得注意的不是耗时，是它的落点。</p>
+<p>全文索引目前 Power BI 报表还用不上。那它是给谁准备的？</p>
+<p>Chris 的判断是：未来会有越来越多不同类型的前端，能对你的语义模型跑任意 DAX。他举的例子很具体——酒店预订模型里有一列客户反馈文本，你想回答「有多少退款是给了抱怨空调的客户」，只有靠 <code>TextSimilarity()</code> 才写得出来。</p>
+<p>这句话把第三节和第五节接上了。索引不是给报表用的，是给那些不一定是报表的东西用的。</p>
+<h2 id="上面的客户端-已经来了">上面的客户端，已经来了</h2>
+<p>这些前端里，有一个已经有名字了：Claude Dashboards。</p>
+<p>BI Insight 的作者在 10 月用 beta 版做了完整测试。路径是 Microsoft 的 Power BI MCP server——MCP 即 Model Context Protocol，一套让 AI 客户端调用外部工具和数据的协议。接上之后，用自然语言描述要什么看板，Claude 生成 DAX 查询、拿结果、渲染图表。不建新模型，不重建关系，也不手工导出全量数据。</p>
+<p>听起来像「报表不用做了」。但他提了一个必须听进去的点：不导出整个数据集，不等于数据没有离开 Power BI。DAX 查询的结果是经 MCP 传给 Claude 的，敏感数据一样会出去。</p>
+<p>然后是三个现实问题：分享给别人之后 RLS 还生效吗？用户需要什么权限？能不能连多个 Fabric 租户？</p>
+<p>据原文，这些问题他都测了，但素材只保留到「问题提出」这一段。结论我没看到，不替他下判断。只能说：这三件事没答案之前，别把生产模型接上去。</p>
+<p>我的看法：这类工具的门槛从来不是「能不能生成图表」。图表谁都能生成。门槛是权限模型能不能原样带过去——RLS、成员身份、行级过滤，这些在语义模型里是定了十年的东西，到了 AI 客户端这边是不是还认，才是真问题。</p>
+<h2 id="边界变成了产品">边界变成了产品</h2>
+<p>Power BI 11 月 5 日的更新，正好回答上一节的一部分：OAP。</p>
+<p>OAP 是 workspace outbound access protection，工作区出站访问保护，管的是「这个工作区里的数据能流到哪」。</p>
+<p>6 月首发时规则很死：报告和语义模型必须在同一个工作区。客户反馈说太严。这次开了口子——报告可以查另一个工作区的语义模型，前提是工作区管理员通过例外策略（exception policy）显式放行。</p>
+<p>默认仍然阻断。报告打开时，Power BI 先评估报告所在工作区的策略，再决定渲不渲染。没有匹配的例外，连接被拦，报告打不开。</p>
+<p>配置路径写得很具体：工作区设置 → Outbound networking → Add new cloud connection rule → Connection Kind 选 Power BI Semantic Model → 在 Workspace exception 里选目标工作区 → Add → Save。不用改报告绑定，也不用把两边挪进同一个工作区。</p>
+<p>语义模型自己仍然受自己工作区的 OAP 控制。两边都要开，只开一边不够。</p>
+<p>我的看法：这个功能是为一种架构准备的——中央团队管共享语义模型，业务团队在各自工作区建报表。这是企业里最常见的分工。OAP 之前，这个架构和出站管控是打架的：要么放弃隔离，要么放弃分工。现在多了一个选项，而且不用动已有的绑定关系。</p>
+<h2 id="横向比较-代价可测-权限不可测">横向比较：代价可测，权限不可测</h2>
+<p>五条放在一起，能看出两件事。</p>
+<p><strong>第一，三类数字，两类问题。</strong></p>
+<p>Data Mozart 的 17 倍、Reddit 的 52 MB/s、Chris Webb 的 1392 毫秒，都是数字。都能提前测，都能写进验收标准，都能事后复现。这三条讲的是「代价」。</p>
+<p>Claude Dashboards 和 OAP 讲的是另一类：能不能连、连上之后 RLS 还认不认、边界该画在哪。这些问题没有毫秒数，只能靠策略和流程保证。而且它们的答案会随着产品和租户配置变化，今天测通了，下周不一定还通。</p>
+<p>把两类问题混在一起讨论，是很多团队踩坑的原因。性能问题可以交给工程师，权限问题必须交给能拍板的人。</p>
+<p><strong>第二，三条性能素材都在说同一句话：问题不在你以为的那一层。</strong></p>
+<p>Data Mozart 说不在 DAX，在 Delta 文件怎么写。Reddit 说不在并行度，在网关和源端。Chris Webb 说不在查询，在索引构建。</p>
+<p>三条指向同一句方法论：调优之前，先定位到层。先问「慢在哪一层的边界上」，再决定打开哪个工具。这个问题以前不重要，因为模型就是全部；现在它变得重要了，因为上下各多了一层。</p>
+<p>这也是我觉得这五条该合在一起读的原因。单看每一条，是「性能技巧 + 安全更新 + AI 尝鲜」；合起来是一条线——语义模型的价值，正在从「算得快」转向「谁在什么边界里调用它」。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>分三档。</p>
+<p><strong>必学：OAP 例外策略。</strong> 企业里「中央团队管模型、业务团队建报表」的分工太常见，这个功能就是为它准备的。虽然还是预览，但配置路径简单，值得先在测试工作区跑通。等真遇到「报告打不开」的报错再研究，就晚了。</p>
+<p><strong>可选：全文索引。</strong> 现在开没有副作用，但按列开，别一次给十列都上。开完做一次 Full refresh，用 Profiler 抓 Progress Report End 的 Duration，看自己表的真实成本。Chris Webb 那 1.4 秒是七万多个短字符串，长文本一定更久。它现在还不能被报表用上，所以这是给未来留的余量，不是给今天解决的问题。</p>
+<p><strong>观望：Claude Dashboards 直接接语义模型。</strong> beta、RLS 结论未见到、数据要经 MCP 出去。等权限那部分讲清楚了再上，涉及敏感业务数据的一律先别碰。它不是不成立，是还没到能交给业务方的阶段。</p>
+<p>至于 Direct Lake：如果已经在 Fabric 上跑，这已经不是「要不要学」的问题。把文件数、row group、V-Order 这些参数写进 ETL 交付标准，是现在就该动的事。</p>
+<p>下次报表慢，先别打开 DAX Studio。先问一句：这张表，是怎么写进去的。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#慢的地方-不在模型里">慢的地方，不在模型里</a></li><li><a href="#进来的那条路-加参数没用">进来的那条路，加参数没用</a></li><li><a href="#模型内部-也开始为外部客户端准备">模型内部，也开始为外部客户端准备</a></li><li><a href="#上面的客户端-已经来了">上面的客户端，已经来了</a></li><li><a href="#边界变成了产品">边界变成了产品</a></li><li><a href="#横向比较-代价可测-权限不可测">横向比较：代价可测，权限不可测</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav" aria-label="上下篇"><a href="../../blog/fabric-four-updates/"><span class="dir">← 上一篇</span><strong>Fabric 这周四条更新：接入变简单，治理更难</strong></a><a class="next" href="../../blog/sap-bw-powerbi-connection/"><span class="dir">下一篇 →</span><strong>SAP BW 接 Power BI：6 个坑和一份清单</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

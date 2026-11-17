@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAP BW Power BI 接入：步骤、权限与避坑 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="SAP BW 接入 Power BI，卡点不在建模，在连接方式、组件位数和授权。按选型（Import / DirectQuery）、装组件、准备 BEx 查询、建模五步讲，附六个高频坑和上线清单。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/sap-bw-powerbi-connection/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/sap-bw-powerbi-connection/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SAP BW Power BI 接入：步骤、权限与避坑 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="SAP BW 接入 Power BI，卡点不在建模，在连接方式、组件位数和授权。按选型（Import / DirectQuery）、装组件、准备 BEx 查询、建模五步讲，附六个高频坑和上线清单。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/sap-bw-powerbi-connection/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/sap-bw-powerbi-connection/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SAP BW Power BI 接入：步骤、权限与避坑 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="SAP BW 接入 Power BI，卡点不在建模，在连接方式、组件位数和授权。按选型（Import / DirectQuery）、装组件、准备 BEx 查询、建模五步讲，附六个高频坑和上线清单。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/sap-bw-powerbi-connection/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SAP BW Power BI 接入：步骤、权限与避坑",
+  "description": "SAP BW 接入 Power BI，卡点不在建模，在连接方式、组件位数和授权。按选型（Import / DirectQuery）、装组件、准备 BEx 查询、建模五步讲，附六个高频坑和上线清单。",
+  "datePublished": "2026-11-14",
+  "dateModified": "2026-11-14",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/sap-bw-powerbi-connection/cover.webp",
+  "keywords": "SAP BW Power BI 接入、Power BI、SAP BW、数据接入、DirectQuery、权限",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/sap-bw-powerbi-connection/"
+  },
+  "wordCount": 3473
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>SAP BW 接 Power BI：6 个坑和一份清单</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-14">2026 年 11 月 14 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>9 分钟读完</span>
+        </p>
+        <h1 class="article-title">SAP BW 接 Power BI：6 个坑和一份清单</h1>
+        <p class="article-lead">SAP BW 接 Power BI，卡点在连接之前：选型、组件位数、查询发布和授权。附六个高频坑与上线清单。</p>
+        <ul class="post-tags"><li>Power BI</li><li>SAP BW</li><li>数据接入</li><li>DirectQuery</li><li>权限</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="SAP BW 接 Power BI：6 个坑和一份清单" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>SAP BW 接 Power BI，麻烦大多出在连接之前，不在建模里。</p>
+<p>查询在 BW 里跑得好好的，到 Power BI 里选不到。表连上了，刷一次四十分钟。DirectQuery 一点，一半视觉对象变灰。这些都不是 DAX 的问题，是连接方式、组件版本和授权的问题。</p>
+<p>SAP BW Power BI 接入的顺序不能乱：先定连接方式，再装组件，然后在 BW 里把查询准备好，最后才建模。顺序反了，每一步都在补救上一步。</p>
+<p>下面按这个顺序走，文末有上线前的检查清单。需要有人把这一段整体打通，<a href="../../#services">服务</a> 页写了范围；只是想让自己手上的报表先跑起来，看完照着做就行，卡住了从 <a href="../../#contact">联系</a> 页找我。</p>
+<h2 id="第一步-连接方式只有三种-先选-别试">第一步：连接方式只有三种，先选，别试</h2>
+<p>SAP BW 不是数据库。它是一个建好模的数据仓库，对外主要暴露两类对象：查询（BEx Query）和信息提供者（InfoProvider，比如 InfoCube、CompositeProvider、DSO）。Power BI 的 SAP BW 连接器读的就是这两类东西。</p>
+<p>三种走法，代价完全不同：</p>
+<table>
+<thead>
+<tr>
+<th>走法</th>
+<th>数据怎么走</th>
+<th>适合什么</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BW 连接器 + Import</td>
+<td>查询结果一次性拉进模型</td>
+<td>报表结构固定，要写复杂 DAX</td>
+<td>有刷新延迟；特征越多，首次刷新越慢</td>
+</tr>
+<tr>
+<td>BW 连接器 + DirectQuery</td>
+<td>每个视觉对象下推成一次 BW 查询</td>
+<td>必须看实时数，且 BW 侧已有跑得快的查询</td>
+<td>模型里不能加计算列和计算表，部分 DAX 用不了，并发压力回到 BW</td>
+</tr>
+<tr>
+<td>OData（SAP Gateway 服务）</td>
+<td>走 HTTP，BW 侧发布成 OData 服务</td>
+<td>跨网、云端、不想在每台机器装 RFC 组件</td>
+<td>要在 BW 侧建服务，层级和聚合得自己处理</td>
+</tr>
+</tbody>
+</table>
+<p>判断规则只有一条：<strong>报表要算的东西越多，越该用 Import。</strong> 同比、占比、排名、动态分组，这些都要在模型里算。DirectQuery 下算不了，只能下推给 BW，而 BW 对 DAX 的翻译能力有限。</p>
+<p>反过来，只有一个场景值得上 DirectQuery：业务方要的是「现在」的数，而这个数在 BW 里已经有一个跑得很快的查询。两个条件缺一个，就别上。Import 加每小时刷新，能覆盖绝大多数管理报表。</p>
+<img alt="三种接入方式对比：Import、DirectQuery 与 OData" decoding="async" height="718" loading="lazy" src="img/01-infographic-connection-modes.webp" width="1280"/>
+<h2 id="第二步-组件装不对-后面全白干">第二步：组件装不对，后面全白干</h2>
+<p>Power BI Desktop 是 64 位。SAP BW 连接器要的是对应的 64 位 SAP .NET Connector 3.0（SAP NCo，SAP 官方的 .NET 连接库），外加它依赖的 SAP NetWeaver RFC 库。两样都装 64 位，目录加进 PATH，再确认 VC++ 运行库在。</p>
+<p>最容易错的不是装，是装错位数。机器上常同时存着一份 32 位的旧组件——别的工具装的。Power BI 读不到 64 位那一份，就报 <code>The 'SAP' provider is not registered on the local machine</code>，或者加载 <code>sapnco</code> 失败。看到这两个报错，先去查位数，别去查连接参数。</p>
+<p>还有一处容易漏：发布到 Power BI 服务后，定时刷新不是在你这台电脑上跑，是在<strong>本地数据网关</strong>那台机器上跑。那台同样要装同一套 64 位组件。Desktop 里刷新成功、服务里失败，多半是这里。</p>
+<img alt="64 位组件栈与 32 位旧组件的冲突" decoding="async" height="718" loading="lazy" src="img/02-infographic-64bit-stack.webp" width="1280"/>
+<h2 id="第三步-在-bw-里准备好要接入的那个查询">第三步：在 BW 里准备好要接入的那个查询</h2>
+<p>连接之前，BW 侧必须先有一个「给外部用」的查询。这一步做不好，后面怎么调都慢。</p>
+<ol>
+<li><strong>用查询，不用信息提供者。</strong> 在 BEx Query Designer 里建一个查询，或者复用业务已经在用的。查询里带着限制、计算指标、变量；信息提供者给的是裸数据，业务口径要你在 Power BI 里重做一遍。</li>
+<li><strong>勾选「允许外部访问该查询」。</strong> 在查询属性里。不勾，连接器的 Navigator 里不会出现它——这是「明明有查询却选不到」最常见的原因。</li>
+<li><strong>只放真正要用的特征和关键值。</strong> 特征多一个，结果集按它的取值组合放大一次。十个特征放在一起，行数轻易到几百万。</li>
+<li><strong>变量给默认值。</strong> 否则每次刷新都要人输入，定时刷新直接失败。</li>
+<li><strong>授权到位。</strong> 用户要有 <code>S_RS_COMP</code>、<code>S_RS_COMP1</code> 这类查询权限，加上 BW 的分析授权（事务码 <code>RSECADMIN</code> 维护）。分析授权按 InfoObject 粒度过滤，少给一个特征，报表里就少一列。</li>
+</ol>
+<img alt="SAP BW 接入 Power BI 的五步顺序" decoding="async" height="718" loading="lazy" src="img/03-infographic-five-step-flow.webp" width="1280"/>
+<p>第 3 条值得单独说。SAP BW 的查询是星型结构上的多维结果，Power BI 拿到的是压平后的二维表。压平由连接器按你选的字段组合展开，特征之间做笛卡尔组合。字段选多了，不是「查得慢一点」，是行数爆炸。</p>
+<h2 id="第四步-navigator-里选查询-再删字段">第四步：Navigator 里选查询，再删字段</h2>
+<p>连上之后，Navigator 会列出你能访问的 InfoProvider 和 Query。选 Query，别选 InfoProvider。</p>
+<p>多数版本可以在 Navigator 里对查询做字段级选择（编辑 / Edit），把这次用不到的特征和关键值去掉。版本里没有这个入口，就让 BW 侧另建一个窄查询——不要在 Power BI 里先拉全字段再筛，那一步筛选是在本地做的，数据早就全过来了。</p>
+<p>层次结构要当心。BW 的层级到 Power BI 里默认被压成 <code>Level 01</code>、<code>Level 02</code>……一组列。列名不是层级关系，是「第几层上的值」。父节点那一行的关键值通常是汇总值，直接对这些列求和会重复计算。</p>
+<p>日期也常出问题。BW 的 <code>0CALDAY</code> 有时传过来是 <code>20261114</code> 这样的整数，不是日期类型。建模前先转：</p>
+<pre><code class="language-dax">日期 =
+DATE (
+    INT ( '销售查询'[0CALDAY] / 10000 ),
+    INT ( MOD ( '销售查询'[0CALDAY], 10000 ) / 100 ),
+    MOD ( '销售查询'[0CALDAY], 100 )
+)
+</code></pre>
+<p>把 <code>yyyymmdd</code> 拆成年、月、日再拼回去，才能和日期表建立关系。转完记得把这张表标记为日期表，否则时间智能函数全部失效。</p>
+<h2 id="第五步-六个高频坑-对着排">第五步：六个高频坑，对着排</h2>
+<ol>
+<li><strong>查询在 Navigator 里看不到。</strong> 先查「允许外部访问」有没有勾，再查 <code>S_RS_COMP</code> 授权，最后确认查询已激活。</li>
+<li><strong>登录失败，报 <code>RFC_ERROR_LOGON_FAILURE</code>。</strong> 客户端号错、密码过期，或者 BW 侧开了 SNC 而本地没配。别急着改连接器，先让 Basis 看一眼 SM21 的日志。</li>
+<li><strong>连上了，行数是 0。</strong> 分析授权没给到对应的 InfoObject。管理员看得到数，你这边是空的，就是这个原因。</li>
+<li><strong>首次刷新几十分钟。</strong> 通常是特征选多了。回第四步删字段。删不动，说明这个查询本身就该在 BW 侧重做。</li>
+<li><strong>DirectQuery 下视觉对象报「此查询包含不支持的功能」。</strong> 时间相关层次结构、计算列、部分 DAX 在 DirectQuery 里不支持下推。要么改写法，要么换 Import。</li>
+<li><strong>Desktop 能刷新，服务里失败。</strong> 网关机器缺 64 位组件，或者 DirectQuery 的 Kerberos 委托没配通。网关和 BW 之间的 SSO 要 Basis 和域管理员一起配，一个人搞不定。</li>
+</ol>
+<img alt="六个高频坑的排查表：症状、先查什么、处理" decoding="async" height="718" loading="lazy" src="img/04-infographic-six-pitfalls.webp" width="1280"/>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>Q：Import 和 DirectQuery 能混用吗？</strong></p>
+<p>能，用复合模型：明细走 DirectQuery，汇总走 Import。代价是关系只能在同一个源内建立，跨源的关联要靠模型里的桥接表，限制不少。团队没有专人维护模型时，别一上来就上复合模型。</p>
+<p><strong>Q：一定要装 SAP 的组件吗？有没有免安装的路？</strong></p>
+<p>有。走 OData（SAP Gateway 服务）就不用在每台机器装 RFC 库。代价是 BW 侧要先发布服务，字段和层级按 OData 的口径来，聚合得在 Power BI 里自己做。数据量不大、报表不多的场景，这条路更省事。</p>
+<p><strong>Q：同一个查询，为什么别人刷得快我刷得慢？</strong></p>
+<p>比三件事：选的字段是不是一样、分析授权是不是一样、走的是不是同一台服务器。前两个决定结果集大小，第三个决定网络和 BW 的负载。</p>
+<p><strong>Q：BW/4HANA 和老的 BW，连接方式一样吗？</strong></p>
+<p>连接器是同一个，连法也一样。区别在对象：BW/4HANA 里主要是 CompositeProvider、Open ODS 视图和 aDSO，老的 InfoCube 不再是主流。查询这一层没变，仍然是 BEx 查询，或者基于查询的视图。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>SAP BW 接 Power BI，<strong>默认选 Import，选 BEx 查询，在连接器里删到只剩需要的字段</strong>。这三件事做完，大部分性能问题不会出现。</p>
+<p>DirectQuery 留一个很窄的口子：只有「实时」是业务的硬需求，并且 BW 侧已经有一个响应在几秒内的查询，才用它。其余情况，DirectQuery 等于把建模的活推回给 BW 团队，而 BW 团队通常不接这个活。</p>
+<p>还有一件事比技术选型更重要：<strong>谁有权改那个 BEx 查询</strong>。报表团队想加一个特征，BW 团队要排期，这个流程不写清楚，上线后每次需求变更都要等两周。交付时我会把「查询的变更权」和「报表的变更权」分开写进约定，谁改谁负责，不混在一起。</p>
+<p>如果你的 BW 还在跑，报表已经堆了几十张，先别急着换工具。把最常用的三个查询按上面五步过一遍，通常能省掉一轮硬件扩容的钱。更多数据接入的拆解在 <a href="../../blog/">博客</a>。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#第一步-连接方式只有三种-先选-别试">第一步：连接方式只有三种，先选，别试</a></li><li><a href="#第二步-组件装不对-后面全白干">第二步：组件装不对，后面全白干</a></li><li><a href="#第三步-在-bw-里准备好要接入的那个查询">第三步：在 BW 里准备好要接入的那个查询</a></li><li><a href="#第四步-navigator-里选查询-再删字段">第四步：Navigator 里选查询，再删字段</a></li><li><a href="#第五步-六个高频坑-对着排">第五步：六个高频坑，对着排</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav" aria-label="上下篇"><a href="../../blog/semantic-model-open-both-ends/"><span class="dir">← 上一篇</span><strong>语义模型两头被打开：这 5 条更新指向同一件事</strong></a><a class="next" href="../../blog/dax-performance-optimization/"><span class="dir">下一篇 →</span><strong>DAX 度量值跑得慢？先定位，再改这 6 处</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

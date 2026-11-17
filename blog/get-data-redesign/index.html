@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Data 改版：386 条反馈里，24 人卡在同一处 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="新版 Get Data 方向对了，但四个坑还没填完。现在该不该切过去？分三种情况说清楚，最后一种可以直接忽略。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/get-data-redesign/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/get-data-redesign/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Get Data 改版：386 条反馈里，24 人卡在同一处 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="新版 Get Data 方向对了，但四个坑还没填完。现在该不该切过去？分三种情况说清楚，最后一种可以直接忽略。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/get-data-redesign/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/get-data-redesign/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Get Data 改版：386 条反馈里，24 人卡在同一处 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="新版 Get Data 方向对了，但四个坑还没填完。现在该不该切过去？分三种情况说清楚，最后一种可以直接忽略。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/get-data-redesign/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Get Data 改版：386 条反馈里，24 人卡在同一处",
+  "description": "新版 Get Data 方向对了，但四个坑还没填完。现在该不该切过去？分三种情况说清楚，最后一种可以直接忽略。",
+  "datePublished": "2026-11-05",
+  "dateModified": "2026-11-05",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/get-data-redesign/cover.webp",
+  "keywords": "Power BI、Power Query、Get Data、微软、Fabric",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/get-data-redesign/"
+  },
+  "wordCount": 3675
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Get Data 改版：386 条反馈里，24 人卡在同一处</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-05">2026 年 11 月 5 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>9 分钟读完</span>
+        </p>
+        <h1 class="article-title">Get Data 改版：386 条反馈里，24 人卡在同一处</h1>
+        <p class="article-lead">新版 Get Data 方向对了，但四个坑还没填完。现在该不该切过去？分三种情况说清楚，最后一种可以直接忽略。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Power Query</li><li>Get Data</li><li>微软</li><li>Fabric</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Get Data 改版：386 条反馈里，24 人卡在同一处" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：现在别全面切过去。</p>
+<p>新版 Get Data 的方向是对的——它改的不是界面，是你做第一件事时的思考顺序。但四个细节还没补齐，而且都卡在每天都要用的地方。</p>
+<p>微软在十月版本里把它推了出来，目前是 Preview。社区有个反馈帖，5 月开到 10 月，386 条回复。下面这些判断，来自原文和那 386 条反馈。</p>
+<h2 id="它改了什么">它改了什么</h2>
+<p>老界面是一棵连接器树。</p>
+<p>Excel、CSV、SQL Server、SharePoint，按数据源类型排开。你脑子里得先有一个连接器名字，才能往下走。</p>
+<p>新界面是六个模块：Home、New、Recent data、OneLake catalog、Blank table、Blank query。</p>
+<p>看起来是重排。其实不是。</p>
+<p>老逻辑的第一步是「我该选哪个连接器」。新逻辑的第一步是「我要复用还是新建」。</p>
+<p>这两个问题，差得很远。</p>
+<p>连接器列表解决的是「怎么连」，回答不了「连什么」。</p>
+<p>现实里，很多时候你并不知道该用什么连接器。你只知道「财务部维护的那个销售数据」，或者「上周连过的那个库」，或者手里已经有一段写好的 SQL。</p>
+<p>微软这次拆开的，正是这两件事。</p>
+<h2 id="六个入口-六种起点">六个入口，六种起点</h2>
+<p><strong>New</strong> —— 你知道源在哪。有服务器地址、文件路径、服务 URL，直接搜连接器或按分类找。这是最接近老逻辑的路。该快，还是快。</p>
+<p><strong>OneLake catalog</strong> —— 你知道业务数据是什么，但不知道它的接口。按业务上下文找数据项，点进去能看类型、负责人、位置，以及 endorsement 和敏感度标签。</p>
+<p>有个场景很典型。两个数据项都叫 Sales：一个在团队维护的报表位置，一个在某个人的测试项目里。光看名字，你分不出该连哪个。</p>
+<p><strong>但记住一点：能在 catalog 里看到，不等于有权限读。</strong> 原文写得很明确——目录可见性不授予数据访问权。endorsement 也只是个信号，不是适用性保证。</p>
+<p><strong>Recent data</strong> —— 回到你用过的源。它跳过连接器列表，但别当快照用。位置变了、权限收紧了，它不会告诉你。</p>
+<p><strong>Blank table / Blank query</strong> —— 起点不是外部数据。前者手输一张小映射表，比如 RegionCode 到 RegionName 的对照；后者直接粘一段 M 表达式。</p>
+<p>这里有个常见误解：<strong>在 Blank table 里粘贴 Excel 的数值，不会建立到那个 Excel 的可刷新连接。</strong> 值会变成查询的一部分，写死在里面。想要刷新，还是得走连接器。</p>
+<p><strong>Home</strong> —— 不负责连接。它只负责让你在这几条路里选一条。</p>
+<h2 id="一张对照表">一张对照表</h2>
+<table>
+<thead>
+<tr>
+<th>你的起点</th>
+<th>老界面怎么走</th>
+<th>新界面走哪</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>知道服务器地址或文件路径</td>
+<td>连接器树 → 选类型 → 填地址</td>
+<td>New</td>
+</tr>
+<tr>
+<td>知道团队有个 Sales 数据，但不知道在哪</td>
+<td>先问工作区，再找连接串</td>
+<td>OneLake catalog</td>
+</tr>
+<tr>
+<td>昨天连过某个库</td>
+<td>重新从列表里翻</td>
+<td>Recent data</td>
+</tr>
+<tr>
+<td>只要一张地区映射表</td>
+<td>打开 Excel 建表再连</td>
+<td>Blank table</td>
+</tr>
+<tr>
+<td>手里有一段现成 M 代码</td>
+<td>新建空查询再粘</td>
+<td>Blank query</td>
+</tr>
+</tbody>
+</table>
+<p>这表说明一件事：新界面不是替代，是分流。每条路对应一种「你手上已经有什么」。</p>
+<h2 id="catalog-里的两个陷阱">catalog 里的两个陷阱</h2>
+<p><strong>第一个：能看到不等于能读。</strong></p>
+<p>catalog 展示的是目录元数据。你看到某个语义模型，不代表你有权限打开它。连接那一刻才鉴权。</p>
+<p><strong>第二个：endorsement 不是质量保证。</strong></p>
+<p>Promoted、Certified 这些标签，说明有人背书，不说明它适合你的场景。两个都叫 Sales 的数据项，可能一个有认证、一个是测试项目——有认证的那个，也未必是你需要的。</p>
+<p>判断依据应该是三样：负责人、位置、更新频率。这比标签实在。</p>
+<h2 id="为什么说方向对了">为什么说方向对了</h2>
+<p>把新旧放在一起看，差异只有一句话：</p>
+<p><strong>第一个决策，从「我该选哪个连接器」，变成了「我要复用还是新建什么」。</strong></p>
+<p>这个转变对两类人价值最大。</p>
+<p>第一类，团队有成规模的 Fabric 数据资产。以前你知道数据在，但得先问工作区、再找连接串。现在从业务语义出发，能直接找到。</p>
+<p>第二类，经常在多个源之间翻数据的分析师。Recent data 和 catalog 把「上次那个」和「团队那个」摆到台面上，不用每次从连接器列表重新决策。</p>
+<p>只连一个固定 CSV 的人，这些变化没意义。微软自己在原文里也承认了：熟悉源的人，应该还能走直路。</p>
+<h2 id="对老用户的影响">对老用户的影响</h2>
+<p>有个细节容易被忽略。</p>
+<p>老界面的肌肉记忆是三步：点获取数据 → 找连接器 → 填参数。闭着眼也能走完。</p>
+<p>新界面把这三步拆到了不同入口。如果没想清楚起点，反而会多点两下。</p>
+<p>反馈里那 8 个人说加载慢，本质就是这个：<strong>已经想好要连什么的人，被一个他不需要的发现页挡住了。</strong></p>
+<p>这不是设计缺陷。所有「加了发现层」的产品都要付这个代价。微软的解法是保留 New 这条直路——只要你确定源在哪，它还是最快的。</p>
+<p>真正的问题是：老用户得重新建立一个判断——我现在是「知道源」，还是「知道数据」。</p>
+<p>这个切换成本，比界面变化本身更磨人。</p>
+<h2 id="四个坑">四个坑</h2>
+<p>反馈帖按「有多少不同的人明确报告了这个问题」排序，不是按帖子数或点赞。一个人只算一次。</p>
+<p><strong>第一，原生 SQL 输入。24 人。</strong></p>
+<p>对不少团队来说，连数据库的起点就是一段现成的 SQL，不是「选一张表」。有 Redshift 用户反馈 Advanced options 里找不到自定义 SQL 输入；还有团队发现这个字段没了，直接关掉了预览。</p>
+<p>这不是界面偏好。这是工作流阻断。</p>
+<p>微软已经补上了创建连接时的这个输入。<strong>但范围要说清楚</strong>：补的是「创建」。通过 Source 步骤齿轮图标重新打开、修改那段 SQL，覆盖仍然不完整。</p>
+<p><strong>第二，建完的查询改不了。16 人。</strong></p>
+<p>老版本里，回到 Source 步骤，点齿轮，能重新打开连接对话框改 SQL。这是维护报表最常用的路径。</p>
+<p>有 Databricks 用户描述得很具体：创建时 SQL 输入在，重新打开设置时没了，最后退回老界面。</p>
+<p>还有个更细的场景。有团队在 Power Query 和 DBeaver 之间搬参数化 SQL，靠的是「提取可读 SQL」。而从 Advanced Editor 复制出来的 M 里带着转义和引号，得先清理才能用。齿轮图标那个可编辑表单，对他们是刚需。</p>
+<p><strong>第三，加载速度。8 人。</strong></p>
+<p>问题不只是总时长。是<strong>已经想好要连什么的人，被迫等一个他不需要的发现页</strong>。</p>
+<p>有人对比过：老流程选 CSV 直接选文件；新流程要等界面出来，再点 Browse，再选文件。</p>
+<p>微软说启动和加载的改进，放在 2026 年 12 月的 Desktop 版本。</p>
+<p><strong>第四，Advanced Web settings。5 人。</strong> 某些连接场景下，这个设置直接决定连接能不能建立。</p>
+<h2 id="一个必须说明的边界">一个必须说明的边界</h2>
+<p>博客截图里出现的 Browse Azure、SharePoint browsing、Upload，<strong>目前不属于 Power BI Desktop</strong>。</p>
+<p>它们属于 Dataflow Gen2，部分也在 Power BI web modeling 里。Desktop 什么时候上，官方没有承诺时间。</p>
+<p>这不是小事。看到截图就以为 Desktop 也有了，会白折腾半天。模块的可用性，因宿主而异。原文专门强调了这一点。</p>
+<h2 id="试之前要知道的">试之前要知道的</h2>
+<p>预览是可以随时关的。回 Options 里取消勾选，就退回老界面。数据模型和查询逻辑不受影响——M 代码还是那段 M 代码。</p>
+<p>所以个人试错成本很低。</p>
+<p>但团队推广是另一回事。正在做交付的报表，别在这个预览上开工。真正要避免的，是给一个还不稳定的界面背书。</p>
+<p>如果你们是 5 人以上的 BI 团队，建议先让一个人在非生产报表上试两周，把坑踩完，再决定推不推。</p>
+<h2 id="想试的话-怎么做">想试的话，怎么做</h2>
+<p><strong>开预览（仅 Desktop）</strong></p>
+<p>File → Options and settings → Options → Preview features → 勾选 <strong>New Power Query experience</strong> → 确定。</p>
+<p>Power BI web modeling 用的是 Power Query Online，不走这个开关。</p>
+<p><strong>按手上有什么选入口</strong></p>
+<ul>
+<li>知道服务器或文件路径 → New</li>
+<li>知道是团队维护的某个 Fabric 数据项 → OneLake catalog</li>
+<li>上周连过、想接着用 → Recent data</li>
+<li>只要一张小对照表，或一段现成 M 代码 → Blank table 或 Blank query</li>
+</ul>
+<p><strong>新 Navigator 有个操作变化</strong></p>
+<p>老版本「转换数据」是一个独立按钮。新版 Desktop 里，Transform data 被收进了 Load 下拉菜单。第一次用会找不到，容易以为功能被砍了。</p>
+<p><strong>连接前先预览</strong></p>
+<p>支持 Navigator 的连接器里，选完对象别急着加载。先看列和明细层级，决定后面要不要返工。</p>
+<h2 id="我的判断">我的判断</h2>
+<p><strong>可选，不是必学。</strong></p>
+<p>现在是体验升级，不是能力升级。你现在能做的事，新界面不会多给你一件。</p>
+<p>分三种情况：</p>
+<ul>
+<li><strong>有 Fabric 数据资产、经常跨源找数据</strong> → 现在就试。在一个非生产报表上开预览，把 OneLake catalog 那条路走一遍，能明显感觉到差别。</li>
+<li><strong>重度依赖自定义 SQL、要反复改 Source</strong> → 等等。齿轮图标那条编辑路径还没补齐，切过去会难受。</li>
+<li><strong>只连固定 Excel/CSV</strong> → 直接忽略。等正式版再说，新界面不会给你带来什么。</li>
+</ul>
+<p>但有件事值得记下来。</p>
+<p>这次改动的方向，是从「面向工具」转向「面向业务语义」。OneLake catalog 这个入口，未来大概率会长成整个 Fabric 的数据门户。</p>
+<p>现在熟悉它，是在为后面铺路。</p>
+<hr/>
+<p>这是 Power Query Corner 六篇系列的第一篇，后面讲连接、转换、加载。</p>
+<p>你开了这个预览吗？最不适应的是哪一步。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#它改了什么">它改了什么</a></li><li><a href="#六个入口-六种起点">六个入口，六种起点</a></li><li><a href="#一张对照表">一张对照表</a></li><li><a href="#catalog-里的两个陷阱">catalog 里的两个陷阱</a></li><li><a href="#为什么说方向对了">为什么说方向对了</a></li><li><a href="#对老用户的影响">对老用户的影响</a></li><li><a href="#四个坑">四个坑</a></li><li><a href="#一个必须说明的边界">一个必须说明的边界</a></li><li><a href="#试之前要知道的">试之前要知道的</a></li><li><a href="#想试的话-怎么做">想试的话，怎么做</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a class="next" href="../../blog/fabric-five-updates/"><span class="dir">下一篇 →</span><strong>Fabric 这周五条更新：入口在变，地基没变</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

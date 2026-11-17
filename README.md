@@ -21,13 +21,19 @@
 
 ```
 index.html            页面结构（文案、链接都在这里）
+blog/                 博客：索引页、每篇文章、RSS（由公众号工作流同步生成）
+blog/index.html       文章列表，按标签筛选
+blog/<slug>/          单篇文章，图片已转 WebP
+blog/feed.xml         RSS 2.0 订阅源
 404.html              GitHub Pages 的 404 页，与首页同一套视觉
 robots.txt            允许抓取，并指向 sitemap
-sitemap.xml           站点地图（首页 + 作品集）
+sitemap.xml           站点地图（首页 + 作品集 + 博客全部文章）
 ca8fb82aa608eb6566678430c4a768a8.txt   IndexNow 密钥，Bing 主动推送验证用
 scripts/indexnow.ps1  上线后把 URL 推给 Bing / Yandex
 assets/site.css       全部样式
+assets/blog.css       博客与首页「最近写的」样式
 assets/site.js        入场动画、导航高亮、移动端菜单、宣传片播放
+assets/blog.js        博客的标签筛选、目录跟随、阅读进度
 assets/analytics.js   GA4 / 百度统计 / Clarity 加载器（ID 在 index.html 底部）
 _content/             内容营销计划与案例研究模板（下划线开头，GitHub Pages 不会发布）
 assets/fonts/         自托管 Manrope 可变字体
@@ -39,6 +45,31 @@ assets/shots/promo-poster.webp  宣传片封面帧
 ```
 
 三张大图（`ip-home`、`pf-overview`、`platform-login`）有 `-1600` / `-800` 两档，靠 `srcset` + `sizes` 按屏幕挑；小图（`ip-factory`、`ip-sales`、`report-*`）只有一档 WebP。截图是 2026-11-05 从线上站点按 1600px 宽重截的。
+
+## 博客（公众号同步）
+
+`blog/` 下所有页面由公众号工作流自动生成，不要手改：
+
+- 源：`公众号工作流/drafts/<日期>/article.md`（frontmatter + Markdown）和同目录的 `cover.jpg`、`imgs/`。
+- 生成器：`公众号工作流/scripts/sync_site.py`。
+- 自动：`run_daily.ps1` 最后一步（步骤 9）调用 `sync_site.py --all --push`，生成后自动提交、推送到本仓库；GitHub Pages 收到推送后上线。
+- 手动补跑（在公众号工作流目录）：
+
+```powershell
+& "$env:LOCALAPPDATA\pbi-wechat-venv\Scripts\python.exe" scripts\sync_site.py --all
+& "$env:LOCALAPPDATA\pbi-wechat-venv\Scripts\python.exe" scripts\sync_site.py --all --push
+```
+
+每次同步会做这些事：
+
+1. 每篇文章生成 `blog/<slug>/index.html`，Markdown 转 HTML，代码块、表格、图片、目录都排好。
+2. 正文图片和封面转 WebP（宽 ≤1280，质量 82/85），放进 `blog/<slug>/img/`；源图没变就跳过。
+3. 重建 `blog/index.html`、`blog/feed.xml`、`sitemap.xml`，并更新首页 `BLOG:START` / `BLOG:END` 之间的「最近写的」三张卡。
+4. 文章被删掉时，清掉 `blog/` 下对应的旧目录（清单记在 `blog/.manifest.json`）。
+
+文章地址：`https://ipowerbi.icu/blog/<slug>/`。slug 优先用 frontmatter 的 `slug`，其次 `plan_topic`，老文章在脚本的 `SLUG_MAP` 里写死。不想让某篇上站时，删掉或改名它的 `article.md` 再跑一次即可。
+
+文章页的内链会做一次映射：正文里的 `/services/`、`/contact/` 等栏目路径改到首页对应锚点，避免生成死链。
 
 ## 部署
 

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 写 DAX 已经及格，难的是验收 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="SQLBI 两周连发三条：模型基准、MCP 装库、AI 写作课，外加 Direct Lake 计算列。AI 写 DAX 已经及格，真正难的是验收——读得懂、装得对、出了问题兜得住。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/ai-dax-acceptance/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/ai-dax-acceptance/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 写 DAX 已经及格，难的是验收 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="SQLBI 两周连发三条：模型基准、MCP 装库、AI 写作课，外加 Direct Lake 计算列。AI 写 DAX 已经及格，真正难的是验收——读得懂、装得对、出了问题兜得住。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/ai-dax-acceptance/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/ai-dax-acceptance/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 写 DAX 已经及格，难的是验收 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="SQLBI 两周连发三条：模型基准、MCP 装库、AI 写作课，外加 Direct Lake 计算列。AI 写 DAX 已经及格，真正难的是验收——读得懂、装得对、出了问题兜得住。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/ai-dax-acceptance/cover.webp">
+<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI 写 DAX 已经及格，难的是验收",
+  "description": "SQLBI 两周连发三条：模型基准、MCP 装库、AI 写作课，外加 Direct Lake 计算列。AI 写 DAX 已经及格，真正难的是验收——读得懂、装得对、出了问题兜得住。",
+  "datePublished": "2026-11-07",
+  "dateModified": "2026-11-07",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/ai-dax-acceptance/cover.webp",
+  "keywords": "Power BI、DAX、SQLBI、AI",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/ai-dax-acceptance/"
+  },
+  "wordCount": 3038
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>AI 写 DAX 已经及格，难的是验收</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-07">2026 年 11 月 7 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>8 分钟读完</span>
+        </p>
+        <h1 class="article-title">AI 写 DAX 已经及格，难的是验收</h1>
+        <p class="article-lead">SQLBI 两周连发三条：模型基准、MCP 装库、AI 写作课，外加 Direct Lake 计算列。AI 写 DAX 已经及格，真正难的是验收——读得懂、装得对、出了问题兜得住。</p>
+        <ul class="post-tags"><li>Power BI</li><li>DAX</li><li>SQLBI</li><li>AI</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="AI 写 DAX 已经及格，难的是验收" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>AI 写 DAX 已经及格了。</p>
+<p>过去两周，SQLBI 连发三篇，方向完全一致：10 月 22 日发布 DAX Lib 的 MCP server，10 月 27 日上线 DAX LLM Benchmark v2，11 月 2 日把《DAX with AI: Scenarios》提前四周交付。同一时间段，Guy in a Cube 讲了一期 Direct Lake 计算列。</p>
+<p>四条放一起，主线不是「AI 有多强」。是「AI 写出来的 DAX，怎么验收、怎么兜底、出了问题谁负责」。</p>
+<h2 id="一-基准测的是裸考-不是你的工作流">一、基准测的是裸考，不是你的工作流</h2>
+<p>DAX LLM Benchmark 第二版上线，地址是 daxbench.com。第一版是 Maxim Anatsko 在 2025 年 12 月做的。Marco Russo 看到之后找他合作，今年夏天重做了测试引擎，把覆盖面拉宽到更多真实场景。</p>
+<p>v2 的结论有两句。第一，最新一代前沿模型写 DAX 已经很好；代际之间的差距，比厂商之间的差距更大。第二，开源模型仍然落后，但走的是同一条曲线。</p>
+<p>方法上有几个刻意的设计：每个测试是单次请求，用模型默认的 reasoning 级别；不允许 agent 反复迭代、重试；不给任何 skills。Marco 自己承认，这和真实工作流差得很远。但他说，这是唯一能测出「原生」能力的办法。11 月 4 日他们开了一场直播讲方法论，录播放在 YouTube。</p>
+<p>我的看法：这个基准值得看，但不能当 KPI。</p>
+<p>单次裸考测的是底子。真实项目里，agent 会读报错、会改第二版、会翻你的模型元数据。底子差的模型配上好的工作流，产出可能比底子好的模型单打独斗更靠谱。所以分数高低，决定的是你给它多少自由度，不是你能不能放手。</p>
+<p>真正该看的指标只有一个：它写出来的 DAX，你能不能在三分钟内读懂。读不懂，分数再高也是负债。</p>
+<h2 id="二-三门课-其实是一张能力清单">二、三门课，其实是一张能力清单</h2>
+<p>《DAX with AI》是三条课，不是一条。</p>
+<p><code>AI for Power BI: Intro</code> 免费。它讲的不是 Copilot，是 agent、skills、plugins、MCP server 怎么操作模型和报表。<code>DAX with AI: Essentials</code> 教你怎么读 AI 生成的 DAX，以及怎么把 prompt 写对。<code>DAX with AI: Scenarios</code> 面对的是复杂业务：你的主要工作是控制方向，写代码和改模型，都是为了让结果对上业务要的那个数。</p>
+<p>Scenarios 原定 11 月 30 日交付。实际 11 月 2 日就上线，提前四周。</p>
+<p>课程里有一条设计我很认同：不讲具体工具。原文的说法是，工具变得太快，一门讲工具的课还没发出去就过期了。装哪个客户端、怎么配环境，他们单独维护页面。</p>
+<p>概念课里有几个例子值得记。一个是 grain，用柠檬水配方讲：糖和柠檬汁的量取决于水的量。你要是先把水加总、再乘配方比例，结果一定是错的。模型小，错误才看得见。另外两个概念是 DAX contracts，和日平均的隐藏复杂度。</p>
+<p>我的看法：这三门课的分层，就是一张能力清单。</p>
+<p>第一层是 prompt 写对。第二层是读得懂生成结果。第三层是能反过来改模型，去匹配业务口径。大多数团队以为自己卡在第一层，其实卡在第二层。他们能把需求描述清楚，但看到 AI 给的那段 <code>CALCULATE</code> 嵌套，判断不了对不对。</p>
+<p>第三层最难，也最值钱。到了那一步，决定结果的不是 AI，是你对业务粒度的理解。</p>
+<h2 id="三-mcp-server-的意义-不生成-只搬运">三、MCP server 的意义：不生成，只搬运</h2>
+<p>10 月 22 日，DAX Lib 的 MCP server 0.1.0 发布。DAX Lib 是 2025 年底上线的 DAX 用户自定义函数仓库。</p>
+<p>这个 server 做四件事：搜包、看包的 README 和版本、列出你本机开着的 Power BI Desktop 模型、把包里的函数装进模型。任何支持本地 stdio 的 MCP 客户端都能用，Claude、Codex、VS Code 里的 GitHub Copilot、Cursor 都在列。</p>
+<p>关键在实现方式。它下载的是原包，把函数原文直接写进模型，格式和注释都保留，不是让语言模型照着文档重新打一遍。同名函数会被替换，模型里其他地方不动。装完不会自动保存，要你自己在 Desktop 里存盘。</p>
+<p>限制也说得很清楚：只支持 Windows x64；只装进本机开着的 Desktop 模型；模型兼容级别要到 1702 以上；它不删除、不更新已有函数，升级就装新版本。没有遥测，MIT 开源。</p>
+<p>我的看法：这是四条里最「工程化」的一条。</p>
+<p>AI 生成代码最大的风险不是写错，是看起来对、细节被悄悄改掉。DAX Lib 的做法直接绕开生成环节——代码来自仓库，模型只负责搬运和落位。这是把不确定性关进了最小的格子。</p>
+<p>我给团队定过一条规则：能用包解决的，别让模型手写。现在这条规则有了工具支撑。</p>
+<h2 id="四-另一条线-dax-能待的地方变多了">四、另一条线：DAX 能待的地方变多了</h2>
+<p>Guy in a Cube 这期讲 Direct Lake 计算列。这个功能 2026 年 8 月宣布，现在可用了。</p>
+<p>Patrick 的场景很真实：数据在 Fabric warehouse，他需要一列班次，仓库开发说排队等排期。报表等不了，他就在语义模型里加了一个计算列。</p>
+<p>坑在于不是所有 Direct Lake 都支持。Direct Lake on SQL 不行，得用 Direct Lake on OneLake。判断方法在 TMDL 的 expression 里：如果写的是 <code>Sql.Database</code>，就没有这个列选项；要改成 <code>DatabaseAzureStorage</code> / <code>DataLake</code>，再填 workspace 和 database ID。模型里还多了一个 <code>expression context</code>，Direct Lake 只支持 user context 这一种。</p>
+<p>我的看法：这条不属于 AI 线，但它补了另一半。</p>
+<p>以前源里没有的列，只能等。现在可以先在模型层顶上。代价是模型和源的口径开始分叉。半年后没人说得清这个列从哪来、为什么这么算，就是事故。</p>
+<p>Patrick 自己在视频里说了一句「你可能不该学我这招」。这句话要听进去。它是应急手段，不是默认做法。</p>
+<h2 id="四条放在一起看">四条放在一起看</h2>
+<p>第一，SQLBI 这三条不是零散更新，是一条流水线。基准负责评估，课程负责训练，MCP 负责交付。评估、训练、交付，三件事在两周内补齐，说明他们在铺路，不是在追热点。</p>
+<p>第二，三条各给了一条原则，指向同一个方向。基准说代际差异大于厂商差异，选模型看版本，别看牌子；课程说不讲工具因为变化太快，别把流程绑死在某个客户端上；MCP 说只搬运不生成，能复用就别重写。合起来就一句话：把不确定性关在最小的格子里。</p>
+<p>第三，验收标准没有因为 AI 而降低。基准测的是单次裸考，课程教的是读代码和控方向，MCP 保证的是代码原文。没有一条在说「你可以不看了」。</p>
+<p>第四，Direct Lake 计算列提醒了另一件事：DAX 的执行位置在往模型层挪。能力变多，治理成本也跟着涨。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>值得跟，现在就可以动手，但优先级要排清楚。</p>
+<p><strong>必学</strong>：读 AI 生成的 DAX。这是新的基本功，和当年学 <code>CALCULATE</code> 一样，绕不过去。Essentials 和 Scenarios 值得投入时间。</p>
+<p><strong>可选</strong>：DAX Lib 加 MCP server。团队里已经在用用户自定义函数、又正好是 Windows x64，可以试。注意兼容级别 1702 这条硬门槛，装完记得手动存盘。</p>
+<p><strong>观望</strong>：DAX LLM Benchmark。当参考，别当选型依据，更别当考核指标。它的测试条件离真实工作流太远。</p>
+<p><strong>先别碰</strong>：Direct Lake 计算列。除非你确认自己用的是 Direct Lake on OneLake，并且已经有人管模型和源的口径。不然省下的排期时间，迟早要还回去。</p>
+<p>AI 把写 DAX 的门槛拉低了，把验收的门槛拉高了。这两件事同时发生，才是这两周真正值得记的东西。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一-基准测的是裸考-不是你的工作流">一、基准测的是裸考，不是你的工作流</a></li><li><a href="#二-三门课-其实是一张能力清单">二、三门课，其实是一张能力清单</a></li><li><a href="#三-mcp-server-的意义-不生成-只搬运">三、MCP server 的意义：不生成，只搬运</a></li><li><a href="#四-另一条线-dax-能待的地方变多了">四、另一条线：DAX 能待的地方变多了</a></li><li><a href="#四条放在一起看">四条放在一起看</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav" aria-label="上下篇"><a href="../../blog/onelake-security-eventhouse-ga/"><span class="dir">← 上一篇</span><strong>OneLake 安全 GA：RLS 只定义一次，跨引擎生效</strong></a><a class="next" href="../../blog/fabric-four-updates/"><span class="dir">下一篇 →</span><strong>Fabric 这周四条更新：接入变简单，治理更难</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="../../blog/feed.xml">RSS</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

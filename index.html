@@ -211,6 +211,7 @@
       imagesrcset="assets/shots/pf-overview-800.webp 800w, assets/shots/pf-overview-1600.webp 1600w"
       imagesizes="(max-width: 720px) 72vw, 520px">
 <link rel="stylesheet" href="assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="assets/blog.css?v=20261117-6">
 </head>
 <body>
 
@@ -246,6 +247,7 @@
       </div>
     </div>
     <a href="#about" data-spy="about">关于</a>
+    <a href="blog/">博客</a>
   </nav>
   <a class="nav-cta" href="#contact">联系</a>
   <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开菜单">
@@ -261,6 +263,7 @@
       <a href="#site-platform">开发平台</a>
       <a href="#site-finance">智能问数</a>
       <a href="#about">关于</a>
+      <a href="blog/">博客</a>
       <a href="#contact">联系</a>
     </nav>
   </div>
@@ -725,6 +728,41 @@
       </div>
     </div>
   </section>
+
+  <!-- BLOG:START -->
+<section class="blog-teaser" id="blog">
+  <div class="wrap">
+    <div class="teaser-head">
+      <div>
+        <h2 data-reveal>最近写的</h2>
+        <p data-reveal style="--i:1">公众号同步：项目里踩过的坑，和能直接拿走用的做法。</p>
+      </div>
+      <a class="teaser-all" data-reveal style="--i:2" href="blog/">全部文章 <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="teaser-grid">
+      <a class="teaser-card" href="blog/dax-performance-optimization/">
+        <img src="blog/dax-performance-optimization/cover.webp" alt="DAX 度量值跑得慢？先定位，再改这 6 处" loading="lazy" decoding="async">
+        <span class="teaser-card-body">
+          <span class="teaser-date">2026.11.17</span>
+          <span class="teaser-title">DAX 度量值跑得慢？先定位，再改这 6 处</span>
+        </span>
+      </a><a class="teaser-card" href="blog/sap-bw-powerbi-connection/">
+        <img src="blog/sap-bw-powerbi-connection/cover.webp" alt="SAP BW 接 Power BI：6 个坑和一份清单" loading="lazy" decoding="async">
+        <span class="teaser-card-body">
+          <span class="teaser-date">2026.11.14</span>
+          <span class="teaser-title">SAP BW 接 Power BI：6 个坑和一份清单</span>
+        </span>
+      </a><a class="teaser-card" href="blog/semantic-model-open-both-ends/">
+        <img src="blog/semantic-model-open-both-ends/cover.webp" alt="语义模型两头被打开：这 5 条更新指向同一件事" loading="lazy" decoding="async">
+        <span class="teaser-card-body">
+          <span class="teaser-date">2026.11.12</span>
+          <span class="teaser-title">语义模型两头被打开：这 5 条更新指向同一件事</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+<!-- BLOG:END -->
 
   <!-- ── 常见问题 ─────────────────────────────────────── -->
   <section class="faq" id="faq">
