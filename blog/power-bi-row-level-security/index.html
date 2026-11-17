@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power BI 行级权限（RLS）配置指南 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Power BI 行级权限（RLS）怎么配：静态角色按岗位写 DAX 过滤，动态角色用权限表加 USERPRINCIPALNAME()，讲清 RLS 与 OLS 的边界、测试方法和 6 个最常见失效原因，附可直接复制的表达式。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/power-bi-row-level-security/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/power-bi-row-level-security/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Power BI 行级权限（RLS）配置指南 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Power BI 行级权限（RLS）怎么配：静态角色按岗位写 DAX 过滤，动态角色用权限表加 USERPRINCIPALNAME()，讲清 RLS 与 OLS 的边界、测试方法和 6 个最常见失效原因，附可直接复制的表达式。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/power-bi-row-level-security/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/power-bi-row-level-security/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Power BI 行级权限（RLS）配置指南 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Power BI 行级权限（RLS）怎么配：静态角色按岗位写 DAX 过滤，动态角色用权限表加 USERPRINCIPALNAME()，讲清 RLS 与 OLS 的边界、测试方法和 6 个最常见失效原因，附可直接复制的表达式。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/power-bi-row-level-security/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-7">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Power BI 行级权限（RLS）配置指南",
+  "description": "Power BI 行级权限（RLS）怎么配：静态角色按岗位写 DAX 过滤，动态角色用权限表加 USERPRINCIPALNAME()，讲清 RLS 与 OLS 的边界、测试方法和 6 个最常见失效原因，附可直接复制的表达式。",
+  "datePublished": "2026-11-18",
+  "dateModified": "2026-11-18",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/power-bi-row-level-security/cover.webp",
+  "keywords": "Power BI 行级权限、Power BI、RLS、行级权限、DAX、安全",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/power-bi-row-level-security/"
+  },
+  "wordCount": 2996
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Power BI 行级权限：静态角色与动态角色两套写法</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-18">2026 年 11 月 18 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>7 分钟读完</span>
+        </p>
+        <h1 class="article-title">Power BI 行级权限：静态角色与动态角色两套写法</h1>
+        <p class="article-lead">RLS 配错，泄露的不是报表，是数据。静态角色、动态角色两套写法与 6 个失效原因，一次讲清。</p>
+        <ul class="post-tags"><li>Power BI</li><li>RLS</li><li>行级权限</li><li>DAX</li><li>安全</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Power BI 行级权限：静态角色与动态角色两套写法" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>Power BI 配 RLS，最坏的结果不是用户看不到数据，是他看到了别人的数据。</p>
+<p>搜「Power BI 行级权限」的人，手上多半已经有一张全公司共用的报表，现在要按岗位拆开看。这篇给两套写法——静态角色和动态角色——配可直接复制的 DAX，再列 6 个最常见的失效原因。先说结论：角色少于 5 个用静态，超过 10 个或按人授权用动态。行级的事必须在模型层解决，报表层藏不住。</p>
+<h2 id="一-先分清-rls-管行-ols-管列">一、先分清：RLS 管行，OLS 管列</h2>
+<p>三层权限经常被混在一起，先拆开。</p>
+<table>
+<thead>
+<tr>
+<th>要控制什么</th>
+<th>用什么</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>能看哪些行</td>
+<td>RLS（行级安全性）</td>
+<td>华东经理只看华东订单</td>
+</tr>
+<tr>
+<td>能看哪些列</td>
+<td>OLS（对象级安全性）</td>
+<td>财务以外看不到「成本」列</td>
+</tr>
+<tr>
+<td>能看哪些页面</td>
+<td>页面权限、工作区</td>
+<td>销售只看销售页</td>
+</tr>
+</tbody>
+</table>
+<p>RLS 是语义模型上的过滤器。同一份模型挂十张报表，RLS 都生效；反过来，只在某张报表里藏一个视觉对象，数据照样能从导出、从 Excel、从别的报表拿到。行级的问题只能在模型层解决。</p>
+<p>Fabric 那边在把权限往数据层收：OneLake security 11 月初 GA 支持 Eventhouse 外部表，对象级、列级、行级一次定义，KQL 查询也自动执行。方向是对的，但语义模型的 RLS 还留在模型层，两边目前各配各的。</p>
+<img alt="一、先分清：RLS 管行，OLS 管列" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="二-静态角色-给每个岗位写一条行级权限">二、静态角色：给每个岗位写一条行级权限</h2>
+<p>适用条件很明确：岗位固定、角色少于 5 个、半年改不了一次。满足就先用这个，别一上来就上动态。</p>
+<ol>
+<li>打开 Desktop，建模 → 管理角色 → 新建。</li>
+<li>角色名用「岗位 + 范围」，比如「销售-华东」。别用「角色1」。</li>
+<li>在维度表上写过滤表达式：</li>
+</ol>
+<pre><code class="language-DAX">'区域'[区域] = "华东"
+</code></pre>
+<p>只保留区域等于华东的行，其他行在这个角色下不可见。</p>
+<p>多值：</p>
+<pre><code class="language-DAX">'区域'[区域] IN {"华东", "华南"}
+</code></pre>
+<ol start="4">
+<li>切到「以角色身份查看」，勾上这个角色，看数字对不对。</li>
+<li>发布到服务端，在语义模型的「安全性」里加成员。优先加 AAD 组，别一个个加人。</li>
+</ol>
+<p>三个注意点：过滤表达式只返回 TRUE/FALSE，不要在里面用 CALCULATE；表名有空格要加单引号；过滤写在维度表上比写在事实表上省，维度表行数少，先缩小再顺着关系传递。</p>
+<p>静态角色的天花板是角色数量。我做过的一个 FinOps 看板，27 个业务单元、28 个 RLS 角色。每加一个 BU，就要改模型、重新发布、重新分成员。做到第三个月，角色名单和 HR 名单开始对不上，这个信号出现，就该换动态了。手上公开的看板在<a href="../../portfolio/">案例</a>里，权限都是按这个思路配的。</p>
+<img alt="二、静态角色：给每个岗位写一条行级权限" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="三-动态角色-一张权限表-userprincipalname">三、动态角色：一张权限表 + USERPRINCIPALNAME()</h2>
+<p>动态 RLS 的核心是一张权限表，列两三个就够：</p>
+<table>
+<thead>
+<tr>
+<th>UserEmail</th>
+<th>Region</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zhang@contoso.com</td>
+<td>华东</td>
+</tr>
+<tr>
+<td>li@contoso.com</td>
+<td>华南</td>
+</tr>
+</tbody>
+</table>
+<p>权限表放数据库或 SharePoint 列表，别放本地 Excel——文件一挪，刷新就断。导入模型后可以隐藏，普通用户看不到。</p>
+<p><strong>方法 A：建关系（推荐）</strong></p>
+<p>权限表与区域维度建多对一关系，过滤表达式写在权限表上：</p>
+<pre><code class="language-DAX">'权限表'[UserEmail] = USERPRINCIPALNAME()
+</code></pre>
+<p>把权限表过滤到当前登录用户那几行，过滤顺着关系传到事实表。表小、走关系，性能最好。</p>
+<p><strong>方法 B：无关系，用集合判断</strong></p>
+<p>当权限范围是拼出来的（区域 + 产品线组合），维度表不一定能直接建关系，用集合：</p>
+<pre><code class="language-DAX">'区域'[区域] IN
+CALCULATETABLE(
+    VALUES('权限表'[Region]),
+    '权限表'[UserEmail] = USERPRINCIPALNAME()
+)
+</code></pre>
+<p>先按当前邮箱筛权限表、取出区域清单，再判断每个区域在不在清单里。两种写法结果一样。能建关系就用 A，不能建关系才用 B。B 在权限表很大时慢，因为每次查询都要算一遍集合。</p>
+<p><strong>经理看下属</strong></p>
+<p>组织层级用 PATH。先在员工表加计算列：</p>
+<pre><code class="language-DAX">层级路径 = PATH('员工'[员工ID], '员工'[上级ID])
+</code></pre>
+<p>再在员工表上写 RLS 表达式：</p>
+<pre><code class="language-DAX">PATHCONTAINS(
+    '员工'[层级路径],
+    LOOKUPVALUE('员工'[员工ID], '员工'[邮箱], USERPRINCIPALNAME())
+)
+</code></pre>
+<p>当前登录的人如果在某条层级路径里，这条路径上的所有员工对他可见。</p>
+<p><strong>账号要对上</strong></p>
+<p>USERPRINCIPALNAME() 在 Desktop 里返回你自己的登录邮箱，在服务端返回 UPN。B2B 来宾账号会带 #EXT# 后缀。权限表里要按服务端的实际值存，否则测试通过、上线空表。</p>
+<p><strong>维护流程</strong></p>
+<p>业务提申请 → 权限表加一行 → 下一次刷新生效。不用改模型、不用重新发布。这是动态角色最大的价值：权限变成数据，谁负责谁维护。反过来，如果没人愿意维护这张表，就别上动态——权限表烂掉比角色名单烂掉更快。</p>
+<img alt="三、动态角色：一张权限表 + USERPRINCIPALNAME()" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="四-测试-desktop-通过不等于线上通过">四、测试：Desktop 通过不等于线上通过</h2>
+<p>「以角色身份查看」只验证表达式。成员、服务端、应用受众，三样要分开验。</p>
+<p>排查顺序固定：</p>
+<ol>
+<li>成员在不在角色里</li>
+<li>角色挂没挂到正确的模型</li>
+<li>表达式返回的对不对</li>
+<li>关系通不通</li>
+<li>度量值有没有清过滤器</li>
+</ol>
+<p>按这个顺序走，能省掉大部分来回。</p>
+<h2 id="五-6-个最常见的失效原因">五、6 个最常见的失效原因</h2>
+<ol>
+<li><strong>用户是工作区管理员、成员或贡献者。</strong> 这三种角色默认绕过 RLS。只给查看者，或者通过应用分发。</li>
+<li><strong>关系方向不对。</strong> 过滤写在维度表上，关系断了、方向反了，过滤传不到事实表。</li>
+<li><strong>度量值清了过滤器。</strong> ALL、REMOVEFILTERS、CROSSFILTER 会把安全过滤一起清掉。写完度量值要在角色视图里复核。</li>
+<li><strong>账号对不上。</strong> UPN、别名邮箱、#EXT#，三种写法有一种不一致，用户就看到空表。</li>
+<li><strong>权限表没刷新。</strong> 增量刷新只刷了事实表，权限表还是上个月的。</li>
+<li><strong>发布后没重新分配。</strong> 模型里改了角色，服务端成员不会自动同步；应用受众也要跟着更新。</li>
+</ol>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>Q1：RLS 和 OLS 到底怎么选？</strong></p>
+<p>管行用 RLS，管列用 OLS。两者可以同时开：先按区域切行，再对敏感列设 OLS。注意 OLS 在 Desktop 里没有界面，要用 Tabular Editor 或 XMLA 端点设置。</p>
+<p><strong>Q2：一个人分到多个角色，看到的是并集还是交集？</strong></p>
+<p>并集。只要任一角色允许，这行就可见。所以角色要按「最小范围」拆，别指望用角色做减法。</p>
+<p><strong>Q3：导入模式、DirectQuery、实时连接，RLS 都生效吗？</strong></p>
+<p>都生效。导入模式和 DirectQuery 的 RLS 定义在语义模型里；实时连接到 Analysis Services 的，RLS 在源端模型上定义，Power BI 这边只是转发身份。</p>
+<p><strong>Q4：用户说「什么都看不到」，先查什么？</strong></p>
+<p>先查成员在不在角色里，再查 UPN 是否一致，最后看表达式。九成的「什么都看不到」是账号对不上或成员没加。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>RLS 是 Power BI 里少数「配错就直接变成数据事故」的功能。别的功能配错是难看，它配错是泄露。所以优先级是必学。</p>
+<p>怎么选：</p>
+<ul>
+<li>角色少于 5 个、半年不变：静态，半天能配完。</li>
+<li>角色超过 10 个，或要按人授权：动态，一次投入，后面省事。</li>
+<li>涉及组织层级：动态 + PATH，别手工维护「经理看谁」的名单。</li>
+<li>只是不想让人看某几列：用 OLS，不要用 RLS 硬切行。</li>
+<li>两拨人完全隔离（比如两家客户）：分工作区、分模型。RLS 不是租户隔离。</li>
+</ul>
+<p>还有一个前提：动态 RLS 必须有人维护权限表。没有 Owner，就别上动态——权限表三个月不更新，比角色名单更难查。</p>
+<p>这类改造在我们的<a href="../../#services">服务</a>里做。有具体的权限场景拿不准，把权限矩阵发过来，先帮你判断该用哪种——<a href="../../#contact">联系</a>。</p>
+<p>先画一张「谁该看哪些行」的表，再决定用哪种角色。表画不出来，说明业务规则还没定——这时候配 RLS，只是把混乱固化进模型。</p>
+<img alt="我的判断" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一-先分清-rls-管行-ols-管列">一、先分清：RLS 管行，OLS 管列</a></li><li><a href="#二-静态角色-给每个岗位写一条行级权限">二、静态角色：给每个岗位写一条行级权限</a></li><li><a href="#三-动态角色-一张权限表-userprincipalname">三、动态角色：一张权限表 + USERPRINCIPALNAME()</a></li><li><a href="#四-测试-desktop-通过不等于线上通过">四、测试：Desktop 通过不等于线上通过</a></li><li><a href="#五-6-个最常见的失效原因">五、6 个最常见的失效原因</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/finops-power-bi-dashboard/"><span class="dir">← 上一篇</span><strong>FinOps 云成本分析看板：从原始账单到决策四层</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

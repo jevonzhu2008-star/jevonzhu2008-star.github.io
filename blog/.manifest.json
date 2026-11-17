@@ -7,8 +7,9 @@
     "finops-power-bi-dashboard",
     "get-data-redesign",
     "onelake-security-eventhouse-ga",
+    "power-bi-row-level-security",
     "sap-bw-powerbi-connection",
     "semantic-model-open-both-ends"
   ],
-  "updated": "2026-11-17"
+  "updated": "2026-11-18"
 }
