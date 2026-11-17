@@ -223,20 +223,6 @@ html.nav-open body { overflow: hidden; }
 
 .blog-hero-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: #cfccc2; }
 
-.blog-rss {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--ink);
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px solid var(--accent);
-}
-
-.blog-rss:hover { color: var(--faint); }
-
-.blog-rss svg { width: 13px; height: 13px; }
-
 /* ── 筛选 ─────────────────────────────────────────────────── */
 
 .blog-list { padding-bottom: 24px; }

@@ -21,10 +21,9 @@
 
 ```
 index.html            页面结构（文案、链接都在这里）
-blog/                 博客：索引页、每篇文章、RSS（由公众号工作流同步生成）
+blog/                 博客：索引页与每篇文章（由公众号工作流同步生成）
 blog/index.html       文章列表，按标签筛选
 blog/<slug>/          单篇文章，图片已转 WebP
-blog/feed.xml         RSS 2.0 订阅源
 404.html              GitHub Pages 的 404 页，与首页同一套视觉
 robots.txt            允许抓取，并指向 sitemap
 sitemap.xml           站点地图（首页 + 作品集 + 博客全部文章）
@@ -64,7 +63,7 @@ assets/shots/promo-poster.webp  宣传片封面帧
 
 1. 每篇文章生成 `blog/<slug>/index.html`，Markdown 转 HTML，代码块、表格、图片、目录都排好。
 2. 正文图片和封面转 WebP（宽 ≤1280，质量 82/85），放进 `blog/<slug>/img/`；源图没变就跳过。
-3. 重建 `blog/index.html`、`blog/feed.xml`、`sitemap.xml`，并更新首页 `BLOG:START` / `BLOG:END` 之间的「最近写的」三张卡。
+3. 重建 `blog/index.html` 和 `sitemap.xml`，并更新首页 `BLOG:START` / `BLOG:END` 之间的「最近写的」三张卡。
 4. 文章被删掉时，清掉 `blog/` 下对应的旧目录（清单记在 `blog/.manifest.json`）。
 
 文章地址：`https://ipowerbi.icu/blog/<slug>/`。slug 优先用 frontmatter 的 `slug`，其次 `plan_topic`，老文章在脚本的 `SLUG_MAP` 里写死。不想让某篇上站时，删掉或改名它的 `article.md` 再跑一次即可。
