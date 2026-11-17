@@ -113,7 +113,7 @@
 </ul>
 <p>定位到具体视觉对象后，把它的 DAX 查询复制到 DAX Studio，打开 Server Timings，再点 Clear Cache。看两个数：FE（Formula Engine，公式引擎，单线程）和 SE（Storage Engine，存储引擎，多线程）。SE 时间长，通常是扫描的数据量太大；FE 时间长，通常是公式结构复杂、迭代次数多。</p>
 <p>注意一点：不清缓存，第二次测的是缓存结果，数字会好看到失真。</p>
-<img alt="先定位：Performance Analyzer 看的是两段时间" decoding="async" loading="lazy" src="imgs/01-infographic-section-1.png"/>
+<img alt="先定位：Performance Analyzer 看的是两段时间" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
 <h2 id="技巧-1-能算一次的-别算两次">技巧 1：能算一次的，别算两次</h2>
 <p>同一个表达式在一次求值里被引用多次，用 VAR 收起来。</p>
 <p>改前：</p>
@@ -150,7 +150,7 @@ CALCULATE(
 </code></pre>
 <p>布尔条件交给 <code>CALCULATE</code>，引擎会把它翻译成对 <code>Sales[Amount]</code> 这一列的筛选，不用先造表。</p>
 <p><strong>注意</strong>：条件跨两张表、或者需要 <code>OR</code> 组合时，<code>FILTER</code> 仍然是对的写法。但把它套在最小那张表上，别套事实表。</p>
-<img alt="技巧 2：迭代器只迭代该迭代的行" decoding="async" loading="lazy" src="imgs/02-infographic-section-2.png"/>
+<img alt="技巧 2：迭代器只迭代该迭代的行" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
 <h2 id="技巧-3-计算列-度量值-power-query-选对计算发生的层">技巧 3：计算列、度量值、Power Query，选对计算发生的层</h2>
 <p>计算列在刷新时算一次，按行存进 VertiPaq，占内存；度量值在查询时按视觉对象的粒度算，不占存储。事实表上的计算列，几百万行就是几百万次计算，还会抬高模型体积。</p>
 <p>改前，在 Sales 事实表加计算列：</p>
@@ -179,7 +179,7 @@ CALCULATE(
 <li><strong>事实表直接对事实表建关系</strong>：先想清楚粒度，多数情况该补一张维度。</li>
 </ul>
 <p>之前做的 FinOps 看板有 27 个业务单元、28 个 RLS 角色，这种模型里双向关系尤其要克制：每多一条，RLS 的筛选就要多传播一次。</p>
-<img alt="技巧 4：别在度量值里做模型该做的事" decoding="async" loading="lazy" src="imgs/03-infographic-section-3.png"/>
+<img alt="技巧 4：别在度量值里做模型该做的事" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
 <h2 id="技巧-5-把筛选条件写简单-让引擎少猜">技巧 5：把筛选条件写简单，让引擎少猜</h2>
 <p><code>CALCULATE</code> 的筛选参数越简单，引擎越容易走索引式扫描。</p>
 <p>改前：</p>
@@ -209,7 +209,7 @@ CALCULATE(
 <li>容量有没有触发 guardrail，导致表被踢出内存。</li>
 </ol>
 <p>这些都不是 DAX 能解决的。改公式之前，先确认慢在哪一层。</p>
-<img alt="技巧 6：Direct Lake 慢，先查表是怎么写的" decoding="async" loading="lazy" src="imgs/04-infographic-section-4.png"/>
+<img alt="技巧 6：Direct Lake 慢，先查表是怎么写的" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
 <h2 id="常见问题">常见问题</h2>
 <p><strong>用了 VAR，为什么没变快？</strong></p>
 <p>VAR 只避免同一次求值里的重复计算，不会减少扫描的行数。如果瓶颈是 SE 时间，也就是读数据的量，VAR 帮不上。先看 Server Timings 里 FE 和 SE 谁占大头。</p>
