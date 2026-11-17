@@ -21,14 +21,13 @@
 <meta name="twitter:title" content="博客 · Jevon Zhu · Power BI 笔记">
 <meta name="twitter:description" content="Power BI、DAX、SAP BW、Microsoft Fabric 的实战笔记：先定位问题，再给能直接用的做法。">
 <meta name="twitter:image" content="https://ipowerbi.icu/assets/og-cover.jpg">
-<link rel="alternate" type="application/rss+xml" title="Jevon Zhu · Power BI 笔记" href="https://ipowerbi.icu/blog/feed.xml">
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
 <link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/site.css?v=20261115-2">
-<link rel="stylesheet" href="../assets/blog.css?v=20261117-6">
+<link rel="stylesheet" href="../assets/blog.css?v=20261117-7">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,48 +46,54 @@
       {
         "@type": "ListItem",
         "position": 1,
+        "url": "https://ipowerbi.icu/blog/finops-power-bi-dashboard/",
+        "name": "FinOps 云成本分析看板：从原始账单到决策四层"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
         "url": "https://ipowerbi.icu/blog/dax-performance-optimization/",
         "name": "DAX 度量值跑得慢？先定位，再改这 6 处"
       },
       {
         "@type": "ListItem",
-        "position": 2,
+        "position": 3,
         "url": "https://ipowerbi.icu/blog/sap-bw-powerbi-connection/",
         "name": "SAP BW 接 Power BI：6 个坑和一份清单"
       },
       {
         "@type": "ListItem",
-        "position": 3,
+        "position": 4,
         "url": "https://ipowerbi.icu/blog/semantic-model-open-both-ends/",
         "name": "语义模型两头被打开：这 5 条更新指向同一件事"
       },
       {
         "@type": "ListItem",
-        "position": 4,
+        "position": 5,
         "url": "https://ipowerbi.icu/blog/fabric-four-updates/",
         "name": "Fabric 这周四条更新：接入变简单，治理更难"
       },
       {
         "@type": "ListItem",
-        "position": 5,
+        "position": 6,
         "url": "https://ipowerbi.icu/blog/ai-dax-acceptance/",
         "name": "AI 写 DAX 已经及格，难的是验收"
       },
       {
         "@type": "ListItem",
-        "position": 6,
+        "position": 7,
         "url": "https://ipowerbi.icu/blog/onelake-security-eventhouse-ga/",
         "name": "OneLake 安全 GA：RLS 只定义一次，跨引擎生效"
       },
       {
         "@type": "ListItem",
-        "position": 7,
+        "position": 8,
         "url": "https://ipowerbi.icu/blog/fabric-five-updates/",
         "name": "Fabric 这周五条更新：入口在变，地基没变"
       },
       {
         "@type": "ListItem",
-        "position": 8,
+        "position": 9,
         "url": "https://ipowerbi.icu/blog/get-data-redesign/",
         "name": "Get Data 改版：386 条反馈里，24 人卡在同一处"
       }
@@ -121,16 +126,12 @@
 <main id="main">
   <section class="blog-hero">
     <div class="blog-wrap">
-      <p class="blog-eyebrow">Blog<span>·</span>8 篇</p>
-      <h1 class="blog-title">写点<mark>能用</mark>的。</h1>
+      <p class="blog-eyebrow">Blog<span>·</span>9 篇</p>
+      <h1 class="blog-title">写给<mark>正在做</mark>的人。</h1>
       <p class="blog-lead">Power BI、DAX、SAP BW、Microsoft Fabric。每篇都来自手上的项目：先说清问题，再给能直接抄走的做法。</p>
       <div class="blog-hero-meta">
         <span>公众号同步更新</span><span class="dot" aria-hidden="true"></span>
-        <span>最近更新 2026.11.17</span><span class="dot" aria-hidden="true"></span>
-        <a class="blog-rss" href="feed.xml">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5" cy="19" r="2.2"/><path d="M3 10.6v3.1a7.3 7.3 0 0 1 7.3 7.3h3.1A10.4 10.4 0 0 0 3 10.6Zm0-6.5v3.1C12.8 7.2 20.8 15.2 20.8 25H24C24 12.5 14.5 3 3 4.1Z" transform="scale(.88) translate(1.5 -1.5)"/></svg>
-          订阅 RSS
-        </a>
+        <span>最近更新 2026.11.17</span>
       </div>
     </div>
   </section>
@@ -138,10 +139,21 @@
   <section class="blog-list">
     <div class="blog-wrap">
       <div class="blog-filters" role="group" aria-label="按标签筛选">
-        <button class="filter-btn is-on" type="button" data-tag="*">全部<span class="n">8</span></button><button class="filter-btn" type="button" data-tag="Power BI">Power BI<span class="n">8</span></button><button class="filter-btn" type="button" data-tag="Fabric">Fabric<span class="n">3</span></button><button class="filter-btn" type="button" data-tag="DAX">DAX<span class="n">2</span></button><button class="filter-btn" type="button" data-tag="Microsoft Fabric">Microsoft Fabric<span class="n">2</span></button><button class="filter-btn" type="button" data-tag="OneLake">OneLake<span class="n">2</span></button><button class="filter-btn" type="button" data-tag="AI">AI<span class="n">1</span></button><button class="filter-btn" type="button" data-tag="Copilot">Copilot<span class="n">1</span></button><button class="filter-btn" type="button" data-tag="DAX Studio">DAX Studio<span class="n">1</span></button>
+        <button class="filter-btn is-on" type="button" data-tag="*">全部<span class="n">9</span></button><button class="filter-btn" type="button" data-tag="Power BI">Power BI<span class="n">9</span></button><button class="filter-btn" type="button" data-tag="DAX">DAX<span class="n">3</span></button><button class="filter-btn" type="button" data-tag="Fabric">Fabric<span class="n">3</span></button><button class="filter-btn" type="button" data-tag="Microsoft Fabric">Microsoft Fabric<span class="n">2</span></button><button class="filter-btn" type="button" data-tag="OneLake">OneLake<span class="n">2</span></button><button class="filter-btn" type="button" data-tag="AI">AI<span class="n">1</span></button><button class="filter-btn" type="button" data-tag="Azure">Azure<span class="n">1</span></button><button class="filter-btn" type="button" data-tag="Copilot">Copilot<span class="n">1</span></button>
       </div>
       <div class="post-grid">
-        <article class="post-card post-card--lead" data-tags="Power BI|DAX|性能优化|DAX Studio|VertiPaq">
+        <article class="post-card post-card--lead" data-tags="Power BI|FinOps|云成本|Azure|DAX">
+  <a class="post-card-link" href="../blog/finops-power-bi-dashboard/">
+    <div class="post-card-media"><img src="../blog/finops-power-bi-dashboard/cover.webp" alt="FinOps 云成本分析看板：从原始账单到决策四层" loading="lazy" decoding="async"></div>
+    <div class="post-card-body">
+      <p class="post-card-meta"><time datetime="2026-11-17">2026.11.17</time><span class="sep" aria-hidden="true"></span><span>11 分钟</span></p>
+      <h2 class="post-card-title">FinOps 云成本分析看板：从原始账单到决策四层</h2>
+      <p class="post-card-desc">云成本看板不是账单复读机。账单、分摊、归属、决策四层，每层要什么数据、哪里最容易错，一次讲清。</p>
+      <ul class="post-tags"><li>Power BI</li><li>FinOps</li><li>云成本</li><li>Azure</li></ul>
+      <span class="post-card-arrow">阅读全文 <span aria-hidden="true">→</span></span>
+    </div>
+  </a>
+</article><article class="post-card" data-tags="Power BI|DAX|性能优化|DAX Studio|VertiPaq">
   <a class="post-card-link" href="../blog/dax-performance-optimization/">
     <div class="post-card-media"><img src="../blog/dax-performance-optimization/cover.webp" alt="DAX 度量值跑得慢？先定位，再改这 6 处" loading="lazy" decoding="async"></div>
     <div class="post-card-body">
@@ -242,7 +254,6 @@
       <nav aria-label="页脚">
         <a href="../">首页</a>
         <a href="../blog/">博客</a>
-        <a href="../blog/feed.xml">RSS</a>
         <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
         <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
         <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>

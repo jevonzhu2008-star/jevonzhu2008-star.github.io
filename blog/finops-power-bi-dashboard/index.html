@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinOps Power BI 看板：四层模型落地 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="FinOps Power BI 看板分四层落地：账单幂等入仓、共享成本分摊、资源归属映射、决策指标。讲清每层要什么数据、最容易错在哪，附分摊与单位成本的 DAX 写法和指标口径。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/finops-power-bi-dashboard/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/finops-power-bi-dashboard/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FinOps Power BI 看板：四层模型落地 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="FinOps Power BI 看板分四层落地：账单幂等入仓、共享成本分摊、资源归属映射、决策指标。讲清每层要什么数据、最容易错在哪，附分摊与单位成本的 DAX 写法和指标口径。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/finops-power-bi-dashboard/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/finops-power-bi-dashboard/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FinOps Power BI 看板：四层模型落地 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="FinOps Power BI 看板分四层落地：账单幂等入仓、共享成本分摊、资源归属映射、决策指标。讲清每层要什么数据、最容易错在哪，附分摊与单位成本的 DAX 写法和指标口径。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/finops-power-bi-dashboard/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-7">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FinOps Power BI 看板：四层模型落地",
+  "description": "FinOps Power BI 看板分四层落地：账单幂等入仓、共享成本分摊、资源归属映射、决策指标。讲清每层要什么数据、最容易错在哪，附分摊与单位成本的 DAX 写法和指标口径。",
+  "datePublished": "2026-11-17",
+  "dateModified": "2026-11-17",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/finops-power-bi-dashboard/cover.webp",
+  "keywords": "FinOps Power BI 看板、Power BI、FinOps、云成本、Azure、DAX",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/finops-power-bi-dashboard/"
+  },
+  "wordCount": 4323
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>FinOps 云成本分析看板：从原始账单到决策四层</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-17">2026 年 11 月 17 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>11 分钟读完</span>
+        </p>
+        <h1 class="article-title">FinOps 云成本分析看板：从原始账单到决策四层</h1>
+        <p class="article-lead">云成本看板不是账单复读机。账单、分摊、归属、决策四层，每层要什么数据、哪里最容易错，一次讲清。</p>
+        <ul class="post-tags"><li>Power BI</li><li>FinOps</li><li>云成本</li><li>Azure</li><li>DAX</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="FinOps 云成本分析看板：从原始账单到决策四层" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>FinOps Power BI 看板难的不是画图，是账单进到 Power BI 之前的那三步。直接拿 Azure 成本分析的截图拼一页，一周能做完，然后没人打开。它回答不了三个问题：这个月为什么涨、这笔钱该谁负责、下个月会是多少。</p>
+<p>这篇讲一套四层模型：账单、分摊、归属、决策。每层说清楚要什么数据、输出什么、最容易错在哪。之前做的 FinOps 看板，27 个业务单元、28 个 RLS 角色，结构就是在这四层上定下来的。想先看成品长什么样，<a href="../../portfolio/">案例</a> 页有；只想把账单接进来自己搭，往下看。</p>
+<h2 id="一-账单层-先把数据搬对">一、账单层：先把数据搬对</h2>
+<p>看板的上限由账单层决定。这一层错了，后面三层全是错的。</p>
+<h3 id="要什么数据">要什么数据</h3>
+<p>最小粒度是「一天 × 一个资源 × 一个计费项」。字段至少这些：</p>
+<ul>
+<li>UsageDate：用量日期，不是导出日期</li>
+<li>SubscriptionId / ResourceGroup / ResourceId</li>
+<li>ServiceName / MeterName / MeterCategory</li>
+<li>Cost / Quantity / UnitPrice</li>
+<li>ChargeType：Usage、Purchase、Refund、Credit、Tax</li>
+<li>CostType：Actual 还是 Amortized</li>
+<li>Currency</li>
+<li>Tags</li>
+</ul>
+<p>有两个字段最容易被忽略。</p>
+<p><strong>ChargeType</strong>。很多人只取 Usage，结果退款、信用额度、税全丢了。明细加总永远对不上财务，原因就在这里。</p>
+<p><strong>CostType</strong>。Actual cost（实际成本）按发生记账，买预留实例那个月会突然冒出一大笔；Amortized cost（摊销成本）把预付费用摊到受益期，月度对比要用它。两个都导，别混着算。</p>
+<h3 id="怎么取">怎么取</h3>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适合</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>门户导出 CSV</td>
+<td>一次性核对</td>
+<td>手工，不可重复</td>
+</tr>
+<tr>
+<td>成本分析截图</td>
+<td>汇报</td>
+<td>不能下钻，不能对账</td>
+</tr>
+<tr>
+<td>Cost Management Exports</td>
+<td>正式方案</td>
+<td>要配存储账户和调度</td>
+</tr>
+<tr>
+<td>Cost Management API</td>
+<td>增量同步</td>
+<td>有分页和限流</td>
+</tr>
+</tbody>
+</table>
+<p>正式做法是 Exports：按天导出到存储账户，CSV 或 Parquet 都行，Power BI 从存储读。Azure 的成本导出现在也支持 FOCUS 格式（FinOps Open Cost and Usage Specification，云成本数据的开放字段规范）。如果以后要接 AWS、GCP，一开始就用 FOCUS，能省一次重做。</p>
+<h3 id="最容易错的两件事">最容易错的两件事</h3>
+<p><strong>重复导入</strong>。Export 每天会覆盖最近几天的文件——账单数据有延迟，昨天的数字今天还会变。如果无脑追加，同一笔成本会进库两三次。</p>
+<p>解决办法是按日期区间幂等写入：每次导入前，先删掉这批文件覆盖的 UsageDate 区间，再整段插入。或者用 <code>UsageDate + ResourceId + MeterId + ChargeType</code> 做业务主键，走 upsert。</p>
+<p><strong>粒度和时区</strong>。账单按 UTC 记，业务按本地时区看；账单周期也未必是自然月。这两件事不在账单层对齐，到了决策层每个数字都会被质疑一次。</p>
+<h2 id="二-分摊层-共享成本怎么拆">二、分摊层：共享成本怎么拆</h2>
+<p>共享成本是 FinOps 看板真正的工作量。能直接打上业务标签的成本越少，这一层越重。</p>
+<p>典型的共享资源有四类：</p>
+<ul>
+<li>网络：hub VNet、防火墙、ExpressRoute、VPN 网关</li>
+<li>容器：AKS 的控制面、节点池的空闲容量</li>
+<li>监控：Log Analytics、Application Insights</li>
+<li>平台：支持计划、Defender、堡垒机、共享存储和备份</li>
+</ul>
+<p>这些资源没有单一业务归属，但钱要有人认。</p>
+<h3 id="三种分摊基准">三种分摊基准</h3>
+<table>
+<thead>
+<tr>
+<th>基准</th>
+<th>怎么算</th>
+<th>适合</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>按人头</td>
+<td>BU 人数占比</td>
+<td>办公类、监控类</td>
+<td>用量差异被抹平</td>
+</tr>
+<tr>
+<td>按消费比例</td>
+<td>各 BU 直采成本占比</td>
+<td>网络、平台类</td>
+<td>大 BU 永远背最多</td>
+</tr>
+<tr>
+<td>按实际用量</td>
+<td>CPU 时长、GB、请求数</td>
+<td>AKS、存储、带宽</td>
+<td>要额外采集用量数据</td>
+</tr>
+</tbody>
+</table>
+<p>没有「正确」的基准，只有能被解释的基准。选完写进规则表，让业务方看得见公式。</p>
+<h3 id="规则存表-不写进-dax">规则存表，不写进 DAX</h3>
+<p>分摊比例一变，如果写在 DAX 里，就要改代码、重新发布。正确做法是一张规则表：</p>
+<table>
+<thead>
+<tr>
+<th>成本池</th>
+<th>业务单元</th>
+<th>基准</th>
+<th>比例</th>
+<th>生效起</th>
+<th>生效止</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网络</td>
+<td>BU-A</td>
+<td>消费比例</td>
+<td>0.42</td>
+<td>2026-01-01</td>
+<td></td>
+</tr>
+<tr>
+<td>网络</td>
+<td>BU-B</td>
+<td>消费比例</td>
+<td>0.33</td>
+<td>2026-01-01</td>
+<td></td>
+</tr>
+<tr>
+<td>监控</td>
+<td>BU-A</td>
+<td>人头</td>
+<td>0.28</td>
+<td>2026-01-01</td>
+<td>2026-06-30</td>
+</tr>
+</tbody>
+</table>
+<p><strong>生效期是必须的。</strong> 没有生效期，改一次比例，去年的报表跟着变。历史数据被篡改，财务第一个不答应。</p>
+<p>DAX 里只做一件事：按规则表算分摊金额。</p>
+<pre><code class="language-dax">共享成本分摊 =
+SUMX(
+    '分摊规则',
+    VAR 比例 = '分摊规则'[比例]
+    VAR 池金额 =
+        CALCULATE(
+            [原始成本],
+            '成本池'[成本池] = '分摊规则'[成本池],
+            ALL('业务单元')
+        )
+    RETURN 比例 * 池金额
+)
+</code></pre>
+<p>先按成本池汇总共享成本，再乘规则表里的比例。规则表加一行，看板就多一个分摊对象，不用动公式。</p>
+<h3 id="这一层最容易错的地方">这一层最容易错的地方</h3>
+<p><strong>分摊后总额对不上账单。</strong> 分摊是把钱挪位置，不是造钱。所有 BU 的分摊金额加起来，必须等于成本池总额，误差控制在 0.5% 以内。每次刷新跑一次校验，对不上就在看板上亮红灯，别等财务来问。</p>
+<p><strong>未分摊余额被藏起来。</strong> 规则没覆盖到的部分，要么进「未分摊」桶显式展示，要么按兜底规则处理。塞进「其他」是最坏的选择——下个月没人记得里面是什么。</p>
+<h2 id="三-归属层-把资源映射到业务">三、归属层：把资源映射到业务</h2>
+<p>账单上的 <code>ResourceId</code> 是一串长字符串，业务方只认「BU、产品、环境、负责人」。这一层做映射。</p>
+<h3 id="标签优先-映射兜底">标签优先，映射兜底</h3>
+<p>标签是最直接的归属手段，但标签有两个现实问题：覆盖率到不了 100%，拼写还不统一。<code>CostCenter</code>、<code>costcenter</code>、<code>cc</code> 在三份账单里能同时出现。</p>
+<p>做法是两层：</p>
+<ol>
+<li><strong>标签优先</strong>：按约定好的标签键取值，比如 <code>bu</code>、<code>product</code>、<code>env</code>、<code>owner</code>。</li>
+<li><strong>映射兜底</strong>：标签缺失时，按订阅、资源组、资源名前缀查映射表。</li>
+</ol>
+<p>映射表至少包含这些列：</p>
+<table>
+<thead>
+<tr>
+<th>匹配方式</th>
+<th>匹配值</th>
+<th>业务单元</th>
+<th>产品</th>
+<th>环境</th>
+<th>负责人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>资源组</td>
+<td>rg-dwh-prod</td>
+<td>BU-A</td>
+<td>数据仓库</td>
+<td>生产</td>
+<td>张工</td>
+</tr>
+<tr>
+<td>订阅</td>
+<td>sub-xxxx</td>
+<td>BU-B</td>
+<td>电商</td>
+<td>生产</td>
+<td>李工</td>
+</tr>
+<tr>
+<td>资源名前缀</td>
+<td>aks-prod-</td>
+<td>BU-A</td>
+<td>平台</td>
+<td>生产</td>
+<td>王工</td>
+</tr>
+</tbody>
+</table>
+<p>按优先级匹配，命中最具体的那一条。资源组优先于订阅，资源名优先于资源组。</p>
+<h3 id="用-resourceid-不用资源名">用 ResourceId，不用资源名</h3>
+<p>资源改名、换资源组、跨订阅迁移，账单会断成两条记录。用 <code>ResourceId</code> 做主键，历史成本才连得起来。资源名只用来展示。</p>
+<h3 id="未归属成本要显式">未归属成本要显式</h3>
+<p>总会有一部分资源谁都认不了：已删除的资源、临时开的实验环境、标签写错的资源。</p>
+<p>给它一个「未归属」归属，单独一个颜色，单独一张卡片。未归属占比是看板最重要的健康指标之一——占比超过 10%，说明标签治理没做，先别急着做优化建议。</p>
+<h3 id="权限">权限</h3>
+<p>按 BU 分权限，用 RLS（Row-Level Security，行级安全）。27 个业务单元、28 个 RLS 角色的模型，角色表单独一张，用 <code>USERPRINCIPALNAME()</code> 关联，别给每个 BU 手写一个角色。BU 一调整，改表不改角色。</p>
+<h2 id="四-决策层-finops-power-bi-看板要回答四个问题">四、决策层：FinOps Power BI 看板要回答四个问题</h2>
+<p>前三层是数据工程，这一层才是看板。一张 FinOps 看板不需要展示所有字段，它只需要回答四个问题：</p>
+<ol>
+<li><strong>这个月超没超预算？</strong> 摊销成本对预算，按 BU、按成本池拆。</li>
+<li><strong>谁在涨？</strong> 环比、同比、Top N 变化，按服务、按资源。</li>
+<li><strong>这笔钱该不该花？</strong> RI/SP 覆盖率、闲置资源、低利用率资源。</li>
+<li><strong>下个月会是多少？</strong> 近三个月移动平均，或者当前日消费 × 剩余天数。</li>
+</ol>
+<p>RI/SP 是 Reserved Instance / Savings Plan，预留实例和节省计划，用预付换折扣的两种购买方式。</p>
+<h3 id="指标设计">指标设计</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>口径</th>
+<th>用来看什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>摊销成本</td>
+<td>Amortized，按受益期摊</td>
+<td>月度对比、预算</td>
+</tr>
+<tr>
+<td>预算执行率</td>
+<td>摊销成本 / 预算</td>
+<td>超支预警</td>
+</tr>
+<tr>
+<td>单位成本</td>
+<td>成本 / 业务量</td>
+<td>涨得合不合理</td>
+</tr>
+<tr>
+<td>RI/SP 覆盖率</td>
+<td>被预留覆盖的用量 / 总用量</td>
+<td>还有多少能省</td>
+</tr>
+<tr>
+<td>RI/SP 利用率</td>
+<td>实际使用 / 已购买</td>
+<td>买多了没有</td>
+</tr>
+<tr>
+<td>未归属占比</td>
+<td>未归属成本 / 总成本</td>
+<td>归因健康度</td>
+</tr>
+<tr>
+<td>闲置资源金额</td>
+<td>低 CPU、无流量资源成本</td>
+<td>直接可省的钱</td>
+</tr>
+</tbody>
+</table>
+<p><strong>单位成本是分水岭。</strong> 成本涨 20%、业务量涨 30%，是正常增长；成本涨 20%、业务量没动，才是问题。没有分母，所有讨论都会变成「这个月怎么这么贵」。</p>
+<pre><code class="language-dax">单位成本 =
+DIVIDE(
+    [摊销成本],
+    SUM('业务量'[值])
+)
+</code></pre>
+<p>分母从业务系统来：订单数、API 调用量、活跃用户、存储 GB。一个 BU 一个分母，别强行统一。</p>
+<p><strong>预算表要自己维护。</strong> 账单里没有预算，预算来自财务或 BU 负责人。一张 <code>预算</code> 表，按「年月 × BU × 成本池」存金额，年初导入，月度调整留版本。</p>
+<pre><code class="language-dax">预算执行率 =
+DIVIDE(
+    [摊销成本],
+    SUM('预算'[金额])
+)
+</code></pre>
+<h3 id="页面结构">页面结构</h3>
+<p>四页够了：</p>
+<ul>
+<li><strong>总览</strong>：本月摊销成本、预算执行率、环比、未归属占比、Top 5 变化</li>
+<li><strong>业务单元</strong>：按 BU 拆，下钻到产品、环境</li>
+<li><strong>资源明细</strong>：按成本排序，标出闲置、无标签、异常增长</li>
+<li><strong>优化</strong>：RI/SP 覆盖率与利用率、闲置清单、可节省金额</li>
+</ul>
+<p>别做成一页塞 20 个视觉对象的「驾驶舱」。没人会用。<a href="../../blog/">博客</a> 里有更细的指标口径拆解。</p>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>直接用 Azure 成本分析不够吗？</strong></p>
+<p>不够，但不是因为它不准。它只能看 Azure 一个云、一个订阅范围，回答不了跨云、跨 BU、按业务归属的问题，也放不进预算和业务量。如果只有一个订阅、只想知道这个月花了多少，它够用，不用做看板。</p>
+<p><strong>标签没打全，还能做吗？</strong></p>
+<p>能，但顺序要反过来：先做映射表兜底，同时推标签治理。映射表能覆盖大部分成本，剩下的进未归属桶。等标签覆盖率上来，再逐步把映射规则换成标签。</p>
+<p><strong>共享成本到底按什么分摊？</strong></p>
+<p>按能被业务方接受的那个基准分。网络、平台类按消费比例，监控、办公类按人头，AKS、存储按实际用量。关键是规则公开、有生效期、总额能对上。分摊从来不是数学问题，是共识问题。</p>
+<p><strong>看板数字和财务账单对不上，怎么办？</strong></p>
+<p>先对齐三件事：CostType 是 Actual 还是 Amortized、周期是不是同一个账单周期、是否含税和信用额度。这三件事对齐后，差异通常在 1% 以内，剩下的是数据延迟。对不上就别发版，账对不上的看板没人信。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>按投入产出排优先级：</p>
+<p><strong>必做</strong>：账单层幂等入仓、归属映射表、未归属显式展示。这三件事决定看板可不可信。缺一个，后面做得再漂亮也是摆设。</p>
+<p><strong>必做</strong>：预算表和预算执行率。没有预算，成本看板就只是账单复读机。</p>
+<p><strong>值得做</strong>：单位成本。它把「花得多」翻译成「花得值不值」，是和业务方对话时最有效的一页。</p>
+<p><strong>可选</strong>：RI/SP 覆盖率和利用率。云支出到一定规模才有意义，小规模先看闲置资源。</p>
+<p><strong>观望</strong>：AI 异常检测、自动优化建议。方向对，但现在给出的建议多数是「这台虚拟机 CPU 低」，人工看一眼就知道，不值得为它增加一层复杂度。</p>
+<p>什么情况下别做这套东西：只有一个订阅、月账单在几万以内、没有专人负责优化。这时候做预算告警就够了。四层模型是给「成本要按业务分摊、要有人为它负责」的组织准备的。<a href="../../#services">服务</a> 页写了这类项目的交付范围。</p>
+<p>你那边的云账单，能直接归属到业务单元的比例是多少？低于六成，先把映射表做起来，别急着做优化页。想先对一遍结构，<a href="../../#contact">联系</a> 页能找到我。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一-账单层-先把数据搬对">一、账单层：先把数据搬对</a></li><li><a href="#二-分摊层-共享成本怎么拆">二、分摊层：共享成本怎么拆</a></li><li><a href="#三-归属层-把资源映射到业务">三、归属层：把资源映射到业务</a></li><li><a href="#四-决策层-finops-power-bi-看板要回答四个问题">四、决策层：FinOps Power BI 看板要回答四个问题</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/dax-performance-optimization/"><span class="dir">← 上一篇</span><strong>DAX 度量值跑得慢？先定位，再改这 6 处</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

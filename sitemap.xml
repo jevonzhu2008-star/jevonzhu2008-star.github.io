@@ -34,6 +34,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ipowerbi.icu/blog/finops-power-bi-dashboard/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ipowerbi.icu/blog/dax-performance-optimization/</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
