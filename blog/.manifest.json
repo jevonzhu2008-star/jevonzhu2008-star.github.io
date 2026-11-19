@@ -2,6 +2,7 @@
   "slugs": [
     "ai-dax-acceptance",
     "dax-performance-optimization",
+    "dax-yoy-ytd-formulas",
     "fabric-five-updates",
     "fabric-four-updates",
     "finops-power-bi-dashboard",
@@ -11,5 +12,5 @@
     "sap-bw-powerbi-connection",
     "semantic-model-open-both-ends"
   ],
-  "updated": "2026-11-18"
+  "updated": "2026-11-19"
 }

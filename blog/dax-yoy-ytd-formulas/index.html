@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAX 同比环比 YTD 公式模板 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="DAX 同比环比怎么写才不出错？这篇给出 YTD、MTD、QTD、同比、环比、移动平均六套完整度量值，讲清日期表必须满足的五个条件、总计行失真的原因，以及 SAMEPERIODLASTYEAR 和 DATEADD 的区别，公式可直接复制。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DAX 同比环比 YTD 公式模板 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="DAX 同比环比怎么写才不出错？这篇给出 YTD、MTD、QTD、同比、环比、移动平均六套完整度量值，讲清日期表必须满足的五个条件、总计行失真的原因，以及 SAMEPERIODLASTYEAR 和 DATEADD 的区别，公式可直接复制。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DAX 同比环比 YTD 公式模板 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="DAX 同比环比怎么写才不出错？这篇给出 YTD、MTD、QTD、同比、环比、移动平均六套完整度量值，讲清日期表必须满足的五个条件、总计行失真的原因，以及 SAMEPERIODLASTYEAR 和 DATEADD 的区别，公式可直接复制。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-7">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DAX 同比环比 YTD 公式模板",
+  "description": "DAX 同比环比怎么写才不出错？这篇给出 YTD、MTD、QTD、同比、环比、移动平均六套完整度量值，讲清日期表必须满足的五个条件、总计行失真的原因，以及 SAMEPERIODLASTYEAR 和 DATEADD 的区别，公式可直接复制。",
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/cover.webp",
+  "keywords": "DAX 同比环比、Power BI、DAX、时间智能、同比、环比",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/dax-yoy-ytd-formulas/"
+  },
+  "wordCount": 3607
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-19">2026 年 11 月 19 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>9 分钟读完</span>
+        </p>
+        <h1 class="article-title">同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</h1>
+        <p class="article-lead">同比环比算错，九成不是公式问题，是日期表。六套度量值模板，复制就能用。</p>
+        <ul class="post-tags"><li>Power BI</li><li>DAX</li><li>时间智能</li><li>同比</li><li>环比</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>DAX 里的同比、环比、YTD，公式本身只有几行。数字对不上，九成不是公式写错了，是日期表没建对。</p>
+<p>搜「DAX 同比环比」的人，多半已经写过一版：YTD 从 1 月 1 日算起却少几天，同比在总计行变成了和整年比，环比一放到年度汇总就失真。这篇不推导原理，直接给六套能复制的度量值，再把日期表必须满足的条件逐条列清。先给判断：时间智能函数只认合格的日期表，其余写法都是在赌。</p>
+<h2 id="一-先确认日期表-再写任何一个公式">一、先确认日期表，再写任何一个公式</h2>
+<p>时间智能函数不是魔法。它做的事只有一件：根据当前筛选的日期范围，算出一段新的日期范围，再套进 <code>CALCULATE</code>。</p>
+<p>所以日期表不合格，后面全是白写。判断一张表能不能用，看五条。</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>具体要求</th>
+<th>不满足会怎样</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>连续</td>
+<td>每天一行，周末、节假日不能缺</td>
+<td>DATEADD、DATESYTD 直接报「日期列不连续」</td>
+</tr>
+<tr>
+<td>完整</td>
+<td>覆盖事实表最早到最晚日期，两头各留一个完整年份</td>
+<td>YTD 少算，同比找不到去年同一天，返回空白</td>
+</tr>
+<tr>
+<td>唯一</td>
+<td>日期列无重复、无空值</td>
+<td>关系退化成多对多，筛选传不顺</td>
+</tr>
+<tr>
+<td>已标记</td>
+<td>「标记为日期表」，指定日期列</td>
+<td>部分函数能跑，Auto-exist 和财年处理会出问题</td>
+</tr>
+<tr>
+<td>关系正确</td>
+<td>日期表一对多指到事实表，单向</td>
+<td>筛选传不到事实表，同比永远是空</td>
+</tr>
+</tbody>
+</table>
+<p>建表最省事的是在 Power Query 里生成，列控制在八个以内：日期、年、季度、月、年 月、周、是否工作日。用 DAX 快速起一张也行：</p>
+<pre><code class="language-DAX">日期 =
+ADDCOLUMNS(
+    CALENDAR(DATE(2022, 1, 1), DATE(2026, 12, 31)),
+    "年", YEAR([Date]),
+    "季度", "Q" &amp; FORMAT([Date], "Q"),
+    "年 月", FORMAT([Date], "YYYY-MM")
+)
+</code></pre>
+<p><code>CALENDAR</code> 生成连续的日期序列，<code>ADDCOLUMNS</code> 补上分析要用的列。</p>
+<p>建完做三件事：在表工具里标记为日期表，日期列选 <code>Date</code>；和每张事实表建一对多、单向关系；到「文件 → 选项 → 当前文件 → 数据加载」里关掉「自动日期时间」。</p>
+<p>自动日期时间会在后台给每个日期列生成一张隐藏表。文件变大，模型里还多出一堆同名层级。它能让公式「碰巧跑通」，等你换表、换写法，错误才冒出来。关掉它，只用自己建的那张。</p>
+<p>给客户做模型时，这一步永远排在所有指标前面。做了 10 年报表，返工最多的不是公式，是日期表。这块的完整流程写在<a href="../../#services">服务</a>里，需要落地可以直接<a href="../../#contact">联系</a>。</p>
+<img alt="一、先确认日期表，再写任何一个公式" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="二-ytd-mtd-qtd-三行就够">二、YTD / MTD / QTD：三行就够</h2>
+<p>基础度量一个就够：</p>
+<pre><code class="language-DAX">销售额 = SUM('销售'[金额])
+</code></pre>
+<p>三个累计各一行，第二个参数必须是日期表里被标记的那一列：</p>
+<pre><code class="language-DAX">销售额 YTD = TOTALYTD([销售额], '日期'[Date])
+销售额 MTD = TOTALMTD([销售额], '日期'[Date])
+销售额 QTD = TOTALQTD([销售额], '日期'[Date])
+</code></pre>
+<p><code>TOTALYTD</code> 是语法糖，等价写法是：</p>
+<pre><code class="language-DAX">销售额 YTD = CALCULATE([销售额], DATESYTD('日期'[Date]))
+</code></pre>
+<p>财年不在 12 月 31 日结束，不改公式，加一个财年结束日：</p>
+<pre><code class="language-DAX">销售额 财年 YTD =
+CALCULATE([销售额], DATESYTD('日期'[Date], "6/30"))
+</code></pre>
+<p>6 月 30 日结束的财年，7 月 1 日就是新财年的第一天。所有 YTD 自动按这个口径切。</p>
+<p>还有一个容易忽略的点：<code>TOTALYTD</code> 算的是「本年 1 月 1 日到当前日期」。如果日期表只做到 2026 年 3 月，而事实表有 2027 年的数据，YTD 永远错。日期表两头各留一个完整年份，不是讲究，是底线。</p>
+<img alt="二、YTD / MTD / QTD：三行就够" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="三-dax-同比环比-公式很短-前提很长">三、DAX 同比环比：公式很短，前提很长</h2>
+<p>同比是和去年同一段比，环比是和紧挨着的上一段比。两个公式都只做一件事：先算出上一期的值。</p>
+<p>同比：</p>
+<pre><code class="language-DAX">销售额 去年同期 =
+CALCULATE([销售额], SAMEPERIODLASTYEAR('日期'[Date]))
+
+销售额 同比 % =
+VAR 本期 = [销售额]
+VAR 同期 = [销售额 去年同期]
+RETURN DIVIDE(本期 - 同期, 同期)
+</code></pre>
+<p>环比：</p>
+<pre><code class="language-DAX">销售额 上期 =
+CALCULATE([销售额], DATEADD('日期'[Date], -1, MONTH))
+
+销售额 环比 % =
+VAR 本期 = [销售额]
+VAR 上期 = [销售额 上期]
+RETURN DIVIDE(本期 - 上期, 上期)
+</code></pre>
+<p><code>DATEADD</code> 的第三个参数决定「上一期」的颗粒度：<code>MONTH</code> 是环比，<code>QUARTER</code> 是季环比，<code>YEAR</code> 是同比。<code>SAMEPERIODLASTYEAR</code> 本身就等于 <code>DATEADD(-1, YEAR)</code>，两者结果完全一致。要跨财年、按季度挪、或者往前推 24 个月，直接用 <code>DATEADD</code>。</p>
+<p>这里有个几乎人人都踩的坑：<strong>总计行的环比没有意义。</strong> 矩阵里每个月的行有自己的日期上下文，<code>DATEADD</code> 往回挪一个月，结果是对的。总计行的上下文是整段日期，往回挪一个月，拿到的是「去年同一段」——你看到的其实是同比。</p>
+<p>所以环比只在月的行上看，总计行留空，或者换成同比。</p>
+<p>同比在总计行是成立的：整年对整年，季度对季度。年度汇总放同比、月度明细放环比，这是汇报里最稳的分工。微软自己在 11 月 17 日的 Fabric 博客里报客户数，用的也是这个口径——44,000 家付费客户，同比增长超过 50%。</p>
+<p>YTD 的同比要单独写，不能拿两个 YTD 相减了事：</p>
+<pre><code class="language-DAX">销售额 YTD 同比 % =
+VAR 本期 = [销售额 YTD]
+VAR 同期 = CALCULATE([销售额 YTD], SAMEPERIODLASTYEAR('日期'[Date]))
+RETURN DIVIDE(本期 - 同期, 同期)
+</code></pre>
+<p>内层再算一次 <code>TOTALYTD</code>，才会把去年那段也截到同一天，而不是拿去年整年比今年前几个月。</p>
+<img alt="三、DAX 同比环比：公式很短，前提很长" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="四-移动平均-按月平均-不按天平均">四、移动平均：按月平均，不按天平均</h2>
+<p>移动平均用 <code>DATESINPERIOD</code>。它从上下文里最后一个日期往回数 N 个周期，返回一段连续日期。</p>
+<p>按月平均的正确写法：</p>
+<pre><code class="language-DAX">销售额 3 月移动平均 =
+CALCULATE(
+    AVERAGEX(VALUES('日期'[年 月]), [销售额]),
+    DATESINPERIOD('日期'[Date], MAX('日期'[Date]), -3, MONTH)
+)
+</code></pre>
+<p>外层把上下文收窄到最近三个月，内层按「年 月」逐月取值再平均。每个月的权重一样，不管这个月有 28 天还是 31 天。</p>
+<p>常见错法是把 <code>DATESINPERIOD</code> 直接丢进 <code>AVERAGEX</code>：</p>
+<pre><code class="language-DAX">销售额 3 月移动平均（错） =
+AVERAGEX(
+    DATESINPERIOD('日期'[Date], MAX('日期'[Date]), -3, MONTH),
+    CALCULATE([销售额])
+)
+</code></pre>
+<p>这样是按<strong>天</strong>平均。有销售的日子只有几天，其余全是 0，平均值被大幅拉低。月底月初看这张图，趋势会完全反过来。</p>
+<p>业务按周汇总，就把粒度换成周；按日运营，按天平均才有意义。先定口径，再选公式。</p>
+<img alt="四、移动平均：按月平均，不按天平均" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+<h2 id="五-六个最常见的时间智能错误">五、六个最常见的时间智能错误</h2>
+<ol>
+<li><strong>日期表没标记。</strong> 函数当时能跑，Auto-exist 和财年切换时结果不可预期，换模型才发现。</li>
+<li><strong>日期列不连续。</strong> 缺周末、缺节假日，<code>DATEADD</code> 直接报错。</li>
+<li><strong>关系方向反了，或者用了多对多。</strong> 筛选传不到事实表，同比一直是空。</li>
+<li><strong>日期表年份不完整。</strong> YTD 少算，同比找不到去年同一天，返回空白而不是报错，最容易被忽略。</li>
+<li><strong>自动日期时间没关。</strong> 模型里多出一批隐藏表，写公式时容易引用错。</li>
+<li><strong>用 <code>/</code> 代替 <code>DIVIDE</code>。</strong> 分母为 0 直接报错，整页视觉对象一起崩；<code>DIVIDE</code> 返回空白，报表不崩。</li>
+</ol>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>同比一定要用日期表吗？能不能直接用事实表的订单日期？</strong></p>
+<p>不能。时间智能函数要求日期列连续、无重复，事实表的订单日期两头都有缺口。用事实表日期，要么直接报错，要么在数据稀疏时悄悄算错，后者更麻烦。</p>
+<p><strong>SAMEPERIODLASTYEAR 和 DATEADD 到底选哪个？</strong></p>
+<p>标准自然年、只比去年同期，用 <code>SAMEPERIODLASTYEAR</code>，语义清楚。财年错位、按季度或 24 个月挪动，用 <code>DATEADD</code>。两者底层是同一套逻辑，不必纠结性能。</p>
+<p><strong>卡片图里的同比为什么是空白？</strong></p>
+<p>卡片图没有日期筛选上下文，<code>SAMEPERIODLASTYEAR</code> 拿不到「本期」的范围。给页面加日期切片器并设默认值，或者在度量值里用 <code>VAR</code> 固定结束日期。</p>
+<p><strong>移动平均按天和按月，差别有多大？</strong></p>
+<p>日销波动大的业务，按天平均会被大量零销售日拉低，趋势看起来比实际差。月度汇报统一按月平均，只有日报表按天。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>这六套公式属于必学。DAX 时间智能是 Power BI 的基本功，汇报里八成的口径都由这几行撑起来，学会了就不用每周手工比对 Excel。</p>
+<p>真正值得投入时间的地方不是公式，是日期表。一张合格、共用、标记好的日期表，前期多花半天，后面每个项目都省事。手上公开的看板都是同一套日期表模板，放在<a href="../../portfolio/">案例</a>里。</p>
+<p>三件事别做：别用自动日期时间省事；别在度量值里写死 <code>DATE(2026, 1, 1)</code>，除非做的是固定区间报表；别把同比和环比塞进同一张图。同比是董事会语言，看的是年度位置；环比是运营语言，看的是这个月有没有变好。放一起，两条线的故事会互相打架。</p>
+<p>团队里如果还没有统一日期表，先建表，再谈指标。顺序反了，后面每个报表都要返工。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一-先确认日期表-再写任何一个公式">一、先确认日期表，再写任何一个公式</a></li><li><a href="#二-ytd-mtd-qtd-三行就够">二、YTD / MTD / QTD：三行就够</a></li><li><a href="#三-dax-同比环比-公式很短-前提很长">三、DAX 同比环比：公式很短，前提很长</a></li><li><a href="#四-移动平均-按月平均-不按天平均">四、移动平均：按月平均，不按天平均</a></li><li><a href="#五-六个最常见的时间智能错误">五、六个最常见的时间智能错误</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/power-bi-row-level-security/"><span class="dir">← 上一篇</span><strong>Power BI 行级权限：静态角色与动态角色两套写法</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
