@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fabric vs Databricks：四个维度的判断 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Fabric 和 Databricks 怎么选？先给结论：已在用 Power BI、团队以 T-SQL 为主，选 Fabric；有专职数据工程团队、以 PySpark 和 ML 为主，选 Databricks。这篇用一张表，从技能栈、数据量、团队规模、预算四个维度给出判断线，并说明两者共存的架构和三个常见坑。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/fabric-vs-databricks/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/fabric-vs-databricks/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fabric vs Databricks：四个维度的判断 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Fabric 和 Databricks 怎么选？先给结论：已在用 Power BI、团队以 T-SQL 为主，选 Fabric；有专职数据工程团队、以 PySpark 和 ML 为主，选 Databricks。这篇用一张表，从技能栈、数据量、团队规模、预算四个维度给出判断线，并说明两者共存的架构和三个常见坑。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/fabric-vs-databricks/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/fabric-vs-databricks/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fabric vs Databricks：四个维度的判断 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Fabric 和 Databricks 怎么选？先给结论：已在用 Power BI、团队以 T-SQL 为主，选 Fabric；有专职数据工程团队、以 PySpark 和 ML 为主，选 Databricks。这篇用一张表，从技能栈、数据量、团队规模、预算四个维度给出判断线，并说明两者共存的架构和三个常见坑。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/fabric-vs-databricks/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-7">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fabric vs Databricks：四个维度的判断",
+  "description": "Fabric 和 Databricks 怎么选？先给结论：已在用 Power BI、团队以 T-SQL 为主，选 Fabric；有专职数据工程团队、以 PySpark 和 ML 为主，选 Databricks。这篇用一张表，从技能栈、数据量、团队规模、预算四个维度给出判断线，并说明两者共存的架构和三个常见坑。",
+  "datePublished": "2026-11-20",
+  "dateModified": "2026-11-20",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/fabric-vs-databricks/cover.webp",
+  "keywords": "Fabric vs Databricks、Power BI、Microsoft Fabric、Databricks、数据平台选型",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/fabric-vs-databricks/"
+  },
+  "wordCount": 4390
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Fabric 和 Databricks 怎么选？四个维度，一张表</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-20">2026 年 11 月 20 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>11 分钟读完</span>
+        </p>
+        <h1 class="article-title">Fabric 和 Databricks 怎么选？四个维度，一张表</h1>
+        <p class="article-lead">Fabric 和 Databricks 不是二选一。按技能栈、数据量、团队、预算四个维度判断，一张表给结论。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Microsoft Fabric</li><li>Databricks</li><li>数据平台选型</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Fabric 和 Databricks 怎么选？四个维度，一张表" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：Fabric 和 Databricks 不是二选一。</p>
+<p>搜「Fabric vs Databricks」的人，真正要回答的只有一个问题：我现在的团队、数据、预算，先上哪一个。这个问题没有通用答案，但有判断线。判断线不在数据量上，在团队会写什么、报表是不是核心产出、有没有人维护平台。</p>
+<p>这篇按四个维度拆：技能栈、数据量、团队规模、预算结构。先给一张表，再逐条讲判断线和反例。两边都不吹。</p>
+<h2 id="fabric-vs-databricks-一张表看差异">Fabric vs Databricks：一张表看差异</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Microsoft Fabric</th>
+<th>Databricks</th>
+<th>对选型的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平台形态</td>
+<td>一体化 SaaS，一个租户共用一套容量</td>
+<td>数据平台，工作区 + 集群 + 作业，按需搭建</td>
+<td>Fabric 省运维，Databricks 更灵活</td>
+</tr>
+<tr>
+<td>计算引擎</td>
+<td>T-SQL 数据仓库、Spark、KQL 实时、Power BI</td>
+<td>Spark + Photon、SQL Warehouse、MLflow</td>
+<td>看团队日常写 SQL 还是 PySpark</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>OneLake，Delta/Parquet，快捷方式直连外部存储</td>
+<td>云对象存储 + Delta Lake，Unity Catalog 管表</td>
+<td>两边都用 Delta，数据可以互通</td>
+</tr>
+<tr>
+<td>开发入口</td>
+<td>Power BI Desktop、SQL、Notebook</td>
+<td>Notebook、SQL、作业、Lakeflow</td>
+<td>Fabric 门槛低，Databricks 工程化强</td>
+</tr>
+<tr>
+<td>治理</td>
+<td>工作区角色 + 敏感度标签 + Purview</td>
+<td>Unity Catalog，跨引擎、跨云统一</td>
+<td>多引擎多团队，Unity Catalog 更成熟</td>
+</tr>
+<tr>
+<td>计费</td>
+<td>容量（F SKU）按月计，容量可暂停</td>
+<td>DBU 按秒计费 + 云主机，空闲自动停</td>
+<td>预算结构相反，后面细说</td>
+</tr>
+<tr>
+<td>部署范围</td>
+<td>只在 Azure</td>
+<td>Azure / AWS / GCP</td>
+<td>要跑多云只能 Databricks</td>
+</tr>
+<tr>
+<td>BI 能力</td>
+<td>Power BI 原生，Direct Lake 直接读 Delta</td>
+<td>AI/BI Dashboard，或外接 Power BI</td>
+<td>报表是核心产出，Fabric 更顺</td>
+</tr>
+<tr>
+<td>AI / ML</td>
+<td>Notebook、实验管理，够用但不深</td>
+<td>MLflow、模型服务、GPU 集群</td>
+<td>训练是主业，Databricks 更合适</td>
+</tr>
+</tbody>
+</table>
+<p>九行里，真正决定选型的是计算引擎和计费这两行。其余几行都是结果，不是原因。</p>
+<img alt="Fabric vs Databricks：一张表看差异" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="维度一-技能栈是最硬的一条约束">维度一：技能栈是最硬的一条约束</h2>
+<p>选平台，本质上是选团队未来三年每天用什么工具干活。</p>
+<p>Fabric 的主语言是 T-SQL 和 DAX。数据仓库就是 T-SQL 语法，报表就是 Power BI 语义模型，管道可以用图形化 Data Factory，也能写 Notebook，但不用也行。一个做报表的团队，几乎不用换技能就能上手。</p>
+<p>Databricks 的主语言是 Python 和 Scala，Spark 是默认的思考方式。SQL 当然也能写，SQL Warehouse 就是给分析师留的入口。但平台真正的价值在工程化：作业编排、增量管道、特征工程、模型训练。只把它当 SQL 引擎用，等于买了台工程车只在市区代步。</p>
+<p>判断线很简单：团队里能独立写 PySpark、调过数据倾斜和分区的人，有没有两个以上。有，Databricks 撑得起来；没有，选它就是在给团队加一条短期学不会的技能线。</p>
+<p>还要分清一件事：「会写 Python」和「会调 Spark」不是一回事。前者是语法，后者是对内存、分区和 shuffle 的直觉。这个直觉只能靠项目喂出来，培训不出来。</p>
+<h2 id="维度二-数据量很少是决定因素">维度二：数据量很少是决定因素</h2>
+<p>几百 GB 到几 TB，两个平台都够用；到几十 TB，两边也都能跑。数据量在大多数公司里，不是选型的分水岭。</p>
+<p>真正拉开差距的是负载形态。</p>
+<p>Fabric 是容量制，一个 F SKU 同时供应数据仓库、Spark、实时分析和 Power BI 查询。好处是一套账单、一个平台；代价是资源共享。一个跑三小时的 Spark 作业，可能让同一份容量里的报表查询变慢。这不是缺陷，是容量规划问题——但小团队往往没人为它做规划。</p>
+<p>Databricks 按作业起集群，隔离是天然的。批处理跑完就停，互不影响。代价是有人要管集群、管实例类型、管成本。</p>
+<p>具体一点：</p>
+<ul>
+<li>单表几千万行、每天增量几 GB：Fabric 数据仓库足够，Direct Lake（直读模式，语义模型直接读 Delta 文件，不导入）连刷新都省了</li>
+<li>单表几十亿行、每天增量 TB 级、要做复杂特征工程：Databricks 的 Spark 调优空间更大</li>
+<li>实时流：Fabric 的 Eventstream 加 KQL 适合运营监控；Databricks 的 Structured Streaming 更适合把流并进湖仓</li>
+</ul>
+<p>微软 11 月 17 日的 Fabric 博客里提到，过去一年 Fabric 数据仓库在行业标准基准测试上快了 70%。这个数字说明它在追，但追的是 T-SQL 分析负载，不是去比 Spark 的极限。</p>
+<p>还有一个容易被忽略的点：文件布局。两边都用 Delta，但小文件多、分区设计乱，任何平台都会慢。数据量上来之后，先治小文件，再谈换平台。</p>
+<img alt="维度二：数据量很少是决定因素" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="维度三-团队规模决定运维成本">维度三：团队规模决定运维成本</h2>
+<p>Fabric 是 SaaS。没有集群要起，没有版本要升，没有参数要调。两三个人的数据团队，也能同时维护仓库、管道和报表。</p>
+<p>Databricks 不是。集群策略、实例类型、自动伸缩、作业并发、权限模型、成本告警，每一样都要有人负责。这些事做得好，平台很稳；没人做，账单会先出问题——一个忘记设自动终止的交互集群，跑一个周末的成本能顶一个月。</p>
+<p>判断线：数据团队少于三人，核心产出是报表和看板，别碰 Databricks。不是它不好，是它需要的维护人手你还没有。</p>
+<p>反过来，如果已经有一支数据工程团队，正在为 Spark 作业和模型训练找平台，那 Fabric 的 Spark 反而会变成束缚。能跑，但工具链、调试体验、社区方案都不在一个量级。这时候硬用 Fabric，省下的是 license 钱，赔上的是工程效率。</p>
+<h2 id="维度四-预算结构是两种财务模型">维度四：预算结构是两种财务模型</h2>
+<p>这一段最容易被算错。</p>
+<p>Fabric 买的是容量，按容量档位计费。用满用不满都在花钱，好处是预算可预测，坏处是闲置也在付费。容量可以暂停，适合开发和测试环境；生产环境一般常开。</p>
+<p>已经买了 Power BI Premium 的公司要注意：Premium 容量本身就是 Fabric 容量，原来的 P 容量可以迁到对应的 F SKU，大致上 P1 对应 F64。也就是说，这部分预算已经花出去了，Fabric 对你几乎是增量成本为零的选择。这一条经常被忽略，却往往是选型里最实际的理由。</p>
+<p>Databricks 买的是计算量，按 DBU（Databricks 的计费单位）计费，再叠加云主机费用。空闲自动终止，间歇性批处理很便宜；7×24 常开的 SQL Warehouse 就不便宜了。账单和 workload 直接挂钩，弹性好，但需要有人盯着。</p>
+<p>比较的时候别比单价，比 12 个月总成本：</p>
+<ul>
+<li>报表为主、每天都有查询：Fabric 的固定容量更划算</li>
+<li>每天只跑几批 ETL、白天几乎不用：Databricks 按量更省</li>
+<li>两边都算上人力：Fabric 省的是运维人力，Databricks 贵的是平台人力</li>
+</ul>
+<h2 id="两者共存-最常见的架构">两者共存：最常见的架构</h2>
+<p>现实中大多数公司不是二选一。</p>
+<p>数据工程侧用 Databricks：接源系统、清洗、做宽表和特征，结果以 Delta 格式落在 ADLS 或 OneLake。BI 侧用 Fabric：通过 OneLake（Fabric 的统一数据湖，底层就是 ADLS Gen2）的快捷方式直接读这些 Delta 表，Power BI 用 Direct Lake 出报表，不复制数据。</p>
+<p>这个架构的关键是边界清楚：</p>
+<ul>
+<li>原始数据和明细层归 Unity Catalog（Databricks 的统一元数据与权限层）管，谁能读、谁能改，在 Databricks 侧定义</li>
+<li>指标定义和报表权限归 Fabric / Power BI 管，语义模型只有一套</li>
+<li>两边都不要各建一套指标。两套口径，就是两份对不上的数字，早晚在汇报桌上打架</li>
+</ul>
+<p>如果数据已经在 Databricks 里，Fabric 的 Mirroring 也能把表持续同步进 OneLake，不用自己搭管道。用不用，看你对延迟和成本的要求。</p>
+<p>微软这两年在补的也是这一层。Ignite 上推的 Fabric IQ，讲的就是把业务定义、指标、关系做成一层共享的上下文，给人也给 agent 用。方向是对的，但落地还是要靠人把定义写清楚。</p>
+<img alt="两者共存：最常见的架构" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>已经有 Power BI Premium，还需要单独买 Fabric 吗？</strong></p>
+<p>不需要。Premium 容量就是 Fabric 容量，工作区直接能用 Fabric 的各项 workload。要留意的是同一份容量被多个 workload 共享，上 Spark 或实时分析之前，先做容量评估。</p>
+<p><strong>Power BI 直连 Databricks 会不会很慢？</strong></p>
+<p>取决于 SQL Warehouse 的规格和查询写法。大宽表、复杂 join，DirectQuery 会慢；可以改成导入模式，或者在 Fabric 里用快捷方式加 Direct Lake。serverless warehouse 还有冷启动，交互式报表要预热。</p>
+<p><strong>数据量到几十 TB，Fabric 撑得住吗？</strong></p>
+<p>存储没问题，OneLake 本来就是湖。计算看容量档位和查询形态：点查、聚合没问题，全表扫描加复杂 join 就要往上加容量。真正的瓶颈通常是建模和 SQL 写法，不是平台上限。</p>
+<p><strong>预算有限的小团队，先上哪个？</strong></p>
+<p>核心产出是报表，先上 Fabric，用试用容量验证，跑通再买最小的 F SKU。只做 ETL 和模型训练、没有报表需求，用 Databricks 按量跑，成本更可控。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>按场景直接给结论：</p>
+<table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>先选</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>已在用 Power BI Premium，报表是核心产出</td>
+<td>Fabric</td>
+</tr>
+<tr>
+<td>团队以 T-SQL / DAX 为主，没有专职数据工程</td>
+<td>Fabric</td>
+</tr>
+<tr>
+<td>有三人以上数据工程团队，PySpark 是主语言</td>
+<td>Databricks</td>
+</tr>
+<tr>
+<td>ML 训练是核心业务，或需要多云</td>
+<td>Databricks</td>
+</tr>
+<tr>
+<td>两者都有</td>
+<td>Databricks 做工程，Fabric 做 BI</td>
+</tr>
+</tbody>
+</table>
+<p>已经有 Power BI 体系的公司，默认选 Fabric。这不是因为 Fabric 更强，是因为你的语义层、权限、报表已经在那里，换平台等于把最贵的那部分资产推倒重来。容量还能复用，账也算得过来。做过 10 年报表，我手上公开的看板 14 块，<a href="../../portfolio/">案例</a>里能看到指标和权限是怎么分层的。</p>
+<p>只有三种情况，我会建议 Databricks 做主平台：第一，ML 训练和特征工程是核心业务，不是附带需求；第二，团队以 PySpark 为主，SQL 只是辅助；第三，业务要跑在多云上，或者治理要求跨引擎统一。这三条中两条，Databricks 的价值才压得住它的运维成本。</p>
+<p>反过来，三件事别做。</p>
+<p>别把数据量当唯一标准。几十 TB 的报表场景，Fabric 一样跑，决定成败的是模型和查询，不是引擎名字。</p>
+<p>别在没有数据工程团队的时候上 Databricks。省下的平台费用，会被没人维护的集群和失控的账单吃回去。</p>
+<p>别在两边各建一套指标。选型可以共存，口径不能。语义层只能有一个源头，这件事比选哪个平台重要得多。</p>
+<p>选型到最后不是技术题。先问清楚这套平台要支撑什么决策、谁来用、三年后谁维护。这三个问题答完，平台基本就定了。这类选型和容量评估属于<a href="../../#services">服务</a>范围，把你的团队规模和数据量列出来，可以一起算一遍，<a href="../../#contact">联系</a>我。</p>
+<img alt="我的判断" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#fabric-vs-databricks-一张表看差异">Fabric vs Databricks：一张表看差异</a></li><li><a href="#维度一-技能栈是最硬的一条约束">维度一：技能栈是最硬的一条约束</a></li><li><a href="#维度二-数据量很少是决定因素">维度二：数据量很少是决定因素</a></li><li><a href="#维度三-团队规模决定运维成本">维度三：团队规模决定运维成本</a></li><li><a href="#维度四-预算结构是两种财务模型">维度四：预算结构是两种财务模型</a></li><li><a href="#两者共存-最常见的架构">两者共存：最常见的架构</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/dax-yoy-ytd-formulas/"><span class="dir">← 上一篇</span><strong>同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
