@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>成都 Power BI 开发：四类数据源接入指南 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="成都 Power BI 开发的第一步不是画图，是弄清数据源在哪。ERP、财务、销售、生产四类系统，分别对应数据库直连、API、文件和本地数据网关四种接入方式。这篇给出对比表和接入顺序，讲清每一步做什么、为什么、注意什么。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="成都 Power BI 开发：四类数据源接入指南 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="成都 Power BI 开发的第一步不是画图，是弄清数据源在哪。ERP、财务、销售、生产四类系统，分别对应数据库直连、API、文件和本地数据网关四种接入方式。这篇给出对比表和接入顺序，讲清每一步做什么、为什么、注意什么。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="成都 Power BI 开发：四类数据源接入指南 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="成都 Power BI 开发的第一步不是画图，是弄清数据源在哪。ERP、财务、销售、生产四类系统，分别对应数据库直连、API、文件和本地数据网关四种接入方式。这篇给出对比表和接入顺序，讲清每一步做什么、为什么、注意什么。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261117-7">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "成都 Power BI 开发：四类数据源接入指南",
+  "description": "成都 Power BI 开发的第一步不是画图，是弄清数据源在哪。ERP、财务、销售、生产四类系统，分别对应数据库直连、API、文件和本地数据网关四种接入方式。这篇给出对比表和接入顺序，讲清每一步做什么、为什么、注意什么。",
+  "datePublished": "2026-11-23",
+  "dateModified": "2026-11-23",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/cover.webp",
+  "keywords": "成都 Power BI 开发、Power BI、成都、数据源、ERP",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/chengdu-power-bi-data-sources/"
+  },
+  "wordCount": 4000
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>成都 Power BI 开发：数据源通常从哪四类系统来</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-23">2026 年 11 月 23 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>10 分钟读完</span>
+        </p>
+        <h1 class="article-title">成都 Power BI 开发：数据源通常从哪四类系统来</h1>
+        <p class="article-lead">成都企业做 Power BI，数据源基本是 ERP、财务、销售、生产四类。接入口、常见坑、选择顺序一次讲清。</p>
+        <ul class="post-tags"><li>Power BI</li><li>成都</li><li>数据源</li><li>ERP</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="成都 Power BI 开发：数据源通常从哪四类系统来" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：成都企业做 Power BI，数据源九成落在四类系统——ERP、财务、销售、生产。剩下的零头是 Excel、手工台账和外部数据。</p>
+<p>搜「成都 Power BI 开发」的人，多半不是想听概念，而是手上有一堆系统，不知道先接哪个、怎么接、接了会不会出事。这篇按系统类型拆：每类里有什么数据、常见怎么接进来、哪一步最容易翻车。最后给一张接入方式对比表和一句判断。</p>
+<h2 id="成都-power-bi-开发-先分清主数据和事实数据">成都 Power BI 开发：先分清主数据和事实数据</h2>
+<p>动手之前，先给系统分两类。</p>
+<p>主数据是客户、供应商、物料、科目、组织架构，变化慢、要唯一。事实数据是订单、凭证、工单、库存流水，天天增长。主数据接错了，整张报表的归属都错；事实数据接错了，数字看着对，一汇总就打架。</p>
+<p>四类系统的分工大致是这样：</p>
+<table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>常见产品</th>
+<th>主要数据</th>
+<th>常见接入方式</th>
+<th>主要难点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ERP</td>
+<td>SAP、Oracle EBS、用友、金蝶、鼎捷</td>
+<td>客户、物料、订单、库存、应收应付</td>
+<td>只读视图，抽到 ODS</td>
+<td>生产库不能直连</td>
+</tr>
+<tr>
+<td>财务</td>
+<td>用友、金蝶、SAP FI/CO</td>
+<td>科目、凭证、余额、辅助核算</td>
+<td>数据库视图或取数工具</td>
+<td>口径不统一</td>
+</tr>
+<tr>
+<td>销售</td>
+<td>Salesforce、销售易、纷享销客、电商后台</td>
+<td>订单、退款、渠道、SKU</td>
+<td>API 或导出文件</td>
+<td>退款与 SKU 映射</td>
+</tr>
+<tr>
+<td>生产</td>
+<td>MES、WMS、SCADA/PLC</td>
+<td>工单、产量、质量、能耗</td>
+<td>数据库、OPC UA、IoT</td>
+<td>数据频率太高</td>
+</tr>
+</tbody>
+</table>
+<p>先接哪一类，不取决于系统新旧，取决于它能不能回答一个具体的业务问题。</p>
+<img alt="成都 Power BI 开发：先分清主数据和事实数据" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="一-erp-数据最全-也最不该直连">一、ERP：数据最全，也最不该直连</h2>
+<p>ERP 是所有系统里数据最全的。客户、供应商、物料、订单、库存、应收应付，一份主数据能撑起后面所有报表。</p>
+<p>成都的制造和贸易企业，上 SAP、Oracle EBS 的不少，用友 U8/U9/NC、金蝶 K3/云星空、鼎捷 T100/易飞也很常见。</p>
+<p>接 ERP 有一条铁律：不要直连生产库跑报表。</p>
+<p>原因不复杂。ERP 的生产库白天在做交易，报表一个全表扫描，可能把订单录入拖慢。采购、仓库一卡，问题最后都会找到做报表的人头上。</p>
+<p>正确顺序是五步：</p>
+<ol>
+<li><strong>要数据字典</strong>。找厂商或内部 IT 要表结构说明，确认订单主表、明细表、库存流水分别在哪张表。没有字典就动手，等于蒙着眼睛建模。</li>
+<li><strong>建只读账号</strong>。只给 SELECT 权限，限定来源 IP，别用 sa 或系统管理员账号。这一步是底线，不是可选项。</li>
+<li><strong>在库上建视图</strong>。把常用关联（订单 + 明细 + 客户 + 物料）封装成视图，把字段名固定下来。Power BI 只读视图。</li>
+<li><strong>定时抽到 ODS</strong>。用调度工具或 SQL Agent 每晚抽一次，落到自己的库。为什么多这一层？因为报表刷新不该和生产交易抢资源。</li>
+<li><strong>Power BI 只连 ODS</strong>。生产库、ODS、报表三层分开，任何一层出问题都查得清。</li>
+</ol>
+<p>Power Query 接只读视图，M 代码就这几行：</p>
+<pre><code>let
+    Source = Sql.Database("10.0.0.21", "ODS_ERP"),
+    dbo_OrderDetail = Source{[Schema="dbo", Item="v_OrderDetail"]}[Data]
+in
+    dbo_OrderDetail
+</code></pre>
+<p><code>Sql.Database</code> 连的是 ODS 库，<code>v_OrderDetail</code> 是库上建好的视图。ERP 换版本、表结构变了，只改视图，不改报表。</p>
+<p>三个容易漏的点：<strong>币种和单位</strong>，决定金额对不对；<strong>组织架构</strong>，决定业绩算给谁；<strong>删除标记</strong>，决定历史数据会不会重复。前两个错，数字全错；第三个错，报表会慢慢变胖。</p>
+<img alt="一、ERP：数据最全，也最不该直连" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="二-财务系统-接口好接-口径难对">二、财务系统：接口好接，口径难对</h2>
+<p>财务数据看起来最容易：科目余额表、凭证、总账，都在数据库里，字段也规整。</p>
+<p>麻烦在口径。</p>
+<p>同一笔费用，财务按部门归集，业务按项目归集；同一笔收入，含税和不含税差 13 个点；辅助核算有部门、项目、客户三套维度，报表要能按任意一套切。这些不是接口问题，是定义问题。</p>
+<p>接入方式通常两种：直接读财务库的视图，或者用财务系统自带的取数工具导出。前者稳定，后者灵活但容易变成每月一次的手工活。</p>
+<p>我的做法是先定四张表：科目表、期间表、凭证表、余额表。四张表的粒度对齐了，后面的指标才有得算。</p>
+<ul>
+<li>科目表：科目编码、名称、借贷方向</li>
+<li>期间表：年月、是否关账</li>
+<li>凭证表：凭证号、日期、摘要、借贷金额、辅助核算</li>
+<li>余额表：期初、本期发生、期末</li>
+</ul>
+<p>几个细节：</p>
+<ul>
+<li>期初期末直接取余额表，别用累计数反推，反推出来的数在跨年时一定对不上</li>
+<li>多币种先统一到本位币，汇率口径写进指标定义</li>
+<li>合并报表的抵消分录单独放一层，别混进明细，否则明细一加总就是错的</li>
+</ul>
+<p>权限也要同步做。财务数据必须按部门或成本中心做行级权限，<a href="../../blog/">博客</a>里写过静态角色和动态角色两种写法，这里不展开。</p>
+<img alt="二、财务系统：接口好接，口径难对" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="三-销售系统-一半在数据库-一半在-api">三、销售系统：一半在数据库，一半在 API</h2>
+<p>销售数据分两种形态。</p>
+<p>自建订单系统、本地部署的 CRM，直接读库就行，方法和 ERP 一样：只读账号加视图。</p>
+<p>SaaS 的 CRM 和电商平台只能走 API 或文件。CRM 这类系统要处理三件事：分页、增量时间戳、限流。别一次拉全量，按更新时间增量拉，接口给你返回多少页就是多少页。电商后台如果没开放接口，先用导出文件兜底，把文件放进固定目录，Power Query 批量读。</p>
+<p>真正的坑不在接入，在字段。</p>
+<ul>
+<li><strong>退款和取消单</strong>：订单表里的金额不是净销售额，要减掉退款和取消，否则销售看板永远虚高</li>
+<li><strong>渠道归属</strong>：线上下单、门店发货，这笔业绩算线上还是门店，得先有规则</li>
+<li><strong>SKU 映射</strong>：同一个商品，ERP 物料编码、电商商品 ID、门店条码是三套，不建映射表，销量永远对不上</li>
+</ul>
+<p>前两条是业务规则，第三条是数据工程。三件事里最容易做、收益最大的是映射表，先建它。</p>
+<h2 id="四-生产系统-别把秒级数据直接灌进模型">四、生产系统：别把秒级数据直接灌进模型</h2>
+<p>制造企业数据量最大的地方在生产侧。MES、WMS、SCADA/PLC、能耗采集，一个车间一天的数据量可能超过整个 ERP。</p>
+<p>接入方式按系统分：</p>
+<ul>
+<li>MES、WMS：一般是 SQL Server 或 Oracle，读视图即可</li>
+<li>PLC、设备接口：走 OPC UA，或者先汇到 IoT 平台再取</li>
+<li>能耗、实时监控：要求高的走 Eventstream（Fabric 的实时数据管道）加 KQL（一种面向日志和时序数据的查询语言）</li>
+</ul>
+<p>关键在频率。设备数据是秒级、毫秒级的，原样进 Power BI 模型，模型会撑爆，刷新也跑不完。</p>
+<p>正确做法是先聚合：按班次、小时、工序落一张汇总事实表，模型只读汇总结果。要看明细时再单独做一个钻取页，不要把所有细节塞进同一个模型。</p>
+<p>另一个常见问题是编码。设备编码和工单号对不上，产量和质量数据就挂不到一起。上线前先做一次对码，比事后补数据省事得多。</p>
+<h2 id="四类系统之外-excel-和手工台账">四类系统之外：Excel 和手工台账</h2>
+<p>不要小看这部分。不少成都企业的销售预测、预算、费用台账还停在 Excel。</p>
+<p>这类数据不该硬接。先定模板，用 Power Query 从固定目录批量读；结构不稳定的部分，人工维护一张对照表。模板比接口重要——接口能改，人的习惯改不动。</p>
+<h2 id="接入方式怎么选-一张表">接入方式怎么选：一张表</h2>
+<table>
+<thead>
+<tr>
+<th>接入方式</th>
+<th>适合的数据</th>
+<th>优点</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>导入模式</td>
+<td>每天更新一次的分析数据</td>
+<td>查询快，模型可控</td>
+<td>要定时刷新，有时差</td>
+</tr>
+<tr>
+<td>DirectQuery 直连</td>
+<td>需要实时看的大表</td>
+<td>不占内存，数据实时</td>
+<td>每次查询都压源库</td>
+</tr>
+<tr>
+<td>API</td>
+<td>SaaS 系统和电商平台</td>
+<td>不用碰对方数据库</td>
+<td>限流、分页、字段会变</td>
+</tr>
+<tr>
+<td>文件 / Excel</td>
+<td>台账、预算、外部数据</td>
+<td>门槛最低</td>
+<td>结构易变，容易出错</td>
+</tr>
+<tr>
+<td>本地数据网关</td>
+<td>内网数据库、文件共享</td>
+<td>云端能刷新内网数据</td>
+<td>要一台常开的机器</td>
+</tr>
+</tbody>
+</table>
+<p>判断顺序：先问数据多久变一次，再问源库扛不扛得住，最后才选模式。多数企业报表，导入模式就够了。DirectQuery 不是更高级，是拿源库性能换实时性。</p>
+<img alt="接入方式怎么选：一张表" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+<h2 id="内网数据上云-网关是必答题">内网数据上云：网关是必答题</h2>
+<p>ERP、财务、MES 的库都在公司内网，Power BI 服务在云端，中间要有一座桥，就是本地数据网关（on-premises data gateway，装在域内一台机器上，代理云端向内网取数）。</p>
+<p>微软 11 月 20 日发布了网关 2026 年 11 月版，版本号 3000.342。这次的重点不是新功能，是稳定性：修了服务主体令牌刷新后元数据丢失的问题，优化了重复包的确认处理和序列化时的内存占用，也更新了加密依赖，堵掉一个已知漏洞。对企业的实际意义是刷新失败会少一些，排错也更容易。</p>
+<p>网关有几条运维要求，提前说清楚，比出事后救火划算：</p>
+<ul>
+<li>一台常开的 Windows 机器，别装在谁的个人电脑上</li>
+<li>内存给够，多个数据源同时刷新会排队</li>
+<li>数据库密码换了，网关里的凭据要同步改，否则第二天刷新全红</li>
+<li>生产环境建议装两台做集群，一台挂另一台接</li>
+<li>网关版本要跟着 Power BI Desktop 更新，版本差太多会出现本地能连、云端刷不了</li>
+</ul>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>四类系统都要接吗？</strong></p>
+<p>不用。先接能回答业务问题的那一类。多数企业第一版报表围绕销售和财务，ERP 提供主数据，生产数据放第二期。</p>
+<p><strong>没有 IT 支持，能自己接吗？</strong></p>
+<p>只读视图和网关这两步绕不开 IT。可以先用 Excel 和 SaaS 数据把模型、指标跑通，拿结果去申请数据库权限，比空口申请容易得多。</p>
+<p><strong>DirectQuery 是不是比导入模式好？</strong></p>
+<p>不是。它换来的是实时，代价是每次查询都压源库。报表用户一多，源库先扛不住。分析型报表默认用导入。</p>
+<p><strong>换系统了，报表要重做吗？</strong></p>
+<p>在 Power Query 里加一层暂存查询，把字段名统一，报表层只引用暂存层。换系统时只改暂存层，度量值和视觉对象不动。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>数据源这件事，优先级很清楚：</p>
+<ol>
+<li>先理 ERP 主数据和财务口径，这两块决定报表可不可信</li>
+<li>再接销售，它决定报表有没有人看</li>
+<li>生产数据最后接，先聚合再进模型</li>
+</ol>
+<p>三类企业可以照这个顺序做：制造业先接 ERP 加 MES 的班次产量；贸易和零售先接 ERP 加电商订单；集团型公司先做财务合并，再往下拆业务。</p>
+<p>两种情况下别急着接。连数据字典都没有的老系统，先把字段含义问清楚；业务口径一天三变的部门，先定指标再谈数据源。这两种情况接了也是白接，返工的成本比晚接一个月高得多。</p>
+<p>做了 10 年报表，数据源梳理永远是每个项目的第一步，也是最容易被跳过的一步。这类盘点和接入规划属于<a href="../../#services">服务</a>里最先做的一环，手上有几套系统、分别是什么，列出来就能排接入顺序，<a href="../../#contact">联系</a>页有方式。之前做的 FinOps 看板，27 个业务单元、28 个 RLS 角色，<a href="../../portfolio/">案例</a>里能看到指标和权限是怎么分层的。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#成都-power-bi-开发-先分清主数据和事实数据">成都 Power BI 开发：先分清主数据和事实数据</a></li><li><a href="#一-erp-数据最全-也最不该直连">一、ERP：数据最全，也最不该直连</a></li><li><a href="#二-财务系统-接口好接-口径难对">二、财务系统：接口好接，口径难对</a></li><li><a href="#三-销售系统-一半在数据库-一半在-api">三、销售系统：一半在数据库，一半在 API</a></li><li><a href="#四-生产系统-别把秒级数据直接灌进模型">四、生产系统：别把秒级数据直接灌进模型</a></li><li><a href="#四类系统之外-excel-和手工台账">四类系统之外：Excel 和手工台账</a></li><li><a href="#接入方式怎么选-一张表">接入方式怎么选：一张表</a></li><li><a href="#内网数据上云-网关是必答题">内网数据上云：网关是必答题</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/powerbi-ai-task-unit/"><span class="dir">← 上一篇</span><strong>从写 DAX 到接任务：这五条更新指向同一个方向</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
