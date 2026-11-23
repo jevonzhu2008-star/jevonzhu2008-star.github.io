@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261123-1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Excel 迁移 Power BI：清单与避坑指南",
+  "description": "Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。",
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/excel-to-power-bi-migration/cover.webp",
+  "keywords": "Excel 迁移 Power BI、Power BI、Excel、DAX、Power Query",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/excel-to-power-bi-migration/"
+  },
+  "wordCount": 3156
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>把 Excel 报表迁到 Power BI：迁移清单与避坑指南</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-24">2026 年 11 月 24 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>8 分钟读完</span>
+        </p>
+        <h1 class="article-title">把 Excel 报表迁到 Power BI：迁移清单与避坑指南</h1>
+        <p class="article-lead">先给结论：值得迁的是重复出报表那部分活，不是表格。附清单、公式翻译和 7 个要改的习惯。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Excel</li><li>DAX</li><li>Power Query</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="把 Excel 报表迁到 Power BI：迁移清单与避坑指南" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：Excel 报表迁 Power BI，值得迁的不到一半。</p>
+<p>多数人把「迁移」理解成把那张表原样搬到 Power BI 里。方向就错了。该迁的是每天重复出数的那部分工作、每月手工汇总的那几张底表、七八个人同时打开就卡的那个文件。至于那张配色精致的汇总页，重做往往比搬过去快。</p>
+<p>这篇给三样东西：一张判断表，告诉你什么该迁什么别迁；一份迁移清单，按顺序做不会乱；一张公式对照表，Excel 的老写法在 DAX 里怎么写。最后讲七个必须改掉的 Excel 习惯。</p>
+<h2 id="一张表判断-你的报表该不该迁">一张表判断：你的报表该不该迁</h2>
+<p>Excel 报表里通常混了三层东西：数据、计算、展示。迁 Power BI，是把这三层拆开，分别处理。</p>
+<table>
+<thead>
+<tr>
+<th>报表特征</th>
+<th>建议</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每周每月重复出，看的人超过 3 个</td>
+<td>迁</td>
+<td>一次建模，后面自动刷新</td>
+</tr>
+<tr>
+<td>数据来自多个系统，靠手工复制粘贴</td>
+<td>迁</td>
+<td>Power Query 配一次，天天跑</td>
+</tr>
+<tr>
+<td>几十万行，打开要等，滚动会卡</td>
+<td>迁</td>
+<td>列式存储加压缩，量级完全不同</td>
+</tr>
+<tr>
+<td>一次性分析，结论就一页</td>
+<td>别迁</td>
+<td>迁移的时间比做完还长</td>
+</tr>
+<tr>
+<td>格式就是交付物，要打印、要套打、要报送模板</td>
+<td>别迁</td>
+<td>Power BI 的强项不是像素级排版</td>
+</tr>
+<tr>
+<td>有宏、规划求解、迭代计算</td>
+<td>谨慎</td>
+<td>这类交互式计算 Power BI 做不了</td>
+</tr>
+</tbody>
+</table>
+<p>判断只看一条：这个报表的活是不是重复的。重复的活交给模型，一次性的活用 Excel 就好。</p>
+<img alt="一张表判断：你的报表该不该迁" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="迁移清单-七步-顺序别乱">迁移清单：七步，顺序别乱</h2>
+<h3 id="第一步-盘点工作簿">第一步：盘点工作簿</h3>
+<p>把文件打开，列出每张 sheet 的用途、数据从哪来、多久更新一次、谁在看。这一步看着笨，但能省掉后面一半返工。</p>
+<p>注意两件事。隐藏的 sheet 和命名区域经常藏着关键公式；外部链接指向的文件可能已经不在原位置了。</p>
+<h3 id="第二步-把数据层搬进-power-query">第二步：把数据层搬进 Power Query</h3>
+<p>手工复制粘贴的部分，是迁移收益最大的地方。把源文件接到 Power Query，建一个查询。</p>
+<p>为什么先做这层？因为后面所有计算都建立在它上面。数据层不稳，DAX 写得再漂亮也是错的。</p>
+<p>注意保留原始查询，另建一个清洗后的查询，两层分开。以后源数据变了，只改清洗层，模型和度量值不用动。</p>
+<h3 id="第三步-清洗">第三步：清洗</h3>
+<p>Excel 的表格是给人看的，Power BI 的模型是给机器算的。这中间必须清洗。</p>
+<p>最常见的三个动作：</p>
+<ul>
+<li>合并单元格拆开，每行补齐</li>
+<li>多行表头降成一行，多余的行删掉</li>
+<li>宽表逆透视成长表，一个指标一列</li>
+</ul>
+<p>逆透视的 M 写法：</p>
+<pre><code>= Table.UnpivotOtherColumns ( 源, {"门店", "商品"}, "月份", "销量" )
+</code></pre>
+<p>这行的意思是：除了门店和商品两列，其余列全部变成两列——一列叫「月份」放列名，一列叫「销量」放数值。透视表能用的宽表，进模型前必须先转成长表。</p>
+<h3 id="第四步-建星型模型">第四步：建星型模型</h3>
+<p>一张事实表，几张维度表，用关系连起来。</p>
+<p>为什么不用 VLOOKUP？关系只建一次，所有度量值都能用，改维度表不用改公式。VLOOKUP 是每张表各写一遍，改一次要找一整天。</p>
+<p>注意粒度：事实表一行代表什么，必须写清楚。是一张订单，还是一行订单明细，决定了后面所有金额能不能加。</p>
+<h3 id="第五步-翻译计算">第五步：翻译计算</h3>
+<p>Excel 的公式按单元格算，DAX 按筛选上下文算。这一步不是照抄，是重写。下一节给对照表。</p>
+<h3 id="第六步-重做展示">第六步：重做展示</h3>
+<p>透视表换成矩阵，筛选换成切片器，条件格式换成度量值驱动的颜色。原来靠颜色区分的状态，改成规则。</p>
+<h3 id="第七步-新旧对账">第七步：新旧对账</h3>
+<p>两边同时跑两周。每天抽三个数对一下：总额、按维度拆的明细、边界情况。对不上就查，别等切换后才发现。</p>
+<img alt="迁移清单：七步，顺序别乱" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="excel-公式怎么翻译成-dax">Excel 公式怎么翻译成 DAX</h2>
+<p>先记住一个区别：Excel 里一个公式写在一个单元格里，DAX 里一个度量值写在整张表上，结果随筛选变。</p>
+<table>
+<thead>
+<tr>
+<th>Excel 写法</th>
+<th>DAX 写法</th>
+<th>关键差别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>=SUM(B:B)</code></td>
+<td><code>SUM ( Sales[金额] )</code></td>
+<td>一样，但 DAX 只算当前筛选范围</td>
+</tr>
+<tr>
+<td><code>=SUMIFS(...)</code></td>
+<td><code>CALCULATE ( [销售额], 条件 )</code></td>
+<td>条件写进筛选参数</td>
+</tr>
+<tr>
+<td><code>=COUNTIFS(...)</code></td>
+<td><code>CALCULATE ( COUNTROWS ( Sales ), 条件 )</code></td>
+<td>计数用行数</td>
+</tr>
+<tr>
+<td><code>=VLOOKUP(...)</code></td>
+<td><code>RELATED ( 维度[字段] )</code></td>
+<td>有关系的表直接取</td>
+</tr>
+<tr>
+<td><code>=IF(...)</code> 多层嵌套</td>
+<td><code>SWITCH ( TRUE (), ... )</code></td>
+<td>嵌套超过三层就该换</td>
+</tr>
+<tr>
+<td><code>=SUMPRODUCT(...)</code></td>
+<td><code>SUMX ( 表, 表达式 )</code></td>
+<td>逐行算再汇总</td>
+</tr>
+<tr>
+<td>辅助列算占比</td>
+<td><code>DIVIDE ( [分子], CALCULATE ( [分母], ALL ( 表 ) ) )</code></td>
+<td>占比做成度量值</td>
+</tr>
+</tbody>
+</table>
+<p>几个具体例子。</p>
+<p>基础求和：</p>
+<pre><code>销售额 = SUM ( Sales[金额] )
+</code></pre>
+<p>带条件的求和，对应 SUMIFS：</p>
+<pre><code>华东销售额 =
+CALCULATE (
+    [销售额],
+    Geography[区域] = "华东",
+    'Date'[年份] = 2026
+)
+</code></pre>
+<p><code>CALCULATE</code> 的作用是改筛选上下文：先把区域限定在华东、年份限定在 2026，再算销售额。这是 SUMIFS 在 DAX 里的等价写法，而且不用为每个条件复制一个公式。</p>
+<p>跨表取字段，对应 VLOOKUP：</p>
+<pre><code>产品类别 = RELATED ( 'Product'[类别] )
+</code></pre>
+<p>前提是两张表之间有有效关系。没有关系时用 <code>LOOKUPVALUE</code>，但它比关系慢，能建关系就别用它。</p>
+<p>占比：</p>
+<pre><code>销售占比 =
+DIVIDE (
+    [销售额],
+    CALCULATE ( [销售额], ALL ( 'Product' ) )
+)
+</code></pre>
+<p>分母用 <code>ALL</code> 去掉产品筛选，得到总额。Excel 里这通常要一个辅助列，DAX 里一个度量值就够了。</p>
+<p>一个取舍：能写成度量值就别写计算列。计算列占内存、只在刷新时更新；度量值实时算、不占空间。只有要放进行标签或切片器的字段，才需要计算列。</p>
+<img alt="Excel 公式怎么翻译成 DAX" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="七个必须改掉的-excel-习惯">七个必须改掉的 Excel 习惯</h2>
+<ol>
+<li><strong>合并单元格</strong>。合并之后只有左上角有值，其余是空的。模型里一聚合就少数据。导入前先拆分填充。</li>
+<li><strong>两行以上的表头</strong>。人看着清楚，机器读不懂。用「提升标题」把第一行变成列名，其余删掉。</li>
+<li><strong>小计行混在明细里</strong>。一行小计、一行合计，混在数据中间。模型会把它当明细一起加，数字直接翻倍。汇总交给 DAX，明细表只留明细。</li>
+<li><strong>用颜色和加粗表达状态</strong>。红色代表超期、黄色代表预警——这些信息在模型里全丢了。改成单独的「状态」列，颜色由规则生成。</li>
+<li><strong>日期存成文本、数字带单位</strong>。<code>2026.11</code>、<code>12 万元</code>、<code>1,234 件</code>，这些都不是数值，无法计算。导入时统一类型，单位写进列名。</li>
+<li><strong>一个文件当数据库用</strong>。十几个 sheet 互相引用，改一处全乱。迁到模型后，每张表只负责一件事。</li>
+<li><strong>手工备注参与计算</strong>。「这单不算」「这个客户特殊」，写在备注里，下次没人记得。规则要写进表里，能筛选、能追溯。</li>
+</ol>
+<p>这七条不改，迁过去只是把错误换了个地方放。</p>
+<img alt="七个必须改掉的 Excel 习惯" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+<h2 id="常见问题">常见问题</h2>
+<p><strong>透视表能直接搬过去吗？</strong></p>
+<p>不能直接搬，但逻辑能复用。透视表的行、列、值，对应矩阵的行、列、值；筛选对应切片器。原来的计算字段要重写成度量值。</p>
+<p><strong>数据在共享盘或同事电脑上，能自动刷新吗？</strong></p>
+<p>能，但要满足条件。文件放 OneDrive 或 SharePoint，用云端连接；内网共享盘要装本地数据网关。放个人电脑上、机器一关就刷新失败，这不是 Power BI 的问题。</p>
+<p><strong>迁完还要不要保留原 Excel？</strong></p>
+<p>保留三个月。对账期用它兜底，也方便业务对照。三个月后归档，但别删——口径有争议时，原始文件是唯一证据。</p>
+<p><strong>要学 DAX 到什么程度？</strong></p>
+<p>会 <code>SUM</code>、<code>CALCULATE</code>、<code>FILTER</code>、<code>DIVIDE</code> 和 <code>ALL</code>，能覆盖大部分迁移场景。时间智能函数是第二层，用到再学。</p>
+<h2 id="我的判断">我的判断</h2>
+<p>这件事的优先级，我给三档。</p>
+<p><strong>必迁</strong>：每周每月重复出、多人看、多源手工汇总的报表。这类迁完收益马上能看见——出数时间从半天变成点一下。</p>
+<p><strong>可选</strong>：单人用、结构简单、每月只看一次的报表。迁与不迁差别不大，看这个人愿不愿意学。</p>
+<p><strong>别迁</strong>：一次性分析、格式即交付物的报送表、带宏和规划求解的模型。硬迁的代价是花两周做一个还不如原来的东西。</p>
+<p>还有一条判断：如果 Excel 里的问题不是工具问题，是口径问题，迁到 Power BI 只会把口径问题放大。同一张表两个人算出两个数，先解决定义，再谈迁移。</p>
+<p>具体怎么拆数据层、怎么建模型，<a href="../../blog/">博客</a>里按主题分过类。需要有人把现有工作簿盘一遍、给出迁移顺序的，属于<a href="../../#services">服务</a>里的评估环节，<a href="../../#contact">联系</a>页可以约。</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#一张表判断-你的报表该不该迁">一张表判断：你的报表该不该迁</a></li><li><a href="#迁移清单-七步-顺序别乱">迁移清单：七步，顺序别乱</a></li><li><a href="#excel-公式怎么翻译成-dax">Excel 公式怎么翻译成 DAX</a></li><li><a href="#七个必须改掉的-excel-习惯">七个必须改掉的 Excel 习惯</a></li><li><a href="#常见问题">常见问题</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="../../blog/get-data-redesign/"><strong>Get Data 改版：386 条反馈里，24 人卡在同一处</strong><span class="related-meta">2026 年 11 月 5 日 · 9 分钟</span></a></li>
+          <li><a href="../../blog/dax-yoy-ytd-formulas/"><strong>同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</strong><span class="related-meta">2026 年 11 月 19 日 · 9 分钟</span></a></li>
+          <li><a href="../../blog/power-bi-row-level-security/"><strong>Power BI 行级权限：静态角色与动态角色两套写法</strong><span class="related-meta">2026 年 11 月 18 日 · 7 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/chengdu-power-bi-data-sources/"><span class="dir">← 上一篇</span><strong>成都 Power BI 开发：数据源通常从哪四类系统来</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
