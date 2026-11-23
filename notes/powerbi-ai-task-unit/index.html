@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power BI AI 更新：AI 开始接任务 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="这周的五条 Power BI 和 Fabric 更新指向同一件事：AI 从写代码推进到接整件任务。Project Osmos 公开预览、Copilot 入口合并、SQLBI 改路线、两个人做出完整白板应用，以及一家只靠单个开发者的公司。生产变便宜了，验收和交接没有。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://ipowerbi.icu/blog/powerbi-ai-task-unit/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/powerbi-ai-task-unit/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Power BI AI 更新：AI 开始接任务 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="这周的五条 Power BI 和 Fabric 更新指向同一件事：AI 从写代码推进到接整件任务。Project Osmos 公开预览、Copilot 入口合并、SQLBI 改路线、两个人做出完整白板应用，以及一家只靠单个开发者的公司。生产变便宜了，验收和交接没有。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/powerbi-ai-task-unit/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/powerbi-ai-task-unit/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Power BI AI 更新：AI 开始接任务 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="这周的五条 Power BI 和 Fabric 更新指向同一件事：AI 从写代码推进到接整件任务。Project Osmos 公开预览、Copilot 入口合并、SQLBI 改路线、两个人做出完整白板应用，以及一家只靠单个开发者的公司。生产变便宜了，验收和交接没有。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/powerbi-ai-task-unit/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261123-1">
+
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <p class="article-meta">
+          <time datetime="2026-11-21">2026 年 11 月 21 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>12 分钟读完</span>
+        </p>
+        <h1 class="article-title">从写 DAX 到接任务：这五条更新指向同一个方向</h1>
+        <p class="article-lead">这周五条更新指向同一件事：AI 开始接任务。Osmos 替人做完整项目，SQLBI 把重心移到验收，Copilot 合并入口。生产变便宜了，交接没有。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Microsoft Fabric</li><li>AI</li><li>Project Osmos</li><li>Copilot</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="/blog/powerbi-ai-task-unit/cover.webp" alt="从写 DAX 到接任务：这五条更新指向同一个方向" loading="lazy">
+    </figure>
+    <div class="blog-wrap">
+      <div class="article-cta">
+        <a class="cta-main" href="/blog/powerbi-ai-task-unit/">阅读全文 <span aria-hidden="true">→</span></a>
+        <a class="cta-ghost" href="/blog/">全部文章</a>
+      </div>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="/blog/fabric-five-updates/"><strong>Fabric 这周五条更新：入口在变，地基没变</strong><span class="related-meta">2026 年 11 月 6 日 · 9 分钟</span></a></li>
+          <li><a href="/blog/ai-dax-acceptance/"><strong>AI 写 DAX 已经及格，难的是验收</strong><span class="related-meta">2026 年 11 月 7 日 · 8 分钟</span></a></li>
+          <li><a href="/blog/fabric-vs-databricks/"><strong>Fabric 和 Databricks 怎么选？四个维度，一张表</strong><span class="related-meta">2026 年 11 月 20 日 · 11 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

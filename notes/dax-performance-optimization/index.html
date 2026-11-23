@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/dax-performance-optimization/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/dax-performance-optimization/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DAX 性能优化：6 个技巧和前后对比 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="DAX 性能优化先定位再改：用 Performance Analyzer 分清 DAX 查询时间和视觉对象显示时间，再用 DAX Studio 看 FE/SE。6 个技巧含 VAR、迭代器、FILTER 改写、计算列取舍，每个给前后对比。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/dax-performance-optimization/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261123-1">
+
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <p class="article-meta">
+          <time datetime="2026-11-17">2026 年 11 月 17 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>8 分钟读完</span>
+        </p>
+        <h1 class="article-title">DAX 度量值跑得慢？先定位，再改这 6 处</h1>
+        <p class="article-lead">DAX 慢，多半不是公式写法，是没定位。6 个技巧，每个给前后对比。</p>
+        <ul class="post-tags"><li>Power BI</li><li>DAX</li><li>性能优化</li><li>DAX Studio</li><li>VertiPaq</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="/blog/dax-performance-optimization/cover.webp" alt="DAX 度量值跑得慢？先定位，再改这 6 处" loading="lazy">
+    </figure>
+    <div class="blog-wrap">
+      <div class="article-cta">
+        <a class="cta-main" href="/blog/dax-performance-optimization/">阅读全文 <span aria-hidden="true">→</span></a>
+        <a class="cta-ghost" href="/blog/">全部文章</a>
+      </div>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="/blog/dax-yoy-ytd-formulas/"><strong>同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</strong><span class="related-meta">2026 年 11 月 19 日 · 9 分钟</span></a></li>
+          <li><a href="/blog/power-bi-row-level-security/"><strong>Power BI 行级权限：静态角色与动态角色两套写法</strong><span class="related-meta">2026 年 11 月 18 日 · 7 分钟</span></a></li>
+          <li><a href="/blog/finops-power-bi-dashboard/"><strong>FinOps 云成本分析看板：从原始账单到决策四层</strong><span class="related-meta">2026 年 11 月 17 日 · 11 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
