@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power BI 报表没人用？问题出在上线前 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Power BI 报表没人用，多半不是界面丑或数据不准，而是它没回答任何一个具体决策。这篇给上线前必问的三个问题、报表的四层结构、监控型与分析型与汇报型的分工，以及上线 30 天该看的使用信号。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/power-bi-report-nobody-uses/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/power-bi-report-nobody-uses/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Power BI 报表没人用？问题出在上线前 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Power BI 报表没人用，多半不是界面丑或数据不准，而是它没回答任何一个具体决策。这篇给上线前必问的三个问题、报表的四层结构、监控型与分析型与汇报型的分工，以及上线 30 天该看的使用信号。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/power-bi-report-nobody-uses/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/power-bi-report-nobody-uses/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Power BI 报表没人用？问题出在上线前 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Power BI 报表没人用，多半不是界面丑或数据不准，而是它没回答任何一个具体决策。这篇给上线前必问的三个问题、报表的四层结构、监控型与分析型与汇报型的分工，以及上线 30 天该看的使用信号。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/power-bi-report-nobody-uses/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261123-1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Power BI 报表没人用？问题出在上线前",
+  "description": "Power BI 报表没人用，多半不是界面丑或数据不准，而是它没回答任何一个具体决策。这篇给上线前必问的三个问题、报表的四层结构、监控型与分析型与汇报型的分工，以及上线 30 天该看的使用信号。",
+  "datePublished": "2026-11-25",
+  "dateModified": "2026-11-25",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/power-bi-report-nobody-uses/cover.webp",
+  "keywords": "Power BI 报表没人用、Power BI、报表设计、用户采纳",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/power-bi-report-nobody-uses/"
+  },
+  "wordCount": 2352
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>为什么你的 Power BI 报表上线后没人用？</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-25">2026 年 11 月 25 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>6 分钟读完</span>
+        </p>
+        <h1 class="article-title">为什么你的 Power BI 报表上线后没人用？</h1>
+        <p class="article-lead">报表没人用，根因不是界面和数据，是没对应一个具体决策。上线前三个问题，答不上来就别上。</p>
+        <ul class="post-tags"><li>Power BI</li><li>报表设计</li><li>用户采纳</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="为什么你的 Power BI 报表上线后没人用？" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：报表没人用，不是界面问题，也不是数据问题。是它没有对应任何一个具体的决策。</p>
+<p>我做了 10 年报表。见过验收会上讲得很漂亮的看板，两周后打开访问记录，只有开发和领导本人。也见过长得朴素、就三张图的东西，车间每天开工前都要看一眼。</p>
+<p>差别不在做得好不好看。在于做之前有没有回答一个问题：这张报表上线后，谁会因为看了它而改变一个动作。</p>
+<p>这篇讲四件事：报表没人用的四个常见原因；上线前必须问清楚的三个问题；一张报表该有的四层结构；上线后 30 天该看什么信号。</p>
+<h2 id="报表没人用-先排除这四个原因">报表没人用，先排除这四个原因</h2>
+<p><strong>第一，它其实是汇报用的。</strong></p>
+<p>很多报表从需求开始就是错位的。业务方说要「一个能看到全部数据的看板」，真实用途是季度汇报时截个图。这种报表一年用四次，做得多漂亮都不会有日常访问。</p>
+<p>汇报型报表不是不该做，是别指望它有使用率。它的验收标准是「截图能放进 PPT」，不是「每天有人打开」。</p>
+<p><strong>第二，一屏三十个指标，没有主问题。</strong></p>
+<p>指标越多，看的人越不知道先看哪个。人打开报表的前三秒，是在找一个答案，不是在看一堆数字。找不到，就关了。</p>
+<p><strong>第三，数字对不上，没人解释。</strong></p>
+<p>两个部门报出两个销售额，或者报表和财务系统差几百块。第一次有人问，答不上来；第二次就没人问了，回去自己拉 Excel。信任一旦掉了，很难捡回来。</p>
+<p><strong>第四，出了问题找不到人。</strong></p>
+<p>刷新失败、口径变了、维度对不上，不知道找谁。一张没人负责的报表，用户不敢拿它做决定。</p>
+<p>这四条里，第一条和第二条是设计问题，第三条和第四条是治理问题。四个都占，报表基本就是废的。</p>
+<img alt="报表没人用，先排除这四个原因" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="上线前必问的三个问题">上线前必问的三个问题</h2>
+<p>这张清单我只保留三个问题。答不上来任何一个，就先别上线。</p>
+<h3 id="问题一-谁会看-具体到岗位和场景">问题一：谁会看？具体到岗位和场景</h3>
+<p>「领导会看」不算答案。要看的是：哪个岗位、在什么时间、坐在哪里、打开它之前刚做完什么。</p>
+<p>销售总监是周一早上看上周区域达成，还是每天下午看当日回款？生产经理是班前会前看，还是设备报警时看？场景不同，同一张报表的设计完全不一样。</p>
+<p>一个可操作的判断：如果说不清「他上次是什么时候打开的」，这张报表大概率没人用。</p>
+<h3 id="问题二-看到什么数-他会改什么动作">问题二：看到什么数，他会改什么动作？</h3>
+<p>这是三个问题里最硬的。报表的价值不在展示，在触发。</p>
+<p>比如：某区域回款率低于 85%，销售总监当天要给区域经理打电话。某条产线良率连续两天低于 97%，生产经理要去现场看。某客户毛利率跌破 15%，客户经理要重谈价格。</p>
+<p>这些「看到 A 就做 B」的规则，才是报表真正的需求。没有触发规则，报表就只是一张图。</p>
+<p>写规则的时候，阈值要具体。不是「回款不好要关注」，是「低于 85% 要打电话」。</p>
+<h3 id="问题三-数不对的时候-他找谁">问题三：数不对的时候，他找谁？</h3>
+<p>这个问题决定报表能不能被信任。</p>
+<p>每张报表要有一个口径责任人，一个数据责任人。前者管「这个指标怎么定义」，后者管「数据为什么没刷新、为什么少了」。名字要写在报表上，不是写在需求文档里。</p>
+<p>再加一条：每个关键指标的更新时间要露出来。用户看到「数据截至今天 08:00」，就知道能不能用。看不到时间戳，他就会怀疑。</p>
+<img alt="上线前必问的三个问题" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="按决策倒推-一张报表的四层结构">按决策倒推：一张报表的四层结构</h2>
+<p>三个问题答完，报表的结构其实是定好的。</p>
+<p><strong>第一层，主问题。</strong> 一屏只回答一个问题。这一屏的标题应该是一句人话，比如「本周哪些区域没达成」，不是「销售分析」。</p>
+<p><strong>第二层，异常。</strong> 把需要动作的东西放最上面。达成率低于阈值的区域排前面，颜色和排序都按异常来。正常的部分不用占地方。</p>
+<p><strong>第三层，下钻。</strong> 从异常能点到明细。看到某区域没达成，点进去能看是哪个产品、哪个客户、哪一天掉的。下钻路径要短，三步以内。</p>
+<p><strong>第四层，口径。</strong> 每个指标旁边能查到定义、责任人、更新时间。这一层平时不显眼，但它是信任的地基。</p>
+<p>四层里，最容易被砍掉的是第二层和第四层。砍掉第二层，报表变成数据陈列；砍掉第四层，报表变成一次性用品。</p>
+<h2 id="三类报表-别混着做">三类报表，别混着做</h2>
+<p>一张报表想同时满足所有人，最后谁都满足不了。按用途分三类，分开设计。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>谁看</th>
+<th>频率</th>
+<th>设计重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>监控型</td>
+<td>一线和管理者</td>
+<td>每天</td>
+<td>异常优先，一屏一个结论</td>
+</tr>
+<tr>
+<td>分析型</td>
+<td>分析师、管理者</td>
+<td>出问题时</td>
+<td>能下钻、能换维度、能对比</td>
+</tr>
+<tr>
+<td>汇报型</td>
+<td>管理层、外部</td>
+<td>每月或每季</td>
+<td>排版稳定、能导出、能截图</td>
+</tr>
+</tbody>
+</table>
+<p>监控型的验收标准是「每天有人看」；分析型的验收标准是「出了问题能查清」；汇报型的验收标准是「截图能直接用」。</p>
+<p>把汇报型当监控型做，是使用率低最常见的原因。反过来，把监控型做成汇报型，就是满屏 KPI 卡片。</p>
+<img alt="三类报表，别混着做" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="上线后-30-天-看什么信号">上线后 30 天，看什么信号</h2>
+<p>使用率不能只看打开次数。有人天天打开，可能只是因为它被设成了浏览器首页。</p>
+<p>看四个信号：</p>
+<ol>
+<li><strong>会议里有没有人主动打开它。</strong> 这是最强的信号。有人在大屏上打开、指着某个数说话，说明它进了决策流程。</li>
+<li><strong>有没有人提修改需求。</strong> 提「这个口径不对」「能不能加个下钻」，说明在用。只提「能不能再加个字段」，可能只是想要个数据字典。</li>
+<li><strong>异常有没有引发动作。</strong> 抽查三次报表上的异常，去问对应的负责人有没有处理。没有，说明触发规则是假的。</li>
+<li><strong>口径争议有没有减少。</strong> 同一指标在会上的争论变少，说明报表在替代口头对数。</li>
+</ol>
+<p>30 天里四个信号一个都没有，别急着改配色。回到那三个问题，重答一遍。</p>
+<img alt="上线后 30 天，看什么信号" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+<h2 id="我的判断">我的判断</h2>
+<p>这件事我给三档。</p>
+<p><strong>必须做</strong>：上线前那三个问题，一张报表一张报表地问。这是投入产出最高的一步，半小时能筛掉一半注定没人用的需求。</p>
+<p><strong>值得做</strong>：按监控型、分析型、汇报型分开建。工作量增加不多，但每张报表的目标清楚了。</p>
+<p><strong>可以先放</strong>：美化、动效、复杂的书签导航。在没人用之前，这些都不解决问题。</p>
+<p>还有一条边界：如果没人用的原因是「数据本身不可信」，那不是报表设计能解决的。先去治理口径，再谈使用率。我这些年的第一条方法论就是「先问清楚要做什么决定」，不是「先把数据接进来」。</p>
+<p>一张报表的成败，在上线前就定了。上线后做的，只是验证。</p>
+<p>报表设计和口径治理的具体做法，<a href="../../blog/">博客</a>里按主题分过类。需要有人把现有报表盘一遍、给出改造顺序的，属于<a href="../../#services">服务</a>里的评估环节，<a href="../../#contact">联系</a>页可以约。</p>
+<p>你手上那张没人用的报表，卡在三个问题里的哪一个？</p>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#报表没人用-先排除这四个原因">报表没人用，先排除这四个原因</a></li><li><a href="#上线前必问的三个问题">上线前必问的三个问题</a></li><li><a href="#按决策倒推-一张报表的四层结构">按决策倒推：一张报表的四层结构</a></li><li><a href="#三类报表-别混着做">三类报表，别混着做</a></li><li><a href="#上线后-30-天-看什么信号">上线后 30 天，看什么信号</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="../../blog/excel-to-power-bi-migration/"><strong>把 Excel 报表迁到 Power BI：迁移清单与避坑指南</strong><span class="related-meta">2026 年 11 月 24 日 · 8 分钟</span></a></li>
+          <li><a href="../../blog/chengdu-power-bi-data-sources/"><strong>成都 Power BI 开发：数据源通常从哪四类系统来</strong><span class="related-meta">2026 年 11 月 23 日 · 10 分钟</span></a></li>
+          <li><a href="../../blog/powerbi-ai-task-unit/"><strong>从写 DAX 到接任务：这五条更新指向同一个方向</strong><span class="related-meta">2026 年 11 月 21 日 · 12 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/excel-to-power-bi-migration/"><span class="dir">← 上一篇</span><strong>把 Excel 报表迁到 Power BI：迁移清单与避坑指南</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
