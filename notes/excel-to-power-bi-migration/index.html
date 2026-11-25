@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Excel 迁移 Power BI：清单与避坑指南 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Excel 迁移 Power BI 不是把表格原样搬过去。这篇先给判断标准：哪些报表值得迁、哪些别迁；再给七步迁移清单、Excel 公式到 DAX 的对照写法，以及必须先改掉的 7 个 Excel 习惯。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/excel-to-power-bi-migration/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261125-1">
+
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <p class="article-meta">
+          <time datetime="2026-11-24">2026 年 11 月 24 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>8 分钟读完</span>
+        </p>
+        <h1 class="article-title">把 Excel 报表迁到 Power BI：迁移清单与避坑指南</h1>
+        <p class="article-lead">先给结论：值得迁的是重复出报表那部分活，不是表格。附清单、公式翻译和 7 个要改的习惯。</p>
+        <ul class="post-tags"><li>Power BI</li><li>Excel</li><li>DAX</li><li>Power Query</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="/blog/excel-to-power-bi-migration/cover.webp" alt="把 Excel 报表迁到 Power BI：迁移清单与避坑指南" loading="lazy">
+    </figure>
+    <div class="blog-wrap">
+      <div class="article-cta">
+        <a class="cta-main" href="/blog/excel-to-power-bi-migration/">阅读全文 <span aria-hidden="true">→</span></a>
+        <a class="cta-ghost" href="/blog/">全部文章</a>
+      </div>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="/blog/get-data-redesign/"><strong>Get Data 改版：386 条反馈里，24 人卡在同一处</strong><span class="related-meta">2026 年 11 月 5 日 · 9 分钟</span></a></li>
+          <li><a href="/blog/dax-yoy-ytd-formulas/"><strong>同比环比 YTD 在 DAX 里怎么写：一份可复制的公式模板</strong><span class="related-meta">2026 年 11 月 19 日 · 9 分钟</span></a></li>
+          <li><a href="/blog/power-bi-row-level-security/"><strong>Power BI 行级权限：静态角色与动态角色两套写法</strong><span class="related-meta">2026 年 11 月 18 日 · 7 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
