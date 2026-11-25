@@ -1,5 +1,6 @@
 {
   "slugs": [
+    "ai-ask-data-semantic-model",
     "ai-dax-acceptance",
     "chengdu-power-bi-data-sources",
     "dax-performance-optimization",
@@ -17,5 +18,5 @@
     "sap-bw-powerbi-connection",
     "semantic-model-open-both-ends"
   ],
-  "updated": "2026-11-25"
+  "updated": "2026-11-26"
 }

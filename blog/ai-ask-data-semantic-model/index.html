@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 问数 语义模型：为什么别让 AI 直连数据库 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="AI 问数直连数据库，演示惊艳，生产危险。权限会被只读账号绕过，口径每次现写 SQL 都不一致，成本是全表扫描。这篇讲清五堵墙，以及为什么自然语言应该架在语义模型之上，并给出五步落地顺序和可以直连的例外情形。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/ai-ask-data-semantic-model/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/ai-ask-data-semantic-model/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 问数 语义模型：为什么别让 AI 直连数据库 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="AI 问数直连数据库，演示惊艳，生产危险。权限会被只读账号绕过，口径每次现写 SQL 都不一致，成本是全表扫描。这篇讲清五堵墙，以及为什么自然语言应该架在语义模型之上，并给出五步落地顺序和可以直连的例外情形。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/ai-ask-data-semantic-model/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/ai-ask-data-semantic-model/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 问数 语义模型：为什么别让 AI 直连数据库 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="AI 问数直连数据库，演示惊艳，生产危险。权限会被只读账号绕过，口径每次现写 SQL 都不一致，成本是全表扫描。这篇讲清五堵墙，以及为什么自然语言应该架在语义模型之上，并给出五步落地顺序和可以直连的例外情形。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/ai-ask-data-semantic-model/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261125-1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI 问数 语义模型：为什么别让 AI 直连数据库",
+  "description": "AI 问数直连数据库，演示惊艳，生产危险。权限会被只读账号绕过，口径每次现写 SQL 都不一致，成本是全表扫描。这篇讲清五堵墙，以及为什么自然语言应该架在语义模型之上，并给出五步落地顺序和可以直连的例外情形。",
+  "datePublished": "2026-11-26",
+  "dateModified": "2026-11-26",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/ai-ask-data-semantic-model/cover.webp",
+  "keywords": "AI 问数 语义模型、Power BI、语义模型、AI 问数",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/ai-ask-data-semantic-model/"
+  },
+  "wordCount": 2112
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>智能问数让 AI 直连数据库？我建议你别这么做</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-26">2026 年 11 月 26 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>5 分钟读完</span>
+        </p>
+        <h1 class="article-title">智能问数让 AI 直连数据库？我建议你别这么做</h1>
+        <p class="article-lead">AI 直连库做问数，演示很惊艳，上生产就是事故。语义模型不是包袱，是权限、口径和可解释性的底座。</p>
+        <ul class="post-tags"><li>Power BI</li><li>语义模型</li><li>AI 问数</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="智能问数让 AI 直连数据库？我建议你别这么做" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：AI 问数可以接语义模型，不要直连数据库。演示环境里直连很爽，生产环境里它是事故的起点。</p>
+<p>11 月 17 日 Power BI 团队在 Ignite 的发布说明里，Power BI Desktop for Apps 是这样描述的——「先选一个你已经信任的语义模型，用自然语言描述你要的 app，agent 帮你搭出来」。这句话值得多看两眼：微软把自然语言放在了语义模型之上，而不是数据库之上。</p>
+<p>大多数「智能问数」的方案图，箭头是反的。</p>
+<h2 id="演示为什么好看">演示为什么好看</h2>
+<p>演示环境有三个默认条件，生产环境一个都没有。</p>
+<p>第一，表少。三张表能 JOIN 出全部答案，AI 随便写都不会错。</p>
+<p>第二，数据小。两万行，全表扫描也就几十毫秒。</p>
+<p>第三，没权限。演示账号是全局只读，所有人都能问所有数据。</p>
+<p>这三条在真实系统里全部失效。真实环境是 200 张表、十亿行明细、28 个业务单元各有各的可见范围。演示跑通的东西，到这一步才开始暴露问题。</p>
+<img alt="演示为什么好看" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="直连库在生产上的五堵墙">直连库在生产上的五堵墙</h2>
+<h3 id="一-权限墙-只读账号绕过行级安全">一、权限墙：只读账号绕过行级安全</h3>
+<p>直连库的账号通常是「全库只读」。数据库里要么没有行级安全，要么有但没人配过。</p>
+<p>AI 一旦能自由写 SQL，它就能查到不该看的那部分。销售总监问一句「各事业部的毛利率」，返回的就是全公司的毛利率。</p>
+<p>语义模型里，RLS（行级安全）是模型的一部分。我做过的 FinOps 看板，27 个业务单元对应 28 个 RLS 角色，权限写在模型里，换前端、换工具都还在。这层东西在数据库里做，工作量和维护成本是另一个量级。</p>
+<h3 id="二-口径墙-同一个问题-三次三个答案">二、口径墙：同一个问题，三次三个答案</h3>
+<p>「回款率」在你公司有几个算法？财务按开票日算，销售按合同签订日算。</p>
+<p>直连库时，AI 每次现场生成 SQL。今天 JOIN 这张表，明天换那张，后天把条件写进 WHERE。同一个问题问三次，得到三个数，而且都「看起来对」。</p>
+<p>语义模型里，口径固定在度量值上：</p>
+<pre><code class="language-DAX">回款率 = DIVIDE ( [已回款金额], [应收金额] )
+</code></pre>
+<p>分子分母各是一个度量值，过滤条件写死在 <code>CALCULATE</code> 里。谁问、通过什么工具问，都是同一段逻辑。这就是「语义」两个字的实际含义——不是给 AI 看的提示词，是给整个组织看的定义。</p>
+<h3 id="三-解释墙-说不清数是怎么来的">三、解释墙：说不清数是怎么来的</h3>
+<p>业务看到数不对，第一句话一定是「这个数怎么来的」。</p>
+<p>直连库的回答只能是一段八十行的 SQL。业务看不懂，IT 要花半天复盘，最后还是「我再查查」。</p>
+<p>语义模型里，点开度量值就是定义、依赖链、最后刷新时间。AI 给的每个数，都能顺着模型回到一个可以被讨论的口径上。</p>
+<h3 id="四-成本墙-每次问数都是全表扫描">四、成本墙：每次问数都是全表扫描</h3>
+<p>直连等于把 BI 的查询压力直接压到业务库上。</p>
+<p>一张十亿行的明细表，AI 生成的 SQL 没有索引意识，也不懂分区。「上个月各区域的销售情况」这种模糊问题，落到执行计划里可能是三张表全扫。轻则慢，重则把订单系统拖住。</p>
+<p>语义模型可以走导入模式，数据是预聚合过的，同样的问答代价小一到两个数量级。这不是优化问题，是能不能上线的问题。</p>
+<h3 id="五-审计墙-日志里只有-sql-没有业务">五、审计墙：日志里只有 SQL，没有业务</h3>
+<p>直连库的审计日志只有语句：谁在几点执行了什么 SQL。</p>
+<p>它回答不了「谁基于这个数做了什么决定」。数据出问题时，你能复盘语句，复盘不了决策链。</p>
+<p>模型层可以记录：谁问的、问的什么业务问题、命中哪个度量值、返回多少行。这几种信息，才是治理需要的。</p>
+<img alt="直连库在生产上的五堵墙" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="正确的位置-自然语言在模型上面">正确的位置：自然语言在模型上面</h2>
+<p>落地顺序有五步，别跳。</p>
+<ol>
+<li><strong>只暴露模型。</strong> 给 AI 的是已发布的语义模型，不是连接串。模型里有什么，它就只能问什么。</li>
+<li><strong>口径下沉。</strong> 每个要被问到的指标，做成度量值，补上描述、同义词和两三个样例问题。AI 命中率的高低，八成取决于这一步做没做。</li>
+<li><strong>权限在模型层做。</strong> RLS 配好，再用两个不同角色的账号实测一遍。没测过的权限等于没配。</li>
+<li><strong>加护栏。</strong> 只读、返回行数上限、查询超时、生成的查询可回放。护栏不是不信任 AI，是给它划出安全边界。</li>
+<li><strong>先灰度。</strong> 内部五个业务用户先用两周，统计被问最多的问题，把答得不好的回填到模型里。这一轮做完，再谈放开。</li>
+</ol>
+<p>演示和生产的差别，可以压成一张表：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>演示环境</th>
+<th>生产环境</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据规模</td>
+<td>两三张表、万行级</td>
+<td>上百张表、亿行级</td>
+</tr>
+<tr>
+<td>权限</td>
+<td>全局只读</td>
+<td>按业务单元隔离，28 个 RLS 角色</td>
+</tr>
+<tr>
+<td>口径</td>
+<td>现场约定</td>
+<td>必须固定，可追溯</td>
+</tr>
+<tr>
+<td>查询代价</td>
+<td>几十毫秒</td>
+<td>可能压垮业务库</td>
+</tr>
+<tr>
+<td>审计</td>
+<td>不需要</td>
+<td>要能还原决策链</td>
+</tr>
+<tr>
+<td>失败代价</td>
+<td>现场尴尬三分钟</td>
+<td>决策做错，报表失信</td>
+</tr>
+</tbody>
+</table>
+<p>这六行里，只有第一行能用直连糊过去。</p>
+<img alt="正确的位置：自然语言在模型上面" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="我的判断">我的判断</h2>
+<p><strong>语义模型建模：必学。</strong> 这是唯一一处投入一定回本的地方。模型不是给 AI 用的附属品，它是权限、口径、可解释性的共同底座。没有它，AI 问数就只是把 SQL 换成了中文。</p>
+<p><strong>AI 问数接语义模型：可选，先小范围。</strong> 值得做，但要接受一个现实——第一版命中率不会高。命中率是靠样例问题和同义词喂出来的，不是模型自己长出来的。</p>
+<p><strong>AI 直连业务库做问数：观望。</strong> 不是技术上做不到，是不该在承载决策的系统上做。</p>
+<p>唯一可以直连的情形：单表、小样本、已脱敏、只读副本、不承载任何决策。这种叫沙箱，不叫生产。拿沙箱的效果去汇报生产方案，是过去两年 AI 项目最常见的失误。</p>
+<p>如果你正在给公司选问数方案，先问供应商一个问题：它连的是库，还是模型？答案会省掉后面很多事。需要一起把模型层和问数范围理清楚，可以看看<a href="../../#services">我们的服务</a>，或者直接<a href="../../#contact">联系我们</a>；之前写过的报表设计方法都在<a href="../../blog/">博客</a>里。</p>
+<p>你手上的问数需求，AI 现在连的是哪个库？</p>
+<img alt="我的判断" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#演示为什么好看">演示为什么好看</a></li><li><a href="#直连库在生产上的五堵墙">直连库在生产上的五堵墙</a></li><li><a href="#正确的位置-自然语言在模型上面">正确的位置：自然语言在模型上面</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="../../blog/semantic-model-open-both-ends/"><strong>语义模型两头被打开：这 5 条更新指向同一件事</strong><span class="related-meta">2026 年 11 月 12 日 · 11 分钟</span></a></li>
+          <li><a href="../../blog/power-bi-report-nobody-uses/"><strong>为什么你的 Power BI 报表上线后没人用？</strong><span class="related-meta">2026 年 11 月 25 日 · 6 分钟</span></a></li>
+          <li><a href="../../blog/excel-to-power-bi-migration/"><strong>把 Excel 报表迁到 Power BI：迁移清单与避坑指南</strong><span class="related-meta">2026 年 11 月 24 日 · 8 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/power-bi-report-nobody-uses/"><span class="dir">← 上一篇</span><strong>为什么你的 Power BI 报表上线后没人用？</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>
