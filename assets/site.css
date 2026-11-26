@@ -1322,14 +1322,88 @@ html.nav-open body { overflow: hidden; }
 
 .about-proof ul {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
   margin: 18px 0 0;
   padding: 0;
   list-style: none;
 }
 
-/* 四个入口在四列、两列、一列下都能整除，任何宽度都不会落单 */
+.about-proof li { display: flex; }
+
+/* 每个入口是一张可点的卡片：序号 + 名称 + 一句说明，悬停整卡转品牌黄 */
+.about-proof a {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 18px 17px;
+  border: 1px solid rgba(20, 20, 19, 0.14);
+  border-radius: 16px;
+  background: var(--bg);
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    background 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+
+.about-proof a:hover,
+.about-proof a:focus-visible {
+  background: var(--accent);
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.proof-num {
+  flex: none;
+  padding-top: 2px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+  transition: color 0.25s var(--ease);
+}
+
+.about-proof a:hover .proof-num { color: var(--accent-ink); }
+
+.proof-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.proof-main strong {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.proof-main span {
+  font-size: var(--fs-mini);
+  line-height: 1.55;
+  color: var(--muted);
+  transition: color 0.25s var(--ease);
+}
+
+.about-proof a:hover .proof-main span { color: var(--accent-ink); }
+
+.proof-arrow {
+  flex: none;
+  font-size: 0.9375rem;
+  color: var(--faint);
+  transition: transform 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.about-proof a:hover .proof-arrow {
+  transform: translateX(3px);
+  color: var(--accent-ink);
+}
+
 @media (max-width: 1080px) {
   .about-proof ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1337,28 +1411,6 @@ html.nav-open body { overflow: hidden; }
 @media (max-width: 560px) {
   .about-proof ul { grid-template-columns: 1fr; }
 }
-
-.about-proof a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: var(--fs-body);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  text-decoration: none;
-  transition: color 0.2s var(--ease);
-}
-
-.about-proof a::after {
-  content: "→";
-  color: var(--muted);
-  font-weight: 400;
-  transition: translate 0.2s var(--ease);
-}
-
-.about-proof a:hover { color: var(--muted); }
-.about-proof a:hover::after { translate: 4px 0; }
 
 /* 客户原话：只写匿名到“行业 · 角色”，不摆姓名和头衔 */
 .about-voices {
