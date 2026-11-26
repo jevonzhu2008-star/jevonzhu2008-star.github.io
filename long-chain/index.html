@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>某教育硬件品牌 · 长链任务分析演示汇报 | Jevon Zhu</title>
+<meta name="description" content="智能问数长链任务分析演示：一次提问自动生成 39 页销售洞察汇报，含章节规划、逐页取数、结论归因、行动清单与 DAX 附录。数据为合成演示数据。">
+<link rel="canonical" href="https://ipowerbi.icu/long-chain/">
+<meta property="og:title" content="某教育硬件品牌 · 长链任务分析演示汇报">
+<meta property="og:description" content="一次提问跑完 39 页分析链：章节规划、逐页 DAX 取数、结论归因、P0/P1/P2 行动清单。">
+<style>:root{color-scheme:light;--paper:#f4f6fa;--card:#fff;--ink:#17202c;--muted:#5c6675;--faint:#66707f;--line:#e2e7ef;--line-strong:#cdd5e1;--accent:#1f5eff;--accent-deep:#1749d6;--success:#0d7a52;--danger:#b42318;--warning:#9a5b00}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:#cfe0ff}
+.deck-stage{position:fixed;left:50%;top:calc(50% - 18px);width:1280px;height:720px;transform-origin:center center;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(18,27,43,.05),0 24px 60px -40px rgba(18,27,43,.45);overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;gap:16px;padding:44px 60px 34px;background:var(--card);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto}
+.slide-head{display:flex;flex-direction:column;gap:6px;flex:none}
+.kicker{font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.slide-head h2{font-size:27px;line-height:1.28;font-weight:650;letter-spacing:-.015em;margin:0;color:var(--ink)}
+.slide-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:14px}
+.headline{font-size:21px;line-height:1.46;font-weight:600;letter-spacing:-.01em;margin:0;color:#101a26;max-width:1120px}
+.insight-cols{flex:1;min-height:0;display:grid;grid-template-columns:1.55fr 1fr;gap:24px}
+.chart-figure{width:100%;align-self:start;margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px 8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.chart-figure svg{width:100%;height:auto;flex:none}
+.chart-figure figcaption{font-size:11px;color:var(--faint);padding-top:2px;flex:none}
+.chart-empty{display:flex;align-items:center;justify-content:center;min-height:320px;color:var(--faint);font-size:13px;background:var(--paper);border-radius:10px}
+.chart-empty-only{border-style:dashed}
+.insight-side{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+.kpis{display:flex;flex-wrap:wrap;gap:8px}
+.kpi{flex:1 1 120px;max-width:240px;min-width:0;border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:var(--card);display:flex;flex-direction:column;gap:2px}
+.kpi-label{font-size:10.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-value{font-size:19px;font-weight:650;letter-spacing:-.02em;white-space:nowrap}
+.kpi.negative .kpi-value{color:var(--danger)}
+.kpi.positive .kpi-value{color:var(--success)}
+.kpi.neutral .kpi-value{color:var(--ink)}
+.side-title{font-size:11.5px;font-weight:600;letter-spacing:.05em;color:var(--faint);margin:2px 0 0;text-transform:uppercase}
+.bullets{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.5;color:#2b3543}
+.bullets li::marker{color:var(--accent)}
+.slide-warning{font-size:11px;color:var(--warning);background:#fff6e6;border:1px solid #f0d9ad;border-radius:8px;padding:7px 9px;margin:auto 0 0}
+.provenance{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:3px}
+.provenance-label{font-size:10px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
+.provenance p{margin:0;font-size:10.5px;line-height:1.5;color:var(--faint)}
+.provenance p:first-of-type{color:var(--muted)}
+.slide-foot{flex:none;display:flex;justify-content:space-between;gap:18px;font-size:10px;color:var(--faint);border-top:1px solid var(--line);padding-top:9px}
+.cover-top{display:flex;align-items:center;gap:12px;flex:none}
+.brand-mark{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:14px;font-weight:650}
+.cover-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
+.slide-cover h1{font-size:44px;line-height:1.2;letter-spacing:-.025em;font-weight:650;margin:34px 0 0;max-width:1040px}
+.cover-sub{font-size:19px;line-height:1.5;color:var(--muted);margin:14px 0 0;max-width:900px}
+.cover-warning{margin:16px 0 0;padding:8px 12px;border-radius:9px;background:#fff6e6;border:1px solid #f0d9ad;color:var(--warning);font-size:12px;align-self:flex-start}
+.cover-chapters{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 36px;max-width:880px;margin:34px 0 0;padding:0}
+.cover-chapters li{display:flex;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:#3a4554}
+.cover-chapters span{font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.cover-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:auto 0 0;padding-top:18px;border-top:1px solid var(--line)}
+.cover-meta div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cover-meta dt{font-size:10.5px;color:var(--faint);letter-spacing:.04em}
+.cover-meta dd{margin:0;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cover-foot{margin:16px 0 0;font-size:11px;color:var(--faint)}
+.summary-grid{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.summary-grid.summary-single{grid-template-columns:1fr}
+.summary-block{border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
+.summary-block h3{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin:0;text-transform:uppercase}
+.summary-block ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.55}
+.summary-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:auto;padding-top:8px}
+.summary-kpi{display:flex;flex-direction:column;gap:3px;border-top:2px solid var(--accent);padding-top:10px;min-width:0}
+.summary-kpi span{font-size:10.5px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.summary-kpi strong{font-size:20px;font-weight:650;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.summary-kpi small{font-size:10px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slide-actions .action-columns{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.slide-actions .action-columns.single{grid-template-columns:1fr}
+.action-block{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:var(--card);min-height:0;overflow:hidden}
+.action-block h3{font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin:0;text-transform:uppercase}
+.check-list,.action-list{display:flex;flex-direction:column;gap:9px;overflow:hidden}
+.check-row,.action-row{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid var(--divider);padding-bottom:8px}
+.check-row:last-child,.action-row:last-child{border-bottom:0;padding-bottom:0}
+.check-sev{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:650;color:#fff}
+.check-sev.high{background:var(--danger)}
+.check-sev.mid{background:var(--warn)}
+.check-sev.low{background:var(--success)}
+.action-pri{flex:none;min-width:30px;height:22px;padding:0 5px;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff}
+.action-pri.p0{background:var(--danger)}
+.action-pri.p1{background:var(--accent)}
+.action-pri.p2{background:var(--muted)}
+.check-issue,.action-text{margin:0;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.check-meta,.action-meta{margin:2px 0 0;font-size:10.5px;color:var(--faint);line-height:1.45}
+.slide-appendix .slide-head h2{font-size:24px}
+.appendix-meta{font-size:10.5px;color:var(--faint);margin:0;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appendix-warnings{font-size:10.5px;color:var(--warning);background:#fff6e6;border:1px solid #f0d9ad;border-radius:8px;padding:7px 10px;flex:none}
+.appendix-warnings ul{margin:3px 0 0;padding-left:16px}
+.query-list{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;overflow:visible}
+.query-card{border:1px solid var(--line);border-radius:10px;padding:7px 11px;background:var(--card);flex:none}
+.query-card summary{cursor:pointer;font-size:11px;font-weight:600;color:#3a4554;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.query-card summary::-webkit-details-marker{display:none}
+.query-stat{flex:none;color:var(--faint);font-weight:400}
+.query-card pre{margin:5px 0 0;font-family:ui-monospace, "Cascadia Mono", Consolas, monospace;font-size:9px;line-height:1.45;white-space:pre-wrap;word-break:break-all;color:#17202c}
+.query-error{color:var(--danger);font-size:10px;margin:4px 0 0}
+.deck-nav{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 24px -18px rgba(18,27,43,.5);z-index:20}
+.deck-nav button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;height:28px;min-width:28px;padding:0 10px;font-family:inherit;font-size:12px;cursor:pointer}
+.deck-nav button:hover{background:var(--paper);border-color:var(--line-strong)}
+.deck-nav .counter{font-size:11px;color:var(--faint);min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+.deck-progress{position:fixed;left:0;right:0;bottom:0;height:3px;background:#e7ebf2;z-index:21}
+.deck-progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s ease}
+.deck-toc{position:fixed;inset:0;background:rgba(17,24,39,.32);z-index:30;display:none;padding:8vh 8vw}
+.deck-toc.open{display:block}
+.toc-panel{background:#fff;border:1px solid var(--line);border-radius:16px;max-width:820px;max-height:80vh;margin:0 auto;padding:22px 24px;overflow:auto;box-shadow:0 30px 80px -50px rgba(18,27,43,.6)}
+.toc-panel h2{font-size:17px;margin:0 0 14px}
+.toc-group{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.toc-kicker{font-size:10.5px;font-weight:600;letter-spacing:.05em;color:var(--accent);text-transform:uppercase}
+.toc-item{text-align:left;border:0;background:none;padding:4px 0;font-family:inherit;font-size:13px;color:#2b3543;cursor:pointer}
+.toc-item:hover{color:var(--accent)}
+.toc-item.current{color:var(--accent);font-weight:600}
+.deck-hint{position:fixed;right:14px;bottom:14px;font-size:10.5px;color:var(--faint);z-index:20;background:rgba(255,255,255,.9);padding:4px 8px;border-radius:8px;border:1px solid var(--line)}
+@media print{
+  @page{size:338.67mm 190.5mm;margin:0}
+  html,body{background:#fff}
+  .deck-stage{position:static;transform:none!important;width:1280px;height:auto;border:0;border-radius:0;box-shadow:none;overflow:visible}
+  .slide{position:relative!important;display:flex!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;width:1280px;height:720px;break-after:page;page-break-after:always;transition:none}
+  .deck-nav,.deck-progress,.deck-toc,.deck-hint{display:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+:root{--warn:#9a5b00}
+.slide-appendix .query-card{padding:12px 14px}
+.slide-appendix .query-card+.query-card{margin-top:2px}
+.slide-appendix .query-card summary{font-size:12.5px}
+.slide-appendix .query-card pre{font-size:11px;line-height:1.7}
+.back-home{position:fixed;left:18px;top:14px;z-index:40;font-size:12px;color:#3a4554;text-decoration:none;
+  padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.86);border:1px solid #e2e7ef;backdrop-filter:blur(6px)}
+.back-home:hover{background:#fff;color:#141413}
+.slide-cover .cover-warning{background:#fff6e6;border-color:#f0d9ad;color:#9a5b00}
+.mobile-hint{display:none}
+@media (max-width:720px){
+  .deck-hint{display:none}
+  .deck-nav{left:12px;right:12px;transform:none;justify-content:center;gap:6px}
+  .deck-nav button{white-space:nowrap}
+  .mobile-hint{display:block;position:fixed;left:50%;bottom:64px;transform:translateX(-50%);
+    z-index:35;margin:0;padding:7px 14px;border-radius:999px;background:rgba(20,20,19,.82);color:#fff;
+    font-size:11.5px;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<a class="back-home" href="/">← 返回 ipowerbi.icu</a>
+<div class="deck-stage" id="stage">
+<section class="slide slide-cover">
+  <div class="cover-top"><span class="brand-mark">智</span><span class="cover-eyebrow">数据洞察汇报 · 演示</span></div>
+  <h1>某教育硬件品牌销售洞察报告</h1>
+  <p class="cover-sub">2026 年销售额 2,923.4 万，同比增 21.4%；增长由 C 端拉动，区域达成与毛利结构待优化</p>
+  <p class="cover-warning">演示数据：本报告由合成数据生成，不代表任何企业真实经营结果</p>
+  <ul class="cover-chapters"><li><span>01</span>总体规模与趋势</li><li><span>02</span>产品结构与贡献</li><li><span>03</span>渠道与区域对比</li><li><span>04</span>时间周期与节奏</li><li><span>05</span>客户结构与价值</li><li><span>06</span>异常波动与行动建议</li></ul>
+  <dl class="cover-meta">
+    <div><dt>数据源</dt><dd>某教育硬件品牌销售洞察（演示语义模型）</dd></div>
+    <div><dt>数据覆盖</dt><dd>2026-12-31</dd></div>
+    <div><dt>洞察页</dt><dd>24 页 · 全篇 39 页</dd></div>
+    <div><dt>生成时间</dt><dd>2026-11-26 08:20</dd></div>
+  </dl>
+  <p class="cover-foot">每页标注数据来源与口径，末页附可逐条核验的 DAX 查询附录。</p>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">总体规模与趋势 · 02</span>
+    <h2>整体销售规模与订单量走势</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">销售额从 2023 年 1,809.6 万 增至 2026 年 2,923.4 万，订单量同步扩张</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">400万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">300万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">200万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">100万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><polygon points="70,384 70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2 736,384" fill="#1f5eff" opacity="0.10"/><polyline points="70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2" fill="none" stroke="#1f5eff" stroke-width="2.2" stroke-linejoin="round"/><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/><text x="70.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2023</text><text x="240.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2024</text><text x="410.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2025</text><text x="580.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2026</text></svg><figcaption>月度销售额走势（2023-01 至 2026-12）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">累计销售额</span><span class="kpi-value">¥9,253.8 万</span></div><div class="kpi neutral"><span class="kpi-label">累计订单量</span><span class="kpi-value">20,167</span></div><div class="kpi neutral"><span class="kpi-label">平均客单价</span><span class="kpi-value">¥4,589</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>2026-05 销售额 394.3 万，为报告期内单月最高，订单 820 笔</li><li>2023-12 销售额仅 77.3 万，为报告期低点</li><li>月度客单价在 3,870 至 5,314 元之间波动，均值 4,589 元</li><li>四年销售额复合增长 17.3%</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、客单价</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、客单价 · 数据截至：2026-12-31</span><span>第 2 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">总体规模与趋势 · 03</span>
+    <h2>年度销售额与同比变化</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">年度销售额连续三年增长，2026 年同比增 21.4% 至 2,923.4 万</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">3,000万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">2,250万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">1,500万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">750万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><rect x="106.6" y="178.9" width="93.2" height="205.1" rx="3" fill="#1f5eff"/><text x="153.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2023</text><rect x="273.1" y="144.5" width="93.2" height="239.5" rx="3" fill="#1f5eff"/><text x="319.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2024</text><rect x="439.6" y="111.1" width="93.2" height="272.9" rx="3" fill="#1f5eff"/><text x="486.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2025</text><rect x="606.1" y="52.7" width="93.2" height="331.3" rx="3" fill="#f2c811"/><text x="652.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2026</text><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/></svg><figcaption>各年度销售额（万元）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">2026 年销售额</span><span class="kpi-value">¥2,923.4 万</span></div><div class="kpi positive"><span class="kpi-label">2026 年同比</span><span class="kpi-value">21.4%</span></div><div class="kpi neutral"><span class="kpi-label">2026 年订单量</span><span class="kpi-value">6,310</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>2024 年销售额 2,112.8 万，同比增 16.8%</li><li>2025 年销售额 2,407.9 万，同比增 14.0%</li><li>2026 年销售额 2,923.4 万，同比增 21.4%</li><li>订单量由 2023 年 3,981 笔增至 2026 年 6,310 笔</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、同比变化额</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、同比变化额 · 数据截至：2026-12-31</span><span>第 3 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">总体规模与趋势 · 04</span>
+    <h2>月度销售节奏与季节性</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">5 月是全年峰值 1,286.5 万，12 月为谷底</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">1,500万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">1,125万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">750万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">375万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><rect x="82.2" y="119.0" width="31.1" height="265.0" rx="3" fill="#1f5eff"/><text x="97.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">1月</text><rect x="137.7" y="198.0" width="31.1" height="186.0" rx="3" fill="#1f5eff"/><text x="153.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2月</text><rect x="193.2" y="162.1" width="31.1" height="221.9" rx="3" fill="#1f5eff"/><text x="208.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">3月</text><rect x="248.7" y="225.6" width="31.1" height="158.4" rx="3" fill="#1f5eff"/><text x="264.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">4月</text><rect x="304.2" y="92.4" width="31.1" height="291.6" rx="3" fill="#f2c811"/><text x="319.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">5月</text><rect x="359.7" y="211.3" width="31.1" height="172.7" rx="3" fill="#1f5eff"/><text x="375.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">6月</text><rect x="415.2" y="279.7" width="31.1" height="104.3" rx="3" fill="#1f5eff"/><text x="430.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">7月</text><rect x="470.7" y="220.0" width="31.1" height="164.0" rx="3" fill="#1f5eff"/><text x="486.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">8月</text><rect x="526.2" y="200.6" width="31.1" height="183.4" rx="3" fill="#1f5eff"/><text x="541.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">9月</text><rect x="581.7" y="263.2" width="31.1" height="120.8" rx="3" fill="#1f5eff"/><text x="597.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">10月</text><rect x="637.2" y="238.4" width="31.1" height="145.6" rx="3" fill="#1f5eff"/><text x="652.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">11月</text><rect x="692.7" y="300.2" width="31.1" height="83.8" rx="3" fill="#1f5eff"/><text x="708.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">12月</text><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/></svg><figcaption>各月份累计销售额（四年合计，季节性）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">峰值月</span><span class="kpi-value">1,286.5 万</span></div><div class="kpi negative"><span class="kpi-label">谷值月</span><span class="kpi-value">369.9 万</span></div><div class="kpi neutral"><span class="kpi-label">月均</span><span class="kpi-value">771.1 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>5 月累计 1,286.5 万，订单 2,800 笔，为各月最高</li><li>1 月 1,169.2 万、3 月 978.9 万，年初为次高峰</li><li>12 月仅 369.9 万，为全年最低月份</li><li>旺季三个月合计 3,434.6 万，占全期 37.1%</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量 · 数据截至：2026-12-31</span><span>第 4 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">总体规模与趋势 · 05</span>
+    <h2>客单价与单均购买量水平</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">客单价长期稳定在 4,589 元附近，月度波动区间 3,870 至 5,314 元</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">6,000</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">4,500</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">3,000</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">1,500</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0</text><polygon points="70,384 70.0,82.9 84.2,108.7 98.3,147.0 112.5,125.3 126.7,130.6 140.9,159.2 155.0,127.4 169.2,108.6 183.4,128.4 197.5,164.7 211.7,144.1 225.9,99.7 240.0,136.3 254.2,101.4 268.4,110.9 282.6,120.6 296.7,149.3 310.9,134.7 325.1,130.2 339.2,125.1 353.4,127.7 367.6,119.3 381.7,97.6 395.9,94.8 410.1,111.8 424.3,133.6 438.4,136.8 452.6,132.3 466.8,108.9 480.9,150.2 495.1,110.8 509.3,110.1 523.4,154.3 537.6,124.3 551.8,99.8 566.0,125.0 580.1,114.2 594.3,124.5 608.5,132.3 622.6,118.9 636.8,111.5 651.0,121.5 665.1,112.0 679.3,121.2 693.5,113.6 707.7,137.6 721.8,121.8 736.0,147.9 736,384" fill="#1f5eff" opacity="0.10"/><polyline points="70.0,82.9 84.2,108.7 98.3,147.0 112.5,125.3 126.7,130.6 140.9,159.2 155.0,127.4 169.2,108.6 183.4,128.4 197.5,164.7 211.7,144.1 225.9,99.7 240.0,136.3 254.2,101.4 268.4,110.9 282.6,120.6 296.7,149.3 310.9,134.7 325.1,130.2 339.2,125.1 353.4,127.7 367.6,119.3 381.7,97.6 395.9,94.8 410.1,111.8 424.3,133.6 438.4,136.8 452.6,132.3 466.8,108.9 480.9,150.2 495.1,110.8 509.3,110.1 523.4,154.3 537.6,124.3 551.8,99.8 566.0,125.0 580.1,114.2 594.3,124.5 608.5,132.3 622.6,118.9 636.8,111.5 651.0,121.5 665.1,112.0 679.3,121.2 693.5,113.6 707.7,137.6 721.8,121.8 736.0,147.9" fill="none" stroke="#1f5eff" stroke-width="2.2" stroke-linejoin="round"/><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/><text x="70.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2023</text><text x="240.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2024</text><text x="410.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2025</text><text x="580.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2026</text></svg><figcaption>月度客单价走势（元）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">平均客单价</span><span class="kpi-value">¥4,589</span></div><div class="kpi positive"><span class="kpi-label">最高</span><span class="kpi-value">¥5,314</span></div><div class="kpi negative"><span class="kpi-label">最低</span><span class="kpi-value">¥3,870</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>2023-01 客单价 5,314 元，为报告期最高</li><li>2023-10 客单价 3,870 元，为最低</li><li>客单价各月围绕均值波动，没有持续上行趋势</li><li>B 端批量订单压低了整体客单价，C 端单品价格带更高</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：客单价、销售额、订单量</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：客单价、销售额、订单量 · 数据截至：2026-12-31</span><span>第 5 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">总体规模与趋势 · 归因 · 06</span>
+    <h2>总体规模与趋势 · 关键指标归因</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">销售额同比增 515.5 万，C 端贡献 51.8% 为主因</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="160.0" text-anchor="end" font-size="11.5" fill="#3a4554">C 端</text><rect x="150" y="132.1" width="550.0" height="47.8" rx="3" fill="#f2c811"/><text x="708.0" y="160.0" font-size="10.5" fill="#66707f">+267.0 万</text><text x="132" y="252.0" text-anchor="end" font-size="11.5" fill="#3a4554">B 端</text><rect x="150" y="224.1" width="511.9" height="47.8" rx="3" fill="#1f5eff"/><text x="669.9" y="252.0" font-size="10.5" fill="#66707f">+248.5 万</text></svg><figcaption>各产品类别销售额同比变化</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">销售额同比增量</span><span class="kpi-value">¥515.5 万</span></div><div class="kpi positive"><span class="kpi-label">C 端增幅</span><span class="kpi-value">20.4%</span></div><div class="kpi neutral"><span class="kpi-label">利润同比增量</span><span class="kpi-value">¥71.3 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>C 端本期 1,577.1 万，较上年增加 267.0 万，增幅 20.4%</li><li>B 端本期 1,346.4 万，较上年增加 248.5 万，增幅 22.6%</li><li>C 端利润增加 43.7 万，高于 B 端的 27.6 万</li><li>两类机型订单量分别增加 891 笔和 150 笔</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：本期销售额、上年销售额、销售额变化</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：本期销售额、上年销售额、销售额变化 · 数据截至：2026-12-31</span><span>第 6 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">产品结构与贡献 · 07</span>
+    <h2>产品品类销售构成</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">B 端贡献销售额 45.4%、销量 45.4%，客单价低于 C 端</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="160.0" text-anchor="end" font-size="11.5" fill="#3a4554">B 端</text><rect x="150" y="132.1" width="456.8" height="47.8" rx="3" fill="#f2c811"/><text x="614.8" y="160.0" font-size="10.5" fill="#66707f">4,198.6 万 · 45.4%</text><text x="132" y="252.0" text-anchor="end" font-size="11.5" fill="#3a4554">C 端</text><rect x="150" y="224.1" width="550.0" height="47.8" rx="3" fill="#1f5eff"/><text x="708.0" y="252.0" font-size="10.5" fill="#66707f">5,055.1 万 · 54.6%</text></svg><figcaption>B 端与 C 端机型销售额对比</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">总销售额</span><span class="kpi-value">¥9,253.8 万</span></div><div class="kpi neutral"><span class="kpi-label">B 端占比</span><span class="kpi-value">45.4%</span></div><div class="kpi positive"><span class="kpi-label">C 端客单价</span><span class="kpi-value">¥3,067</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>B 端销售额 4,198.6 万，占比 45.4%，销量 15,050 台，客单价 ¥11,394</li><li>C 端销售额 5,055.1 万，占比 54.6%，销量 18,117 台，客单价 ¥3,067</li><li>C 端客单价比 B 端高 ¥-8,327，销售额占比却低 -9.3 个百分点</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、销量、销售额占比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、销量、销售额占比 · 数据截至：2026-12-31</span><span>第 7 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">产品结构与贡献 · 08</span>
+    <h2>产品销售额排名与集中度</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">教师平板 B9 以 19.7% 销售额居首，前 5 款合计贡献 79.2%</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="46.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B9</text><rect x="150" y="30.9" width="550.0" height="23.7" rx="3" fill="#f2c811"/><text x="708.0" y="46.8" font-size="10.5" fill="#66707f">1,820.9 万 · 19.7%</text><text x="132" y="92.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A90</text><rect x="150" y="76.4" width="533.8" height="23.7" rx="3" fill="#1f5eff"/><text x="691.8" y="92.2" font-size="10.5" fill="#66707f">1,767.2 万 · 19.1%</text><text x="132" y="137.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B8</text><rect x="150" y="121.9" width="468.0" height="23.7" rx="3" fill="#1f5eff"/><text x="626.0" y="137.8" font-size="10.5" fill="#66707f">1,549.4 万 · 16.7%</text><text x="132" y="183.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A80</text><rect x="150" y="167.4" width="403.3" height="23.7" rx="3" fill="#1f5eff"/><text x="561.3" y="183.2" font-size="10.5" fill="#66707f">1,335.3 万 · 14.4%</text><text x="132" y="228.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A60</text><rect x="150" y="212.9" width="259.0" height="23.7" rx="3" fill="#1f5eff"/><text x="417.0" y="228.8" font-size="10.5" fill="#66707f">857.5 万 · 9.3%</text><text x="132" y="274.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B6</text><rect x="150" y="258.4" width="250.2" height="23.7" rx="3" fill="#1f5eff"/><text x="408.2" y="274.2" font-size="10.5" fill="#66707f">828.4 万 · 9.0%</text><text x="132" y="319.8" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S20</text><rect x="150" y="303.9" width="194.6" height="23.7" rx="3" fill="#1f5eff"/><text x="352.6" y="319.8" font-size="10.5" fill="#66707f">644.3 万 · 7.0%</text><text x="132" y="365.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S10</text><rect x="150" y="349.4" width="136.2" height="23.7" rx="3" fill="#1f5eff"/><text x="294.2" y="365.2" font-size="10.5" fill="#66707f">450.8 万 · 4.9%</text></svg><figcaption>各产品销售额排名</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">榜首销售额</span><span class="kpi-value">¥1,820.9 万</span></div><div class="kpi neutral"><span class="kpi-label">前 5 款占比</span><span class="kpi-value">79.2%</span></div><div class="kpi neutral"><span class="kpi-label">前 10 款占比</span><span class="kpi-value">100.0%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>教师平板 B9 销售额 1,820.9 万，占比 19.7%</li><li>学习机 A90 销售额 1,767.2 万，占比 19.1%</li><li>前 5 款产品累计占比 79.2%，前 10 款累计 100.0%，头部集中度较高</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、排名、累计占比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、排名、累计占比 · 数据截至：2026-12-31</span><span>第 8 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">产品结构与贡献 · 09</span>
+    <h2>产品利润贡献排名</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">学习机 A90 利润 394.2 万 居首，利润第一名与销售第一名不是同一款</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="46.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A90</text><rect x="150" y="30.9" width="550.0" height="23.7" rx="3" fill="#f2c811"/><text x="708.0" y="46.8" font-size="10.5" fill="#66707f">394.2 万</text><text x="132" y="92.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B9</text><rect x="150" y="76.4" width="513.0" height="23.7" rx="3" fill="#1f5eff"/><text x="671.0" y="92.2" font-size="10.5" fill="#66707f">367.7 万</text><text x="132" y="137.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A80</text><rect x="150" y="121.9" width="343.4" height="23.7" rx="3" fill="#1f5eff"/><text x="501.4" y="137.8" font-size="10.5" fill="#66707f">246.1 万</text><text x="132" y="183.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B8</text><rect x="150" y="167.4" width="255.4" height="23.7" rx="3" fill="#1f5eff"/><text x="413.4" y="183.2" font-size="10.5" fill="#66707f">183.0 万</text><text x="132" y="228.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A60</text><rect x="150" y="212.9" width="180.7" height="23.7" rx="3" fill="#1f5eff"/><text x="338.7" y="228.8" font-size="10.5" fill="#66707f">129.5 万</text><text x="132" y="274.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S20</text><rect x="150" y="258.4" width="73.9" height="23.7" rx="3" fill="#1f5eff"/><text x="231.9" y="274.2" font-size="10.5" fill="#66707f">53.0 万</text><text x="132" y="319.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B6</text><rect x="150" y="303.9" width="60.0" height="23.7" rx="3" fill="#1f5eff"/><text x="218.0" y="319.8" font-size="10.5" fill="#66707f">43.0 万</text><text x="132" y="365.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S10</text><rect x="150" y="349.4" width="38.4" height="23.7" rx="3" fill="#1f5eff"/><text x="196.4" y="365.2" font-size="10.5" fill="#66707f">27.5 万</text></svg><figcaption>各产品利润贡献排名</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">总利润</span><span class="kpi-value">¥1,443.9 万</span></div><div class="kpi positive"><span class="kpi-label">学习机 A90 利润率</span><span class="kpi-value">22.3%</span></div><div class="kpi negative"><span class="kpi-label">教师平板 B9 利润率</span><span class="kpi-value">20.2%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>学习机 A90 利润 394.2 万 排名第 1，销售排名第 2，利润率 22.3%</li><li>教师平板 B9 销售额排名第 1，利润排名第 2，利润率 20.2%</li><li>利润率最高与最低相差 17.1 个百分点</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：利润、销售额、利润排名</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：利润、销售额、利润排名 · 数据截至：2026-12-31</span><span>第 9 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">产品结构与贡献 · 10</span>
+    <h2>产品销量排名与结构</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">教师平板 B8 销量 5,710 台居首，销量与销售额结构明显错位</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="46.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B8</text><rect x="150" y="30.9" width="550.0" height="23.7" rx="3" fill="#f2c811"/><text x="708.0" y="46.8" font-size="10.5" fill="#66707f">5,710 台</text><text x="132" y="92.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B9</text><rect x="150" y="76.4" width="495.3" height="23.7" rx="3" fill="#1f5eff"/><text x="653.3" y="92.2" font-size="10.5" fill="#66707f">5,142 台</text><text x="132" y="137.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A90</text><rect x="150" y="121.9" width="411.7" height="23.7" rx="3" fill="#1f5eff"/><text x="569.7" y="137.8" font-size="10.5" fill="#66707f">4,274 台</text><text x="132" y="183.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B6</text><rect x="150" y="167.4" width="404.4" height="23.7" rx="3" fill="#1f5eff"/><text x="562.4" y="183.2" font-size="10.5" fill="#66707f">4,198 台</text><text x="132" y="228.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A80</text><rect x="150" y="212.9" width="377.0" height="23.7" rx="3" fill="#1f5eff"/><text x="535.0" y="228.8" font-size="10.5" fill="#66707f">3,914 台</text><text x="132" y="274.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A60</text><rect x="150" y="258.4" width="340.2" height="23.7" rx="3" fill="#1f5eff"/><text x="498.2" y="274.2" font-size="10.5" fill="#66707f">3,532 台</text><text x="132" y="319.8" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S20</text><rect x="150" y="303.9" width="314.8" height="23.7" rx="3" fill="#1f5eff"/><text x="472.8" y="319.8" font-size="10.5" fill="#66707f">3,268 台</text><text x="132" y="365.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S10</text><rect x="150" y="349.4" width="301.4" height="23.7" rx="3" fill="#1f5eff"/><text x="459.4" y="365.2" font-size="10.5" fill="#66707f">3,129 台</text></svg><figcaption>各产品销量排名</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">总销量</span><span class="kpi-value">33,167</span></div><div class="kpi neutral"><span class="kpi-label">教师平板 B8 占比</span><span class="kpi-value">17.2%</span></div><div class="kpi neutral"><span class="kpi-label">学生平板 S10 占比</span><span class="kpi-value">9.4%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>教师平板 B8 销量 5,710 台排名第 1，销售额排名第 3</li><li>教师平板 B9 销售额第 1，销量 5,142 台排名第 2</li><li>低价产品走量、高价产品走额，两条结构不一致</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销量、销量排名、销售额</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销量、销量排名、销售额 · 数据截至：2026-12-31</span><span>第 10 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">产品结构与贡献 · 归因 · 11</span>
+    <h2>产品结构与贡献 · 关键指标归因</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">销售额同比增 21.4%，C 端贡献 51.8% 增量，教师平板 B8 单品贡献 28.6%</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="46.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B8</text><rect x="150" y="30.9" width="550.0" height="23.7" rx="3" fill="#f2c811"/><text x="708.0" y="46.8" font-size="10.5" fill="#66707f">+147.7 万</text><text x="132" y="92.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A90</text><rect x="150" y="76.4" width="287.6" height="23.7" rx="3" fill="#1f5eff"/><text x="445.6" y="92.2" font-size="10.5" fill="#66707f">+77.2 万</text><text x="132" y="137.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A80</text><rect x="150" y="121.9" width="281.8" height="23.7" rx="3" fill="#1f5eff"/><text x="439.8" y="137.8" font-size="10.5" fill="#66707f">+75.7 万</text><text x="132" y="183.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B6</text><rect x="150" y="167.4" width="269.1" height="23.7" rx="3" fill="#1f5eff"/><text x="427.1" y="183.2" font-size="10.5" fill="#66707f">+72.3 万</text><text x="132" y="228.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A60</text><rect x="150" y="212.9" width="212.5" height="23.7" rx="3" fill="#1f5eff"/><text x="370.5" y="228.8" font-size="10.5" fill="#66707f">+57.1 万</text><text x="132" y="274.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S10</text><rect x="150" y="258.4" width="108.1" height="23.7" rx="3" fill="#1f5eff"/><text x="266.1" y="274.2" font-size="10.5" fill="#66707f">+29.0 万</text><text x="132" y="319.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B9</text><rect x="150" y="303.9" width="106.4" height="23.7" rx="3" fill="#1f5eff"/><text x="264.4" y="319.8" font-size="10.5" fill="#66707f">+28.6 万</text><text x="132" y="365.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S20</text><rect x="150" y="349.4" width="104.4" height="23.7" rx="3" fill="#1f5eff"/><text x="262.4" y="365.2" font-size="10.5" fill="#66707f">+28.0 万</text></svg><figcaption>各产品销售额同比变化贡献</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">本期销售额</span><span class="kpi-value">¥2,923.4 万</span></div><div class="kpi positive"><span class="kpi-label">销售额变化</span><span class="kpi-value">+515.5 万</span></div><div class="kpi positive"><span class="kpi-label">利润变化</span><span class="kpi-value">+71.3 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>教师平板 B8 销售额变化 147.7 万，占整体增量 28.6%</li><li>学习机 A90 销售额变化 77.2 万，占整体增量 15.0%</li><li>学习机 A80 销售额变化 75.7 万，占整体增量 14.7%</li><li>学生平板 S20 为下滑最大的产品，减少 28.0 万</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：本期销售额、同期销售额、销售额变化</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：本期销售额、同期销售额、销售额变化 · 数据截至：2026-12-31</span><span>第 11 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">渠道与区域对比 · 12</span>
+    <h2>区域销售额与经销商数量对比</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">华东销售额 2,618.0 万 居首，中南经销商最多但单商产出偏低</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="54.3" text-anchor="end" font-size="11.5" fill="#3a4554">华东</text><rect x="150" y="34.6" width="550.0" height="31.5" rx="3" fill="#f2c811"/><text x="708.0" y="54.3" font-size="10.5" fill="#66707f">2,618.0 万 · 28.3%</text><text x="132" y="115.0" text-anchor="end" font-size="11.5" fill="#3a4554">中南</text><rect x="150" y="95.2" width="474.5" height="31.5" rx="3" fill="#1f5eff"/><text x="632.5" y="115.0" font-size="10.5" fill="#66707f">2,258.5 万 · 24.4%</text><text x="132" y="175.7" text-anchor="end" font-size="11.5" fill="#3a4554">华北</text><rect x="150" y="155.9" width="388.6" height="31.5" rx="3" fill="#1f5eff"/><text x="546.6" y="175.7" font-size="10.5" fill="#66707f">1,850.0 万 · 20.0%</text><text x="132" y="236.3" text-anchor="end" font-size="11.5" fill="#3a4554">东北</text><rect x="150" y="216.6" width="297.8" height="31.5" rx="3" fill="#1f5eff"/><text x="455.8" y="236.3" font-size="10.5" fill="#66707f">1,417.7 万 · 15.3%</text><text x="132" y="297.0" text-anchor="end" font-size="11.5" fill="#3a4554">西南</text><rect x="150" y="277.2" width="128.0" height="31.5" rx="3" fill="#1f5eff"/><text x="286.0" y="297.0" font-size="10.5" fill="#66707f">609.5 万 · 6.6%</text><text x="132" y="357.7" text-anchor="end" font-size="11.5" fill="#3a4554">西北</text><rect x="150" y="337.9" width="105.1" height="31.5" rx="3" fill="#1f5eff"/><text x="263.1" y="357.7" font-size="10.5" fill="#66707f">500.2 万 · 5.4%</text></svg><figcaption>各区域销售额对比</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">区域合计销售额</span><span class="kpi-value">¥9,253.8 万</span></div><div class="kpi neutral"><span class="kpi-label">活跃经销商</span><span class="kpi-value">169 家</span></div><div class="kpi positive"><span class="kpi-label">华东占比</span><span class="kpi-value">28.3%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>华东销售额 2,618.0 万，占比 28.3%，经销商 42 家</li><li>中南销售额 2,258.5 万，占比 24.4%，经销商 51 家</li><li>华北销售额 1,850.0 万，占比 20.0%，经销商 22 家</li><li>西北销售额 500.2 万、经销商 13 家，规模与渠道数量均处末位</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、经销商数、订单量</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、经销商数、订单量 · 数据截至：2026-12-31</span><span>第 12 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">渠道与区域对比 · 13</span>
+    <h2>城市维度销售表现</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">苏州销售额 672.4 万 领跑城市榜，TOP20 合计 9,056.4 万</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="96" y="39.2" text-anchor="end" font-size="11.5" fill="#3a4554">苏州</text><rect x="114" y="27.3" width="586.0" height="15.8" rx="3" fill="#f2c811"/><text x="708.0" y="39.2" font-size="10.5" fill="#66707f">672.4 万</text><text x="96" y="69.5" text-anchor="end" font-size="11.5" fill="#3a4554">杭州</text><rect x="114" y="57.6" width="581.0" height="15.8" rx="3" fill="#1f5eff"/><text x="703.0" y="69.5" font-size="10.5" fill="#66707f">666.7 万</text><text x="96" y="99.8" text-anchor="end" font-size="11.5" fill="#3a4554">南京</text><rect x="114" y="87.9" width="574.9" height="15.8" rx="3" fill="#1f5eff"/><text x="696.9" y="99.8" font-size="10.5" fill="#66707f">659.8 万</text><text x="96" y="130.2" text-anchor="end" font-size="11.5" fill="#3a4554">上海</text><rect x="114" y="118.3" width="539.5" height="15.8" rx="3" fill="#1f5eff"/><text x="661.5" y="130.2" font-size="10.5" fill="#66707f">619.0 万</text><text x="96" y="160.5" text-anchor="end" font-size="11.5" fill="#3a4554">郑州</text><rect x="114" y="148.6" width="537.0" height="15.8" rx="3" fill="#1f5eff"/><text x="659.0" y="160.5" font-size="10.5" fill="#66707f">616.2 万</text><text x="96" y="190.8" text-anchor="end" font-size="11.5" fill="#3a4554">长沙</text><rect x="114" y="178.9" width="501.2" height="15.8" rx="3" fill="#1f5eff"/><text x="623.2" y="190.8" font-size="10.5" fill="#66707f">575.1 万</text><text x="96" y="221.2" text-anchor="end" font-size="11.5" fill="#3a4554">广州</text><rect x="114" y="209.3" width="482.1" height="15.8" rx="3" fill="#1f5eff"/><text x="604.1" y="221.2" font-size="10.5" fill="#66707f">553.2 万</text><text x="96" y="251.5" text-anchor="end" font-size="11.5" fill="#3a4554">武汉</text><rect x="114" y="239.6" width="447.9" height="15.8" rx="3" fill="#1f5eff"/><text x="569.9" y="251.5" font-size="10.5" fill="#66707f">513.9 万</text><text x="96" y="281.8" text-anchor="end" font-size="11.5" fill="#3a4554">北京</text><rect x="114" y="269.9" width="426.6" height="15.8" rx="3" fill="#1f5eff"/><text x="548.6" y="281.8" font-size="10.5" fill="#66707f">489.5 万</text><text x="96" y="312.2" text-anchor="end" font-size="11.5" fill="#3a4554">石家庄</text><rect x="114" y="300.3" width="421.0" height="15.8" rx="3" fill="#1f5eff"/><text x="543.0" y="312.2" font-size="10.5" fill="#66707f">483.1 万</text><text x="96" y="342.5" text-anchor="end" font-size="11.5" fill="#3a4554">济南</text><rect x="114" y="330.6" width="385.1" height="15.8" rx="3" fill="#1f5eff"/><text x="507.1" y="342.5" font-size="10.5" fill="#66707f">441.9 万</text><text x="96" y="372.8" text-anchor="end" font-size="11.5" fill="#3a4554">青岛</text><rect x="114" y="360.9" width="379.5" height="15.8" rx="3" fill="#1f5eff"/><text x="501.5" y="372.8" font-size="10.5" fill="#66707f">435.5 万</text></svg><figcaption>重点城市销售额 TOP12（共 20 城）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">TOP20 城市销售额</span><span class="kpi-value">¥9,056.4 万</span></div><div class="kpi positive"><span class="kpi-label">首位城市</span><span class="kpi-value">¥672.4 万</span></div><div class="kpi neutral"><span class="kpi-label">城市均值</span><span class="kpi-value">¥452.8 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>前五城市：苏州 672.4 万、杭州 666.7 万、南京 659.8 万、上海 619.0 万、郑州 616.2 万</li><li>TOP20 城市销售额合计 9,056.4 万，平均每城 452.8 万</li><li>榜尾 重庆 销售额 200.5 万，与首位相差约 3.4 倍</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、经销商数</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、经销商数 · 数据截至：2026-12-31</span><span>第 13 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">渠道与区域对比 · 14</span>
+    <h2>区域经理业绩对比</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">华东区经理销售额 2,618.0 万 最高，六区合计 9,253.8 万</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="54.3" text-anchor="end" font-size="11.5" fill="#3a4554">华东区经理</text><rect x="150" y="34.6" width="550.0" height="31.5" rx="3" fill="#f2c811"/><text x="708.0" y="54.3" font-size="10.5" fill="#66707f">2,618.0 万</text><text x="132" y="115.0" text-anchor="end" font-size="11.5" fill="#3a4554">中南区经理</text><rect x="150" y="95.2" width="474.5" height="31.5" rx="3" fill="#1f5eff"/><text x="632.5" y="115.0" font-size="10.5" fill="#66707f">2,258.5 万</text><text x="132" y="175.7" text-anchor="end" font-size="11.5" fill="#3a4554">华北区经理</text><rect x="150" y="155.9" width="388.6" height="31.5" rx="3" fill="#1f5eff"/><text x="546.6" y="175.7" font-size="10.5" fill="#66707f">1,850.0 万</text><text x="132" y="236.3" text-anchor="end" font-size="11.5" fill="#3a4554">东北区经理</text><rect x="150" y="216.6" width="297.8" height="31.5" rx="3" fill="#1f5eff"/><text x="455.8" y="236.3" font-size="10.5" fill="#66707f">1,417.7 万</text><text x="132" y="297.0" text-anchor="end" font-size="11.5" fill="#3a4554">西南区经理</text><rect x="150" y="277.2" width="128.0" height="31.5" rx="3" fill="#1f5eff"/><text x="286.0" y="297.0" font-size="10.5" fill="#66707f">609.5 万</text><text x="132" y="357.7" text-anchor="end" font-size="11.5" fill="#3a4554">西北区经理</text><rect x="150" y="337.9" width="105.1" height="31.5" rx="3" fill="#1f5eff"/><text x="263.1" y="357.7" font-size="10.5" fill="#66707f">500.2 万</text></svg><figcaption>各区域经理销售额对比</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">区域合计</span><span class="kpi-value">¥9,253.8 万</span></div><div class="kpi positive"><span class="kpi-label">最高区域</span><span class="kpi-value">¥2,618.0 万</span></div><div class="kpi neutral"><span class="kpi-label">区域经理</span><span class="kpi-value">6 人</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>华东区经理 2,618.0 万</li><li>中南区经理 2,258.5 万</li><li>华北区经理 1,850.0 万</li><li>东北区经理 1,417.7 万</li><li>西南区经理 609.5 万</li><li>西北区经理 500.2 万</li><li>最高与最低区域相差 5.2 倍</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、目标销售额、经销商数</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、目标销售额、经销商数 · 数据截至：2026-12-31</span><span>第 14 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">渠道与区域对比 · 15</span>
+    <h2>区域目标达成情况</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">区域目标达成率平均 65.3%，西北 最高、华东 最低</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="96" y="54.3" text-anchor="end" font-size="11.5" fill="#3a4554">西北</text><rect x="114" y="34.6" width="586.0" height="31.5" rx="3" fill="#f2c811"/><text x="708.0" y="54.3" font-size="10.5" fill="#66707f">81.0%</text><text x="96" y="115.0" text-anchor="end" font-size="11.5" fill="#3a4554">西南</text><rect x="114" y="95.2" width="535.4" height="31.5" rx="3" fill="#1f5eff"/><text x="657.4" y="115.0" font-size="10.5" fill="#66707f">74.0%</text><text x="96" y="175.7" text-anchor="end" font-size="11.5" fill="#3a4554">东北</text><rect x="114" y="155.9" width="477.5" height="31.5" rx="3" fill="#1f5eff"/><text x="599.5" y="175.7" font-size="10.5" fill="#66707f">66.0%</text><text x="96" y="236.3" text-anchor="end" font-size="11.5" fill="#3a4554">中南</text><rect x="114" y="216.6" width="441.3" height="31.5" rx="3" fill="#1f5eff"/><text x="563.3" y="236.3" font-size="10.5" fill="#66707f">61.0%</text><text x="96" y="297.0" text-anchor="end" font-size="11.5" fill="#3a4554">华北</text><rect x="114" y="277.2" width="419.6" height="31.5" rx="3" fill="#1f5eff"/><text x="541.6" y="297.0" font-size="10.5" fill="#66707f">58.0%</text><text x="96" y="357.7" text-anchor="end" font-size="11.5" fill="#3a4554">华东</text><rect x="114" y="337.9" width="376.2" height="31.5" rx="3" fill="#1f5eff"/><text x="498.2" y="357.7" font-size="10.5" fill="#66707f">52.0%</text></svg><figcaption>各区域销售目标达成率</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">平均达成率</span><span class="kpi-value">65.3%</span></div><div class="kpi positive"><span class="kpi-label">最高（西北）</span><span class="kpi-value">81.0%</span></div><div class="kpi negative"><span class="kpi-label">最低（华东）</span><span class="kpi-value">52.0%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>西北 达成率 81.0%，目标 617.5 万，实际 500.2 万</li><li>西南 达成率 74.0%，目标 823.6 万，实际 609.5 万</li><li>东北 达成率 66.0%，目标 2,148.0 万，实际 1,417.7 万</li><li>六区达成率全部低于 100%，整体目标偏高或执行不足</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、目标销售额、达成率</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、目标销售额、达成率 · 数据截至：2026-12-31</span><span>第 15 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">渠道与区域对比 · 归因 · 16</span>
+    <h2>渠道与区域对比 · 关键指标归因</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">销售额同比增 21.4%，中南与华北合计贡献 51.5% 的增量</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="74" y="54.3" text-anchor="end" font-size="11.5" fill="#3a4554">中南</text><rect x="92" y="34.6" width="608.0" height="31.5" rx="3" fill="#f2c811"/><text x="708.0" y="54.3" font-size="10.5" fill="#66707f">+141.8 万</text><text x="74" y="115.0" text-anchor="end" font-size="11.5" fill="#3a4554">华北</text><rect x="92" y="95.2" width="530.5" height="31.5" rx="3" fill="#1f5eff"/><text x="630.5" y="115.0" font-size="10.5" fill="#66707f">+123.7 万</text><text x="74" y="175.7" text-anchor="end" font-size="11.5" fill="#3a4554">华东</text><rect x="92" y="155.9" width="509.2" height="31.5" rx="3" fill="#1f5eff"/><text x="609.2" y="175.7" font-size="10.5" fill="#66707f">+118.7 万</text><text x="74" y="236.3" text-anchor="end" font-size="11.5" fill="#3a4554">西北</text><rect x="92" y="216.6" width="218.8" height="31.5" rx="3" fill="#1f5eff"/><text x="318.8" y="236.3" font-size="10.5" fill="#66707f">+51.0 万</text><text x="74" y="297.0" text-anchor="end" font-size="11.5" fill="#3a4554">西南</text><rect x="92" y="277.2" width="211.3" height="31.5" rx="3" fill="#1f5eff"/><text x="311.3" y="297.0" font-size="10.5" fill="#66707f">+49.3 万</text><text x="74" y="357.7" text-anchor="end" font-size="11.5" fill="#3a4554">东北</text><rect x="92" y="337.9" width="133.3" height="31.5" rx="3" fill="#1f5eff"/><text x="233.3" y="357.7" font-size="10.5" fill="#66707f">+31.1 万</text></svg><figcaption>各区域销售额同比变化贡献</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">本期销售额</span><span class="kpi-value">¥2,923.4 万</span></div><div class="kpi positive"><span class="kpi-label">同比增量</span><span class="kpi-value">+515.5 万</span></div><div class="kpi positive"><span class="kpi-label">同比增幅</span><span class="kpi-value">21.4%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>中南 增加 141.8 万，占增量 27.5%</li><li>华北 增加 123.7 万，占增量 24.0%</li><li>华东 增加 118.7 万，占增量 23.0%</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：本期销售额、去年同期销售额、销售额变化</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：本期销售额、去年同期销售额、销售额变化 · 数据截至：2026-12-31</span><span>第 16 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">时间周期与节奏 · 17</span>
+    <h2>年度销售额结构变化</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">2026 年销售额 2,923.4 万，B 端占比降至 46.1%，C 端升至 53.9%</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">2,000万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">1,500万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">1,000万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">500万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><rect x="106.6" y="213.0" width="93.2" height="171.0" rx="3" fill="#1f5eff"/><text x="153.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">C端 2023</text><rect x="273.1" y="186.4" width="93.2" height="197.6" rx="3" fill="#1f5eff"/><text x="319.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">C端 2024</text><rect x="439.6" y="161.3" width="93.2" height="222.7" rx="3" fill="#1f5eff"/><text x="486.2" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">C端 2025</text><rect x="606.1" y="115.9" width="93.2" height="268.1" rx="3" fill="#f2c811"/><text x="652.8" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">C端 2026</text><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/></svg><figcaption>各年度 C 端销售额（万元）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">2026 年销售额</span><span class="kpi-value">¥2,923.4 万</span></div><div class="kpi neutral"><span class="kpi-label">B 端 2026 占比</span><span class="kpi-value">46.1%</span></div><div class="kpi positive"><span class="kpi-label">C 端 2026 占比</span><span class="kpi-value">53.9%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>B 端销售额从 2023 年 803.8 万 增至 2026 年 1,346.4 万，占比由 44.4% 降至 46.1%</li><li>C 端销售额从 2023 年 1,005.8 万 增至 2026 年 1,577.1 万，占比由 55.6% 升至 53.9%</li><li>华东 2026 年销售额 816.3 万、占比 27.9%，区域集中度进一步提升</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、品类占比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、品类占比 · 数据截至：2026-12-31</span><span>第 17 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">时间周期与节奏 · 18</span>
+    <h2>月度环比变化</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">月度销售波动剧烈，2025-06 环比 -48.8% 为最大跌幅</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">400万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">300万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">200万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">100万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><polygon points="70,384 70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2 736,384" fill="#1f5eff" opacity="0.10"/><polyline points="70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2" fill="none" stroke="#1f5eff" stroke-width="2.2" stroke-linejoin="round"/><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/><text x="70.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2023</text><text x="240.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2024</text><text x="410.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2025</text><text x="580.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2026</text></svg><figcaption>月度销售额走势（2023-01 至 2026-12，77.3 万–394.3 万）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi negative"><span class="kpi-label">最大单月跌幅</span><span class="kpi-value">-48.8%</span></div><div class="kpi positive"><span class="kpi-label">最大单月涨幅</span><span class="kpi-value">286.2%</span></div><div class="kpi neutral"><span class="kpi-label">最近一月</span><span class="kpi-value">103.3 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>2025-06 销售额 186.1 万，环比减少 177.5 万，跌幅 -48.8%</li><li>2026-01 销售额 356.6 万，环比增长 286.2%</li><li>2026-12 销售额 103.3 万，环比 -47.7%</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、月度环比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、月度环比 · 数据截至：2026-12-31</span><span>第 18 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">时间周期与节奏 · 19</span>
+    <h2>工作日与周末销售差异</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">工作日销售额占比约 82.0%，周末仅 18.0%，差异显著</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">2,000万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">1,500万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">1,000万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">500万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><rect x="90.9" y="128.6" width="53.3" height="255.4" rx="3" fill="#1f5eff"/><text x="117.6" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周一</text><rect x="186.1" y="120.8" width="53.3" height="263.2" rx="3" fill="#1f5eff"/><text x="212.7" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周二</text><rect x="281.2" y="112.6" width="53.3" height="271.4" rx="3" fill="#f2c811"/><text x="307.9" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周三</text><rect x="376.4" y="136.5" width="53.3" height="247.5" rx="3" fill="#1f5eff"/><text x="403.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周四</text><rect x="471.5" y="131.6" width="53.3" height="252.4" rx="3" fill="#1f5eff"/><text x="498.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周五</text><rect x="566.6" y="252.8" width="53.3" height="131.2" rx="3" fill="#1f5eff"/><text x="593.3" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周六</text><rect x="661.8" y="231.9" width="53.3" height="152.1" rx="3" fill="#1f5eff"/><text x="688.4" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">周日</text><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/></svg><figcaption>各星期销售额（万元）</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">工作日销售额</span><span class="kpi-value">¥7,587.3 万</span></div><div class="kpi neutral"><span class="kpi-label">周末销售额</span><span class="kpi-value">¥1,666.4 万</span></div><div class="kpi positive"><span class="kpi-label">工作日占比</span><span class="kpi-value">82.0%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>工作日合计 7,587.3 万，占全期 82.0%</li><li>周末合计 1,666.4 万，仅占全期 18.0%，工作日是周末的 4.6 倍</li><li>周三销售额 1,596.7 万 为单日最高，周六 771.6 万 为单日最低</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、订单数</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、订单数 · 数据截至：2026-12-31</span><span>第 19 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">时间周期与节奏 · 归因 · 20</span>
+    <h2>时间周期与节奏 · 关键指标归因</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">销售额同比增 515.5 万，C 端贡献 51.8% 的增量</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="160.0" text-anchor="end" font-size="11.5" fill="#3a4554">C 端</text><rect x="150" y="132.1" width="550.0" height="47.8" rx="3" fill="#f2c811"/><text x="708.0" y="160.0" font-size="10.5" fill="#66707f">+267.0 万</text><text x="132" y="252.0" text-anchor="end" font-size="11.5" fill="#3a4554">B 端</text><rect x="150" y="224.1" width="511.9" height="47.8" rx="3" fill="#1f5eff"/><text x="669.9" y="252.0" font-size="10.5" fill="#66707f">+248.5 万</text></svg><figcaption>产品类别销售额变化贡献</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">销售额总增长</span><span class="kpi-value">+515.5 万</span></div><div class="kpi positive"><span class="kpi-label">C 端增幅</span><span class="kpi-value">20.4%</span></div><div class="kpi neutral"><span class="kpi-label">B 端增幅</span><span class="kpi-value">22.6%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>C 端本期 1,577.1 万、上年 1,310.0 万，增长 267.0 万，增幅 20.4%</li><li>B 端本期 1,346.4 万、上年 1,097.9 万，增长 248.5 万，增幅 22.6%</li><li>区域看 中南 增长 141.8 万 为第一驱动</li><li>东北 减少 31.1 万，是唯一负贡献区域</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：本期销售额、上期销售额、销售额变化</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：本期销售额、上期销售额、销售额变化 · 数据截至：2026-12-31</span><span>第 20 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">客户结构与价值 · 21</span>
+    <h2>客户类型销售构成</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">终端柜台贡献 50.4% 销售额，389 家客户撑起过半业绩</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="96" y="114.0" text-anchor="end" font-size="11.5" fill="#3a4554">终端柜台</text><rect x="114" y="86.1" width="586.0" height="47.8" rx="3" fill="#f2c811"/><text x="708.0" y="114.0" font-size="10.5" fill="#66707f">4,660.8 万 · 50.4%</text><text x="96" y="206.0" text-anchor="end" font-size="11.5" fill="#3a4554">普教</text><rect x="114" y="178.1" width="346.1" height="47.8" rx="3" fill="#1f5eff"/><text x="468.1" y="206.0" font-size="10.5" fill="#66707f">2,752.5 万 · 29.7%</text><text x="96" y="298.0" text-anchor="end" font-size="11.5" fill="#3a4554">职校</text><rect x="114" y="270.1" width="231.4" height="47.8" rx="3" fill="#1f5eff"/><text x="353.4" y="298.0" font-size="10.5" fill="#66707f">1,840.5 万 · 19.9%</text></svg><figcaption>各客户类型销售额对比</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">总销售额</span><span class="kpi-value">¥9,253.8 万</span></div><div class="kpi neutral"><span class="kpi-label">客户总数</span><span class="kpi-value">747 家</span></div><div class="kpi positive"><span class="kpi-label">终端柜台占比</span><span class="kpi-value">50.4%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>终端柜台销售额 4,660.8 万，占比 50.4%，客户 389 家</li><li>普教销售额 2,752.5 万，占比 29.7%，客户 225 家</li><li>职校销售额 1,840.5 万，占比 19.9%，客户 133 家</li><li>三类客户客单价接近，均在 11.98 万至 13.84 万元之间</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、客户数、销售额占比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、客户数、销售额占比 · 数据截至：2026-12-31</span><span>第 21 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">客户结构与价值 · 22</span>
+    <h2>RFM 客户分群分布</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">重要保持客户 430 家占绝对多数，重要价值客户仅 96 家</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="96" y="69.5" text-anchor="end" font-size="11.5" fill="#3a4554">重要保持</text><rect x="114" y="41.8" width="586.0" height="47.3" rx="3" fill="#f2c811"/><text x="708.0" y="69.5" font-size="10.5" fill="#66707f">430 家</text><text x="96" y="160.5" text-anchor="end" font-size="11.5" fill="#3a4554">重要价值</text><rect x="114" y="132.8" width="130.8" height="47.3" rx="3" fill="#0d7a52"/><text x="252.8" y="160.5" font-size="10.5" fill="#66707f">96 家</text><text x="96" y="251.5" text-anchor="end" font-size="11.5" fill="#3a4554">一般保持</text><rect x="114" y="223.8" width="84.5" height="47.3" rx="3" fill="#0d7a52"/><text x="206.5" y="251.5" font-size="10.5" fill="#66707f">62 家</text><text x="96" y="342.5" text-anchor="end" font-size="11.5" fill="#3a4554">流失预警</text><rect x="114" y="314.8" width="43.6" height="47.3" rx="3" fill="#0d7a52"/><text x="165.6" y="342.5" font-size="10.5" fill="#66707f">32 家</text></svg><figcaption>RFM 分群客户数量分布</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">重要保持客户</span><span class="kpi-value">430 家</span></div><div class="kpi positive"><span class="kpi-label">重要价值客户</span><span class="kpi-value">96 家</span></div><div class="kpi neutral"><span class="kpi-label">合计</span><span class="kpi-value">620 家</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>重要保持客户 430 家，占比 69.4%，是客户结构的绝对主体</li><li>重要价值客户仅 96 家，占比 15.5%，升级空间大</li><li>一般保持 62 家、流失预警 32 家，两类合计 15.2%</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：客户数、客户数占比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：客户数、客户数占比 · 数据截至：2026-12-31</span><span>第 22 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">异常波动与行动建议 · 23</span>
+    <h2>销售额异常波动月份识别</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">2026-01 销售额环比 286.2%，2025-06 环比 -48.8%，波动最异常</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><line x1="70" y1="44.0" x2="736" y2="44.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="48.0" text-anchor="end" font-size="10.5" fill="#66707f">400万</text><line x1="70" y1="129.0" x2="736" y2="129.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="133.0" text-anchor="end" font-size="10.5" fill="#66707f">300万</text><line x1="70" y1="214.0" x2="736" y2="214.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="218.0" text-anchor="end" font-size="10.5" fill="#66707f">200万</text><line x1="70" y1="299.0" x2="736" y2="299.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="303.0" text-anchor="end" font-size="10.5" fill="#66707f">100万</text><line x1="70" y1="384.0" x2="736" y2="384.0" stroke="#e2e7ef" stroke-width="1"/><text x="62" y="388.0" text-anchor="end" font-size="10.5" fill="#66707f">0万</text><polygon points="70,384 70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2 736,384" fill="#1f5eff" opacity="0.10"/><polyline points="70.0,167.2 84.2,237.8 98.3,225.1 112.5,272.2 126.7,167.0 140.9,272.4 155.0,310.5 169.2,253.0 183.4,255.9 197.5,306.4 211.7,283.9 225.9,318.3 240.0,167.4 254.2,212.3 268.4,193.9 282.6,257.6 296.7,151.7 310.9,231.4 325.1,298.0 339.2,246.5 353.4,223.3 367.6,272.0 381.7,256.4 395.9,301.6 410.1,126.8 424.3,222.1 438.4,169.7 452.6,226.2 466.8,75.0 480.9,225.9 495.1,279.5 509.3,218.4 523.4,215.5 537.6,263.2 551.8,233.5 566.0,305.5 580.1,80.9 594.3,166.0 608.5,115.2 622.6,186.0 636.8,48.9 651.0,158.8 665.1,257.1 679.3,203.0 693.5,153.6 707.7,241.3 721.8,216.1 736.0,296.2" fill="none" stroke="#1f5eff" stroke-width="2.2" stroke-linejoin="round"/><line x1="70" y1="384" x2="736" y2="384" stroke="#cdd5e1" stroke-width="1"/><text x="70.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2023</text><text x="240.0" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2024</text><text x="410.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2025</text><text x="580.1" y="402" text-anchor="middle" font-size="10.5" fill="#66707f">2026</text></svg><figcaption>各月销售额走势</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi positive"><span class="kpi-label">最大单月涨幅</span><span class="kpi-value">286.2%</span></div><div class="kpi negative"><span class="kpi-label">最大单月跌幅</span><span class="kpi-value">-48.8%</span></div><div class="kpi negative"><span class="kpi-label">最低月</span><span class="kpi-value">77.3 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>2026-01 销售额 356.6 万，环比 286.2%，为全期最大单月涨幅</li><li>2025-06 销售额 186.1 万，环比 -48.8%，为全期最大单月跌幅</li><li>2023-12 销售额 77.3 万，为全期最低单月</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、订单量、月度环比</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、月度环比 · 数据截至：2026-12-31</span><span>第 23 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">异常波动与行动建议 · 24</span>
+    <h2>低毛利产品与折扣异常</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">教师平板 B6毛利率仅 5.2%、折扣率 17.3%，为低毛利与折扣异常双高产品</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="110" y="46.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B6</text><rect x="128" y="30.9" width="133.2" height="23.7" rx="3" fill="#f2c811"/><text x="269.2" y="46.8" font-size="10.5" fill="#66707f">5.2%</text><text x="110" y="92.2" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S10</text><rect x="128" y="76.4" width="156.6" height="23.7" rx="3" fill="#1f5eff"/><text x="292.6" y="92.2" font-size="10.5" fill="#66707f">6.1%</text><text x="110" y="137.8" text-anchor="end" font-size="11.5" fill="#3a4554">学生平板 S20</text><rect x="128" y="121.9" width="210.9" height="23.7" rx="3" fill="#1f5eff"/><text x="346.9" y="137.8" font-size="10.5" fill="#66707f">8.2%</text><text x="110" y="183.2" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B8</text><rect x="128" y="167.4" width="303.0" height="23.7" rx="3" fill="#1f5eff"/><text x="439.0" y="183.2" font-size="10.5" fill="#66707f">11.8%</text><text x="110" y="228.8" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A60</text><rect x="128" y="212.9" width="387.3" height="23.7" rx="3" fill="#1f5eff"/><text x="523.3" y="228.8" font-size="10.5" fill="#66707f">15.1%</text><text x="110" y="274.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A80</text><rect x="128" y="258.4" width="472.6" height="23.7" rx="3" fill="#1f5eff"/><text x="608.6" y="274.2" font-size="10.5" fill="#66707f">18.4%</text><text x="110" y="319.8" text-anchor="end" font-size="11.5" fill="#3a4554">教师平板 B9</text><rect x="128" y="303.9" width="517.8" height="23.7" rx="3" fill="#1f5eff"/><text x="653.8" y="319.8" font-size="10.5" fill="#66707f">20.2%</text><text x="110" y="365.2" text-anchor="end" font-size="11.5" fill="#3a4554">学习机 A90</text><rect x="128" y="349.4" width="572.0" height="23.7" rx="3" fill="#1f5eff"/><text x="708.0" y="365.2" font-size="10.5" fill="#66707f">22.3%</text></svg><figcaption>各产品毛利率对比</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">总利润</span><span class="kpi-value">¥1,443.9 万</span></div><div class="kpi negative"><span class="kpi-label">教师平板 B6 毛利率</span><span class="kpi-value">5.2%</span></div><div class="kpi positive"><span class="kpi-label">学习机 A90 毛利率</span><span class="kpi-value">22.3%</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>教师平板 B6 销售额 828.4 万，毛利率 5.2%，折扣率 17.3%</li><li>学生平板 S10 销售额 450.8 万，毛利率 6.1%，折扣率 9.5%</li><li>学习机 A90 毛利率 22.3% 为最高，与最低产品相差 17.1 个百分点</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：销售额、利润、毛利率、折扣</p>
+    <p>数据截至：2026-12-31</p>
+    <p>1 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、利润、毛利率、折扣 · 数据截至：2026-12-31</span><span>第 24 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-insight">
+  <header class="slide-head">
+    <span class="kicker">异常波动与行动建议 · 归因 · 25</span>
+    <h2>异常波动与行动建议 · 关键指标归因</h2>
+  </header>
+  <div class="slide-body">
+    <p class="headline">2026 年销售额同比增 21.4%，C 端机型贡献 51.8% 增量，为主驱动</p>
+    <div class="insight-cols">
+      <figure class="chart-figure"><svg viewBox="0 0 760 440" role="img" xmlns="http://www.w3.org/2000/svg" font-family='"PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif'><text x="132" y="160.0" text-anchor="end" font-size="11.5" fill="#3a4554">C 端</text><rect x="150" y="132.1" width="550.0" height="47.8" rx="3" fill="#f2c811"/><text x="708.0" y="160.0" font-size="10.5" fill="#66707f">+267.0 万</text><text x="132" y="252.0" text-anchor="end" font-size="11.5" fill="#3a4554">B 端</text><rect x="150" y="224.1" width="511.9" height="47.8" rx="3" fill="#1f5eff"/><text x="669.9" y="252.0" font-size="10.5" fill="#66707f">+248.5 万</text></svg><figcaption>各产品类别销售额同比变化量</figcaption></figure>
+      <aside class="insight-side">
+        <div class="kpis"><div class="kpi neutral"><span class="kpi-label">本期销售额</span><span class="kpi-value">¥2,923.4 万</span></div><div class="kpi positive"><span class="kpi-label">同比增量</span><span class="kpi-value">+515.5 万</span></div><div class="kpi positive"><span class="kpi-label">利润增量</span><span class="kpi-value">+71.3 万</span></div></div>
+        <h3 class="side-title">关键点</h3><ul class="bullets"><li>C 端销售额增加 267.0 万，变化率 20.4%，贡献增量 51.8%</li><li>B 端销售额增加 248.5 万，变化率 22.6%，贡献增量 48.2%</li><li>C 端毛利增加 43.7 万，高于 B 端的 27.6 万</li></ul>
+        <div class="provenance">
+    <span class="provenance-label">本页出处</span>
+    <p>指标：本期销售额、同期销售额、销售额变化</p>
+    <p>数据截至：2026-12-31</p>
+    <p>2 条 DAX 查询 · 见文末附录</p>
+  </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：本期销售额、同期销售额、销售额变化 · 数据截至：2026-12-31</span><span>第 25 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-summary">
+  <header class="slide-head">
+    <span class="kicker">总结 · 26</span>
+    <h2>增长强劲但结构隐忧，聚焦区域与毛利</h2>
+  </header>
+  <div class="slide-body">
+    <div class="summary-grid">
+      <section class="summary-block">
+        <h3>关键发现（含归因）</h3>
+        <ol>
+          <li>销售额同比增 21.4% 至 2,923.4 万，C 端贡献 51.8% 增量、教师平板 B8 单品贡献 28.6%</li>
+          <li>5 月峰值 1,286.5 万，12 月淡季仅 369.9 万，季节性波动显著</li>
+          <li>区域目标达成率平均仅 65.3%，最高 81.0%、最低 52.0%</li>
+          <li>教师平板 B6 毛利率 5.2%、折扣率 17.3%，利润转化偏低</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+  <div class="summary-kpis"><div class="summary-kpi"><span>累计销售额</span><strong>¥9,253.8 万</strong><small>来自「整体销售规模与订单量走势」</small></div><div class="summary-kpi"><span>累计订单量</span><strong>20,167</strong><small>来自「整体销售规模与订单量走势」</small></div><div class="summary-kpi"><span>平均客单价</span><strong>¥4,589</strong><small>来自「整体销售规模与订单量走势」</small></div><div class="summary-kpi"><span>2026 年销售额</span><strong>¥2,923.4 万</strong><small>来自「年度销售额与同比变化」</small></div></div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、订单量、客单价 · 数据截至：2026-12-31</span><span>第 26 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-actions">
+  <header class="slide-head">
+    <span class="kicker">清单与行动 · 27</span>
+    <h2>问题清单与下一步</h2>
+  </header>
+  <div class="slide-body">
+    <div class="action-columns">
+      <section class="action-block"><h3>问题与机会清单</h3><div class="check-list"><div class="check-row">
+      <span class="check-sev high">高</span>
+      <div class="check-main">
+        <p class="check-issue">区域目标达成率普遍偏低</p>
+        <p class="check-meta">证据：平均达成率 65.3%，最低 52.0% · 影响：销售目标形同虚设，区域执行力存疑</p>
+      </div>
+    </div><div class="check-row">
+      <span class="check-sev high">高</span>
+      <div class="check-main">
+        <p class="check-issue">低毛利产品折扣异常</p>
+        <p class="check-meta">证据：教师平板 B6 毛利率 5.2%、折扣率 17.3% · 影响：侵蚀利润，影响整体盈利水平</p>
+      </div>
+    </div><div class="check-row">
+      <span class="check-sev mid">中</span>
+      <div class="check-main">
+        <p class="check-issue">销售季节性波动剧烈</p>
+        <p class="check-meta">证据：5 月峰值 1,286.5 万，12 月仅 369.9 万 · 影响：资源错配，淡季库存与人力闲置</p>
+      </div>
+    </div><div class="check-row">
+      <span class="check-sev mid">中</span>
+      <div class="check-main">
+        <p class="check-issue">客户结构以重要保持为主</p>
+        <p class="check-meta">证据：重要保持 430 家，重要价值仅 96 家 · 影响：高价值客户占比低，升级空间大</p>
+      </div>
+    </div><div class="check-row">
+      <span class="check-sev low">低</span>
+      <div class="check-main">
+        <p class="check-issue">工作日与周末销售差异显著</p>
+        <p class="check-meta">证据：工作日占比 82.0%，周末仅 18.0% · 影响：周末营销资源利用率不足</p>
+      </div>
+    </div></div></section>
+      <section class="action-block"><h3>下一步执行动作</h3><div class="action-list"><div class="action-row">
+      <span class="action-pri p0">P0</span>
+      <div class="action-main">
+        <p class="action-text">复盘区域目标合理性，制定差异化达成路径</p>
+        <p class="action-meta">时机：本周 · 预期：提升区域目标达成率与执行力</p>
+      </div>
+    </div><div class="action-row">
+      <span class="action-pri p0">P0</span>
+      <div class="action-main">
+        <p class="action-text">审查教师平板 B6折扣政策，设置毛利红线</p>
+        <p class="action-meta">时机：本月 · 预期：遏制低毛利产品利润侵蚀</p>
+      </div>
+    </div><div class="action-row">
+      <span class="action-pri p1">P1</span>
+      <div class="action-main">
+        <p class="action-text">针对淡季（12 月至次年 2 月）制定促销与渠道激励方案</p>
+        <p class="action-meta">时机：下季度 · 预期：平滑季节性波动，提升淡季销售额</p>
+      </div>
+    </div><div class="action-row">
+      <span class="action-pri p1">P1</span>
+      <div class="action-main">
+        <p class="action-text">设计重要保持客户向重要价值客户升级的运营策略</p>
+        <p class="action-meta">时机：本月 · 预期：提升高价值客户占比与复购</p>
+      </div>
+    </div><div class="action-row">
+      <span class="action-pri p2">P2</span>
+      <div class="action-main">
+        <p class="action-text">优化周末营销活动与门店排班</p>
+        <p class="action-meta">时机：下季度 · 预期：提升周末销售占比与资源效率</p>
+      </div>
+    </div></div></section>
+    </div>
+  </div>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 指标：销售额、目标达成率、毛利率 · 数据截至：2026-12-31</span><span>第 27 / 39 页 · 生成于 2026-11-26 08:20</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 28</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  <div class="appendix-warnings"><strong>数字核对提示</strong><ul><li>全部 24 页正文数字均与查询结果比对通过（演示数据为脚本同源生成）</li></ul></div>
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q1 · 整体销售规模与订单量走势 · 按月展示销售额与订单量的整体走势，验证规模与节奏<span class="query-stat">48 行 · 280ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[YearMonth], &quot;销售额&quot;, [销售额], &quot;订单量&quot;, [订单量], &quot;客单价&quot;, [客单价]) ORDER BY &#x27;Date&#x27;[YearMonth]</pre>
+      </details><details class="query-card" open>
+        <summary>Q2 · 年度销售额与同比变化 · 按年度展示销售额、订单量及同比变化<span class="query-stat">4 行 · 377ms</span></summary>
+        <pre>EVALUATE ADDCOLUMNS(SUMMARIZECOLUMNS(&#x27;Date&#x27;[Year]), &quot;销售额&quot;, [销售额], &quot;订单量&quot;, [订单量]), &quot;上年销售额&quot;, CALCULATE([销售额], TREATAS({MAX(&#x27;Date&#x27;[Year])-1}, &#x27;Date&#x27;[Year])), &quot;同比变化率&quot;, DIVIDE([销售额]-[上年销售额], [上年销售额]))</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 28 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 29</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q3 · 月度销售节奏与季节性 · 按月份序号聚合多年数据，观察季节性旺淡季规律<span class="query-stat">12 行 · 411ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[MonthNo], &quot;销售额&quot;, [销售额], &quot;订单量&quot;, [订单量]) ORDER BY &#x27;Date&#x27;[MonthNo]</pre>
+      </details><details class="query-card" open>
+        <summary>Q4 · 客单价水平 · 按月展示客单价水平及变化<span class="query-stat">48 行 · 508ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[YearMonth], &quot;客单价&quot;, [客单价], &quot;销售额&quot;, [销售额]) ORDER BY &#x27;Date&#x27;[YearMonth]</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 29 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 30</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q5 · 规模归因 · 按产品类别归因本期与上年同期的销售额、成本、利润变化<span class="query-stat">2 行 · 542ms</span></summary>
+        <pre>EVALUATE ADDCOLUMNS(SUMMARIZECOLUMNS(&#x27;Product&#x27;[Category], &quot;本期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026), &quot;上年&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025)), &quot;变化额&quot;, [本期]-[上年], &quot;变化率&quot;, DIVIDE([本期]-[上年], [上年]))</pre>
+      </details><details class="query-card" open>
+        <summary>Q6 · 产品品类销售构成 · 按产品品类对比销售额、销量与销售额占比<span class="query-stat">2 行 · 639ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Product&#x27;[Category], &quot;销售额&quot;, [销售额], &quot;销量&quot;, [销量], &quot;占比&quot;, [销售额占比], &quot;客单价&quot;, [客单价]) ORDER BY [销售额] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 30 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 31</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q7 · 产品销售额排名与集中度 · 各产品销售额排名及累计占比（帕累托）<span class="query-stat">8 行 · 673ms</span></summary>
+        <pre>EVALUATE VAR t = ADDCOLUMNS(ALLSELECTED(&#x27;Product&#x27;[ProductName]), &quot;销售额&quot;, [销售额], &quot;排名&quot;, [销售额排名], &quot;累计占比&quot;, [累计占比]) RETURN FILTER(t, NOT ISBLANK([销售额])) ORDER BY [排名]</pre>
+      </details><details class="query-card" open>
+        <summary>Q8 · 产品利润贡献排名 · 各产品利润排名，并与销售额排名对比<span class="query-stat">8 行 · 770ms</span></summary>
+        <pre>EVALUATE VAR t = ADDCOLUMNS(ALLSELECTED(&#x27;Product&#x27;[ProductName]), &quot;利润&quot;, [利润], &quot;利润排名&quot;, [利润排名], &quot;销售排名&quot;, [销售额排名], &quot;利润率&quot;, DIVIDE([利润],[销售额])) RETURN FILTER(t, NOT ISBLANK([利润])) ORDER BY [利润排名]</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 31 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 32</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q9 · 产品销量排名与结构 · 各产品销量排名与占比，对比销售额结构<span class="query-stat">8 行 · 804ms</span></summary>
+        <pre>EVALUATE VAR t = ADDCOLUMNS(ALLSELECTED(&#x27;Product&#x27;[ProductName]), &quot;销量&quot;, [销量], &quot;销量排名&quot;, [销量排名], &quot;销售额&quot;, [销售额]) RETURN FILTER(t, NOT ISBLANK([销量])) ORDER BY [销量排名]</pre>
+      </details><details class="query-card" open>
+        <summary>Q10 · 产品归因 · 按产品维度归因本期与上年同期销售额变化<span class="query-stat">8 行 · 901ms</span></summary>
+        <pre>EVALUATE VAR t = ADDCOLUMNS(ALLSELECTED(&#x27;Product&#x27;[ProductName]), &quot;本期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026), &quot;上年&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025)) RETURN ADDCOLUMNS(FILTER(t, NOT ISBLANK([本期]) || NOT ISBLANK([上年])), &quot;变化&quot;, [本期]-[上年]) ORDER BY [变化] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 32 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 33</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q11 · 区域销售额与经销商 · 按区域对比销售额规模与活跃经销商数量<span class="query-stat">6 行 · 935ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Region&#x27;[Region], &quot;销售额&quot;, [销售额], &quot;经销商数&quot;, [经销商数], &quot;订单量&quot;, [订单量]) ORDER BY [销售额] DESC</pre>
+      </details><details class="query-card" open>
+        <summary>Q12 · 城市维度销售表现 · 重点城市销售额分布与排名（TOP 20）<span class="query-stat">20 行 · 352ms</span></summary>
+        <pre>EVALUATE TOPN(20, SUMMARIZECOLUMNS(&#x27;City&#x27;[City], &quot;销售额&quot;, [销售额], &quot;经销商数&quot;, [经销商数]), [销售额], DESC) ORDER BY [销售额] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 33 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 34</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q13 · 区域经理业绩 · 各区域经理所辖区域销售业绩对比<span class="query-stat">6 行 · 386ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Manager&#x27;[Manager], &#x27;Region&#x27;[Region], &quot;销售额&quot;, [销售额], &quot;目标&quot;, [目标销售额]) ORDER BY [销售额] DESC</pre>
+      </details><details class="query-card" open>
+        <summary>Q14 · 区域目标达成 · 各区域销售目标完成率与达成进度<span class="query-stat">6 行 · 483ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Region&#x27;[Region], &quot;销售额&quot;, [销售额], &quot;目标销售额&quot;, [目标销售额], &quot;达成率&quot;, DIVIDE([销售额], [目标销售额])) ORDER BY [达成率] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 34 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 35</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q15 · 区域归因 · 按区域对比本期与去年同期的销售额变化<span class="query-stat">6 行 · 517ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Region&#x27;[Region], &quot;本期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026), &quot;上年&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025), &quot;变化&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026)-CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025)) ORDER BY [变化] DESC</pre>
+      </details><details class="query-card" open>
+        <summary>Q16 · 年度销售额结构变化 · 按年度×产品类别展示销售额与占比<span class="query-stat">8 行 · 614ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[Year], &#x27;Product&#x27;[Category], &quot;销售额&quot;, [销售额], &quot;占比&quot;, DIVIDE([销售额], CALCULATE([销售额], ALLSELECTED(&#x27;Product&#x27;[Category])))) ORDER BY &#x27;Date&#x27;[Year]</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 35 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 36</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q17 · 月度环比变化 · 按月展示销售额与月度环比变化<span class="query-stat">48 行 · 648ms</span></summary>
+        <pre>EVALUATE VAR t = SUMMARIZECOLUMNS(&#x27;Date&#x27;[YearMonth], &quot;销售额&quot;, [销售额]) VAR t2 = ADDCOLUMNS(t, &quot;上月&quot;, MAXX(FILTER(t, [YearMonth] &lt; EARLIER([YearMonth])), [销售额])) RETURN ADDCOLUMNS(t2, &quot;环比&quot;, DIVIDE([销售额]-[上月], [上月])) ORDER BY [YearMonth]</pre>
+      </details><details class="query-card" open>
+        <summary>Q18 · 工作日与周末销售差异 · 按工作日/周末分组展示销售额与订单量<span class="query-stat">2 行 · 745ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[DayType], &quot;销售额&quot;, [销售额], &quot;订单量&quot;, [订单量], &quot;订单数&quot;, [订单数]) ORDER BY [销售额] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 36 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 37</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q19 · 时间归因 · 按产品类别对比最近完整年度与上一年度销售额<span class="query-stat">2 行 · 779ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Product&#x27;[Category], &quot;本期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026), &quot;上期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025), &quot;变化率&quot;, DIVIDE([销售额]-[上期], [上期]))</pre>
+      </details><details class="query-card" open>
+        <summary>Q20 · 客户类型销售构成 · 按客户类型对比销售额与客户数<span class="query-stat">3 行 · 876ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Customer&#x27;[Type], &quot;销售额&quot;, [销售额], &quot;客户数&quot;, [客户数], &quot;占比&quot;, DIVIDE([销售额], CALCULATE([销售额], ALLSELECTED(&#x27;Customer&#x27;[Type])))) ORDER BY [销售额] DESC</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 37 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 38</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q21 · RFM 客户分群 · 按 RFM 分群统计客户数量及占比<span class="query-stat">4 行 · 910ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Customer&#x27;[RFM], &quot;客户数&quot;, [客户数], &quot;占比&quot;, DIVIDE([客户数], CALCULATE([客户数], ALLSELECTED(&#x27;Customer&#x27;[RFM])))) ORDER BY [客户数] DESC</pre>
+      </details><details class="query-card" open>
+        <summary>Q22 · 异常波动月份 · 按月汇总销售额并计算环比，识别异常月份<span class="query-stat">48 行 · 327ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Date&#x27;[YearMonth], &quot;销售额&quot;, [销售额], &quot;环比&quot;, VAR cur=[销售额] VAR prev=CALCULATE([销售额], DATEADD(&#x27;Date&#x27;[Date],-1,MONTH)) RETURN DIVIDE(cur-prev,prev)) ORDER BY &#x27;Date&#x27;[YearMonth]</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 38 / 39 页</span></footer>
+</section>
+<section class="slide slide-appendix">
+  <header class="slide-head">
+    <span class="kicker">附录 · 39</span>
+    <h2>数据来源与查询</h2>
+  </header>
+  <p class="appendix-meta">数据集：某教育硬件品牌销售洞察（演示语义模型） · 模型指纹 a91c74e2d0f3 · 生成于 2026-11-26 08:20 · 演示数据</p>
+  
+  <div class="query-list"><details class="query-card" open>
+        <summary>Q23 · 低毛利与折扣异常 · 按产品列出销售额、毛利、毛利率与折扣率<span class="query-stat">8 行 · 361ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Product&#x27;[ProductName], &quot;销售额&quot;, [销售额], &quot;利润&quot;, [利润], &quot;毛利率&quot;, [毛利率], &quot;折扣率&quot;, [折扣率]) ORDER BY [利润] ASC</pre>
+      </details><details class="query-card" open>
+        <summary>Q24 · 异常归因 · 按产品类别归因本期与上年同期的销售额、毛利、折扣率变化<span class="query-stat">2 行 · 458ms</span></summary>
+        <pre>EVALUATE SUMMARIZECOLUMNS(&#x27;Product&#x27;[Category], &quot;本期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2026), &quot;同期&quot;, CALCULATE([销售额], &#x27;Date&#x27;[Year]=2025), &quot;毛利变化&quot;, CALCULATE([利润], &#x27;Date&#x27;[Year]=2026)-CALCULATE([利润], &#x27;Date&#x27;[Year]=2025))</pre>
+      </details></div>
+  <p class="appendix-foot">每条 DAX 可直接粘贴到 Power BI Desktop 的 DAX 查询视图执行核验</p>
+  <footer class="slide-foot"><span>数据源：某教育硬件品牌销售洞察（演示语义模型） · 查询附录</span><span>第 39 / 39 页</span></footer>
+</section>
+</div>
+<nav class="deck-nav" aria-label="翻页">
+  <button id="prev" type="button" aria-label="上一页">‹</button>
+  <span class="counter" id="counter">1 / 39</span>
+  <button id="next" type="button" aria-label="下一页">›</button>
+  <button id="tocBtn" type="button">目录</button>
+</nav>
+<div class="deck-progress"><i id="bar"></i></div>
+<div class="deck-toc" id="toc" role="dialog" aria-label="目录">
+  <div class="toc-panel">
+    <h2>目录</h2>
+    <div class="toc-group"><span class="toc-kicker">封面</span><button class="toc-item" data-goto="0">某教育硬件品牌销售洞察报告</button></div><div class="toc-group"><span class="toc-kicker">总体规模与趋势</span><button class="toc-item" data-goto="1">整体销售规模与订单量走势</button><button class="toc-item" data-goto="2">年度销售额与同比变化</button><button class="toc-item" data-goto="3">月度销售节奏与季节性</button><button class="toc-item" data-goto="4">客单价与单均购买量水平</button><button class="toc-item" data-goto="5">总体规模与趋势 · 关键指标归因</button></div><div class="toc-group"><span class="toc-kicker">产品结构与贡献</span><button class="toc-item" data-goto="6">产品品类销售构成</button><button class="toc-item" data-goto="7">产品销售额排名与集中度</button><button class="toc-item" data-goto="8">产品利润贡献排名</button><button class="toc-item" data-goto="9">产品销量排名与结构</button><button class="toc-item" data-goto="10">产品结构与贡献 · 关键指标归因</button></div><div class="toc-group"><span class="toc-kicker">渠道与区域对比</span><button class="toc-item" data-goto="11">区域销售额与经销商数量对比</button><button class="toc-item" data-goto="12">城市维度销售表现</button><button class="toc-item" data-goto="13">区域经理业绩对比</button><button class="toc-item" data-goto="14">区域目标达成情况</button><button class="toc-item" data-goto="15">渠道与区域对比 · 关键指标归因</button></div><div class="toc-group"><span class="toc-kicker">时间周期与节奏</span><button class="toc-item" data-goto="16">年度销售额结构变化</button><button class="toc-item" data-goto="17">月度环比变化</button><button class="toc-item" data-goto="18">工作日与周末销售差异</button><button class="toc-item" data-goto="19">时间周期与节奏 · 关键指标归因</button></div><div class="toc-group"><span class="toc-kicker">客户结构与价值</span><button class="toc-item" data-goto="20">客户类型销售构成</button><button class="toc-item" data-goto="21">RFM 客户分群分布</button></div><div class="toc-group"><span class="toc-kicker">异常波动与行动建议</span><button class="toc-item" data-goto="22">销售额异常波动月份识别</button><button class="toc-item" data-goto="23">低毛利产品与折扣异常</button><button class="toc-item" data-goto="24">异常波动与行动建议 · 关键指标归因</button></div><div class="toc-group"><span class="toc-kicker">总结</span><button class="toc-item" data-goto="25">增长强劲但结构隐忧，聚焦区域与毛利</button></div><div class="toc-group"><span class="toc-kicker">清单与行动</span><button class="toc-item" data-goto="26">问题清单与下一步</button></div><div class="toc-group"><span class="toc-kicker">附录</span><button class="toc-item" data-goto="27">数据来源与查询</button><button class="toc-item" data-goto="28">数据来源与查询</button><button class="toc-item" data-goto="29">数据来源与查询</button><button class="toc-item" data-goto="30">数据来源与查询</button><button class="toc-item" data-goto="31">数据来源与查询</button><button class="toc-item" data-goto="32">数据来源与查询</button><button class="toc-item" data-goto="33">数据来源与查询</button><button class="toc-item" data-goto="34">数据来源与查询</button><button class="toc-item" data-goto="35">数据来源与查询</button><button class="toc-item" data-goto="36">数据来源与查询</button><button class="toc-item" data-goto="37">数据来源与查询</button><button class="toc-item" data-goto="38">数据来源与查询</button></div>
+  </div>
+</div>
+<p class="deck-hint">← → 翻页 · O 目录 · Ctrl/Cmd+P 打印为 PDF</p>
+<p class="mobile-hint">竖屏看不清，横屏或到电脑上看更清楚</p>
+<script>(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var counter = document.getElementById('counter');
+  var bar = document.getElementById('bar');
+  var toc = document.getElementById('toc');
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-item'));
+  var index = 0;
+  function show(next, remember) {
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach(function(slide, i) { slide.classList.toggle('active', i === index); });
+    if (counter) counter.textContent = (index + 1) + ' / ' + slides.length;
+    if (bar) bar.style.width = ((index + 1) / slides.length * 100) + '%';
+    links.forEach(function(link) { link.classList.toggle('current', Number(link.dataset.goto) === index); });
+    if (remember !== false && history.replaceState) history.replaceState(null, '', '#' + (index + 1));
+  }
+  function fit() {
+    if (!stage) return;
+    var scale = Math.min(window.innerWidth / 1320, (window.innerHeight - 78) / 760);
+    stage.style.transform = 'translate(-50%, -50%) scale(' + Math.max(0.2, scale) + ')';
+  }
+  function closeToc() { toc && toc.classList.remove('open'); }
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'PageDown' || event.key === ' ') {
+      event.preventDefault(); show(index + 1);
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp') {
+      event.preventDefault(); show(index - 1);
+    } else if (event.key === 'Home') {
+      event.preventDefault(); show(0);
+    } else if (event.key === 'End') {
+      event.preventDefault(); show(slides.length - 1);
+    } else if (event.key === 'Escape') {
+      closeToc();
+    } else if (event.key === 'o' || event.key === 'O') {
+      toc && toc.classList.toggle('open');
+    }
+  });
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var tocBtn = document.getElementById('tocBtn');
+  if (prev) prev.addEventListener('click', function(){ show(index - 1); });
+  if (next) next.addEventListener('click', function(){ show(index + 1); });
+  if (tocBtn) tocBtn.addEventListener('click', function(){ toc && toc.classList.toggle('open'); });
+  if (toc) toc.addEventListener('click', function(event) { if (event.target === toc) closeToc(); });
+  links.forEach(function(link) { link.addEventListener('click', function(){ show(Number(link.dataset.goto)); closeToc(); }); });
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function() {
+    var value = parseInt(String(location.hash || '').replace('#', ''), 10);
+    if (Number.isFinite(value) && value - 1 !== index) show(value - 1, false);
+  });
+  var initial = parseInt(String(location.hash || '').replace('#', ''), 10);
+  show(Number.isFinite(initial) && initial > 0 ? initial - 1 : 0, false);
+  fit();
+})();</script>
+</body>
+</html>

@@ -28,6 +28,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ipowerbi.icu/long-chain/</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ipowerbi.icu/blog/</loc>
     <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>

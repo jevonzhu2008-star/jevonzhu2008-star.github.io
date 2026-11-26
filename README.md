@@ -21,6 +21,7 @@
 
 ```
 index.html            页面结构（文案、链接都在这里）
+long-chain/           长链任务分析演示汇报（39 页可翻页、自包含 HTML；数据为合成演示数据）
 blog/                 博客：索引页与每篇文章（由公众号工作流同步生成）
 blog/index.html       文章列表，按标签筛选
 blog/<slug>/          单篇文章，图片已转 WebP
@@ -44,6 +45,21 @@ assets/shots/promo-poster.webp  宣传片封面帧
 ```
 
 三张大图（`ip-home`、`pf-overview`、`platform-login`）有 `-1600` / `-800` 两档，靠 `srcset` + `sizes` 按屏幕挑；小图（`ip-factory`、`ip-sales`、`report-*`）只有一档 WebP。截图是 2026-11-05 从线上站点按 1600px 宽重截的。
+
+## 长链任务分析演示（long-chain/）
+
+首页「长链任务分析」板块链到的 39 页可翻页汇报。**不要手改 `long-chain/index.html`**，它由 `_content/long-chain/` 里的脚本从合成数据生成（数据全部虚构，不含真实经营数字）：
+
+```powershell
+cd _content\long-chain
+python gen_pages.py
+```
+
+- `gen_deck.py`：合成订单明细（固定随机种子，可复现）并聚合指标
+- `gen_pages.py`：渲染 39 页（封面 + 24 页洞察 + 总结 + 行动清单 + 12 页 DAX 附录）
+- `deck-style.css`：版式取自智能问数的汇报模板，页面自包含、不引外部资源
+
+正文数字由同一份明细推导，所以页与页之间自洽；要换行业只改 `gen_deck.py` 顶部的产品、区域、季节权重。
 
 ## 博客（公众号同步）
 
