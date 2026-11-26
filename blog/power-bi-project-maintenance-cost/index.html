@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power BI 项目维护成本：开发只是首付 · Jevon Zhu · Power BI 笔记</title>
+<meta name="description" content="Power BI 项目维护的成本远高于开发。这篇拆开维护成本花在哪：口径漂移、文档缺失、版本失控、刷新无人管，并给出一份可落地的维护清单和优先级判断——哪些必做，哪些可以不做。">
+<meta name="author" content="Jevon Zhu">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<link rel="canonical" href="https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/">
+<link rel="alternate" hreflang="zh-CN" href="https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Power BI 项目维护成本：开发只是首付 · Jevon Zhu · Power BI 笔记">
+<meta property="og:description" content="Power BI 项目维护的成本远高于开发。这篇拆开维护成本花在哪：口径漂移、文档缺失、版本失控、刷新无人管，并给出一份可落地的维护清单和优先级判断——哪些必做，哪些可以不做。">
+<meta property="og:url" content="https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/">
+<meta property="og:image" content="https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/cover.webp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Jevon Zhu · Power BI 顾问">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Power BI 项目维护成本：开发只是首付 · Jevon Zhu · Power BI 笔记">
+<meta name="twitter:description" content="Power BI 项目维护的成本远高于开发。这篇拆开维护成本花在哪：口径漂移、文档缺失、版本失控、刷新无人管，并给出一份可落地的维护清单和优先级判断——哪些必做，哪些可以不做。">
+<meta name="twitter:image" content="https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/cover.webp">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="../../assets/blog.css?v=20261125-1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Power BI 项目维护成本：开发只是首付",
+  "description": "Power BI 项目维护的成本远高于开发。这篇拆开维护成本花在哪：口径漂移、文档缺失、版本失控、刷新无人管，并给出一份可落地的维护清单和优先级判断——哪些必做，哪些可以不做。",
+  "datePublished": "2026-11-27",
+  "dateModified": "2026-11-27",
+  "inLanguage": "zh-CN",
+  "author": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Jevon Zhu",
+    "url": "https://ipowerbi.icu/"
+  },
+  "image": "https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/cover.webp",
+  "keywords": "Power BI 项目维护、Power BI、项目维护、语义模型",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ipowerbi.icu/blog/power-bi-project-maintenance-cost/"
+  },
+  "wordCount": 2781
+}
+</script>
+</head>
+<body class="blog-page">
+<a class="skip" href="#main">跳到正文</a>
+<header class="blog-nav">
+  <div class="blog-nav-inner">
+    <a class="blog-wordmark" href="../../"><img src="../../assets/avatar-96.png" alt="" width="26" height="26">JEVON ZHU</a>
+    <nav class="blog-nav-links" aria-label="页面导航">
+      <a href="../../#services">服务</a><a href="../../#site-ipowerbi">作品</a><a href="../../#about">关于</a><a href="../../blog/">博客</a>
+    </nav>
+    <a class="blog-nav-cta" href="../../#contact">联系</a>
+    <button class="blog-nav-toggle" type="button" aria-expanded="false" aria-controls="blog-drawer" aria-label="打开菜单">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <span class="read-bar" aria-hidden="true"></span>
+  </div>
+  <div class="blog-drawer" id="blog-drawer" hidden>
+    <a href="../../#services">服务</a>
+<a href="../../#site-ipowerbi">作品</a>
+<a href="../../#about">关于</a>
+<a href="../../blog/">博客</a>
+  </div>
+</header>
+<main id="main">
+  <article class="article">
+    <header class="article-head">
+      <div class="blog-wrap">
+        <nav class="crumbs" aria-label="面包屑">
+          <a href="../../">首页</a><span class="sep" aria-hidden="true">/</span>
+          <a href="../../blog/">博客</a><span class="sep" aria-hidden="true">/</span>
+          <span>Power BI 项目真正的成本，不在开发，在维护</span>
+        </nav>
+        <p class="article-meta">
+          <time datetime="2026-11-27">2026 年 11 月 27 日</time>
+          <span class="sep" aria-hidden="true"></span>
+          <span>7 分钟读完</span>
+        </p>
+        <h1 class="article-title">Power BI 项目真正的成本，不在开发，在维护</h1>
+        <p class="article-lead">Power BI 项目真正的成本在上线之后。口径、文档、版本、告警，四件事决定它能活几年。</p>
+        <ul class="post-tags"><li>Power BI</li><li>项目维护</li><li>语义模型</li></ul>
+      </div>
+    </header>
+    <figure class="article-cover">
+      <img src="cover.webp" alt="Power BI 项目真正的成本，不在开发，在维护" width="900" height="383" fetchpriority="high">
+    </figure>
+    <div class="blog-wrap article-layout">
+      <div class="prose">
+<p>先说结论：Power BI 项目维护的成本，比开发高。开发是首付，维护是月供。</p>
+<p>一个看板从需求到上线，一般四周。上线之后，它要活三年。这三年里口径会变，人会走，源库会改字段，组织架构会调整。按开发的工作量去做预算，项目第二年就开始欠账。</p>
+<p>这篇讲三件事：维护的钱花在哪，一份能照着做的清单，哪些维护其实可以不做。</p>
+<h2 id="开发是首付-维护是月供">开发是首付，维护是月供</h2>
+<p>开发阶段的问题都好解，因为有人盯着。</p>
+<p>需求不清就开会，模型慢了就优化，页面丑了就改。这四周里，数字是有人负责的。</p>
+<p>上线之后不一样。项目进入「正常运转」，谁都不再天天看它。问题从「做得对不对」变成「它还对不对」。</p>
+<p>「它还对不对」这件事，每个月都要重新回答一次：源系统加了字段，口径要不要跟着改？某个人调岗了，他的 RLS 角色谁接？财务说回款率算法变了，改在模型里还是改在报表里？</p>
+<p>这些问题单个都不大。攒到半年，就是一次返工。</p>
+<p>我做了 10 年报表，本职是世界 500 强公司的 BI 开发，也做了 14 块公开看板。返工的项目里，几乎没有一个是当初开发得不好的。问题都出在上线之后没人接。</p>
+<img alt="开发是首付，维护是月供" decoding="async" height="718" loading="lazy" src="img/01-infographic-section-1.webp" width="1280"/>
+<h2 id="power-bi-项目维护-钱花在四个地方">Power BI 项目维护，钱花在四个地方</h2>
+<h3 id="一-口径漂移-同一个数-三个出处">一、口径漂移：同一个数，三个出处</h3>
+<p>最常见的一种。</p>
+<p>新需求来了，开发图省事，在报表页面里直接建一个度量值。能用，交付了。</p>
+<p>三个月后另一个部门要同一个指标，换个开发，又在另一个页面建了一份。名字不一样，逻辑差一点。</p>
+<p>半年后，公司里同一个「回款率」有三套算法。业务对数对不上，开会先花半小时确认用哪个数。</p>
+<p>代价不在改这一个度量值上。代价是所有人开始怀疑报表。一旦业务不信数，后面每个需求都要先自证一遍。</p>
+<p>治理只有一个动作：度量值只在语义模型里建，一个指标一个度量值，写上描述。报表层只负责摆放，不负责计算。</p>
+<h3 id="二-文档缺失-系统只存在某个人的脑子里">二、文档缺失：系统只存在某个人的脑子里</h3>
+<p>字段什么意思，刷新几点跑，口径哪来的，例外规则有几条——这些如果不在文档里，就在某个人的脑子里。</p>
+<p>11 月中旬 Reddit 的 r/PowerBI 上有篇帖子，一位 BI 负责人独自撑着整套 Power BI 加 Databricks，从管道到语义模型到看板全是他一个人。他去申请第二个编制，管理层的反应是：看板一直能用，为什么要加人？还反问，AI 不是能写 SQL 吗？</p>
+<p>这就是文档缺失最典型的样子。系统看起来很稳，因为它还在跑。脆弱性在跑的时候看不见，只在人请假、离职、生病的时候显形。</p>
+<p>文档不是写给领导看的，也不是写给审计看的。是写给三个月后的自己，和那个接你班的人看的。</p>
+<h3 id="三-版本失控-改了什么-说不清">三、版本失控：改了什么，说不清</h3>
+<p>PBIX 是二进制文件。打开、改、保存，谁能说清这次改了什么？没人能。</p>
+<p>两个人先后改同一个文件，最后靠「最终版」「最终版2」「最终版（真的）」区分。发布出问题，只能回滚到某个日期之前的文件，然后凭记忆重做。</p>
+<p>这个问题有现成的解法：用 PBIP（Power BI 项目文件）把模型和报表拆成文本，进 Git。</p>
+<pre><code class="language-text">project/
+  Sales.SemanticModel/
+    definition/
+      tables/*.tmdl        # 表、列、度量值，一个表一个文件
+      relationships.tmdl   # 关系单独成文件
+  Sales.Report/
+    definition/
+      pages/               # 页面按目录拆开
+</code></pre>
+<p>拆成文本之后，每次改动都有 diff，谁改的、改了什么、什么时候改的，一目了然。发布打个 tag，回滚是回滚到某个版本，不是回滚到某个文件。</p>
+<h3 id="四-刷新和权限没人管-坏在半夜-第二天才知道">四、刷新和权限没人管：坏在半夜，第二天才知道</h3>
+<p>Power BI 的故障大多发生在没人看的时候。</p>
+<p>网关凭据过期、源库改了字段名、容量超限、刷新超时——报表在早上打开时是空的，业务先看到，你后知道。</p>
+<p>这不是你系统独有的问题。11 月 20 日微软发布本地数据网关 2026 年 11 月版（3000.342），更新内容基本是安全补丁、诊断改进和兼容性——厂商自己每个月都在修这一层。平台层都在持续维护，你上面那层不可能一劳永逸。</p>
+<p>权限也是同一类。RLS（行级安全）角色是跟着组织架构走的，组织架构一变，权限就该跟着变。没变的那些，就是你不知道的越权。</p>
+<img alt="Power BI 项目维护，钱花在四个地方" decoding="async" height="718" loading="lazy" src="img/02-infographic-section-2.webp" width="1280"/>
+<h2 id="power-bi-项目维护-落到六个动作">Power BI 项目维护，落到六个动作</h2>
+<p>清单不长，难的是每周真的做。</p>
+<ol>
+<li>
+<p><strong>度量值收口。</strong> 所有计算只在模型里建，报表面板里不写计算逻辑。为什么：口径只有一个出处，改一处全站生效。注意：历史报表里的散落度量值要一次性清掉，不清就等于没做。</p>
+</li>
+<li>
+<p><strong>每个核心指标一张口径卡。</strong> 一页纸写清：定义、分子分母、过滤条件、负责人、最后变更时间。为什么：对数的时候不用再开会。注意：只给核心指标写，二三十个就够，全写没人维护。</p>
+</li>
+<li>
+<p><strong>文档写到能交接的程度。</strong> 数据字典、ER 图、刷新计划、已知例外。为什么：这是唯一能对抗人员流动的东西。注意：文档跟着版本走，改了模型就改文档，否则三个月后它会变成误导。</p>
+</li>
+<li>
+<p><strong>版本管理。</strong> PBIP 进 Git，主分支只放已发布版本，改动走分支，发布打 tag。为什么：能回答「上周那个数是哪版算出来的」。注意：一开始就要定目录结构和命名，中途改成本很高。</p>
+</li>
+<li>
+<p><strong>刷新和数据量告警。</strong> 刷新失败要推送，关键表行数波动超过阈值要推送，核心指标同比突变要推送。为什么：把「业务先发现」变成「你先发现」。注意：告警要有人接，没人接的告警等于没有。</p>
+</li>
+<li>
+<p><strong>权限定期复核。</strong> 维护一张 RLS 角色清单，写清每个角色对应哪些人，每季度核一次。为什么：调岗和离职不会自动同步到模型里。注意：复核要用另一个账号实测，看配置不算测过。</p>
+</li>
+</ol>
+<p>按频率排，大概是这个节奏：</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>频率</th>
+<th>单次耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刷新告警处理</td>
+<td>每周</td>
+<td>视故障而定</td>
+</tr>
+<tr>
+<td>需求与口径变更登记</td>
+<td>每周</td>
+<td>半小时</td>
+</tr>
+<tr>
+<td>文档补充</td>
+<td>每月</td>
+<td>半天</td>
+</tr>
+<tr>
+<td>权限复核</td>
+<td>每季度</td>
+<td>半天</td>
+</tr>
+<tr>
+<td>版本清理与依赖升级</td>
+<td>每季度</td>
+<td>半天</td>
+</tr>
+</tbody>
+</table>
+<p>一个维护得还行的模型，我的估算是每月 4 到 8 小时。一个从没治理过的模型，第一次整理要 40 小时起——这就是欠账的利息。</p>
+<p>这套清单我们给客户做交付时会一起给，具体范围可以看<a href="../../#services">我们的服务</a>。</p>
+<img alt="Power BI 项目维护，落到六个动作" decoding="async" height="718" loading="lazy" src="img/03-infographic-section-3.webp" width="1280"/>
+<h2 id="我的判断">我的判断</h2>
+<p><strong>必做：度量值收口、版本管理、刷新告警。</strong> 这三项投入最小，回报最直接。度量值收口决定口径能不能统一，版本管理决定出问题能不能查，刷新告警决定你是先知道还是后知道。三件事加起来，一周两小时。</p>
+<p><strong>可选：完整数据字典。</strong> 项目稳定、接手的人超过两个，值得做。一个人的项目，把口径卡写全就够了，数据字典可以等有人要接手时再补。</p>
+<p><strong>观望：多层审批式的治理。</strong> 三个人的团队上三层审批、五个签字环节，维护成本会超过它省下的风险。治理的目的是让改动可控，不是让改动变慢。</p>
+<p>有一种情况这套清单可以砍掉一半：项目寿命明确在半年内、只服务一个决策、数据不敏感。那就只留口径卡和刷新告警，别的不做。给一个临时项目建全套治理，是把维护成本提前花在了不需要的地方。</p>
+<p>反过来说，如果这个看板承载的是月度经营会、预算分配、绩效考核——维护预算按开发的 50% 到 100% 预留。低于这个数，第二年一定返工，返工的钱是预算的好几倍。</p>
+<p>之前写过的建模方法和 DAX 细节都在<a href="../../blog/">博客</a>里。要一起看看现有模型的维护状况，<a href="../../#contact">联系我们</a>。</p>
+<p>你现在手上的 Power BI 项目，维护时间是从哪挤出来的？</p>
+<img alt="我的判断" decoding="async" height="718" loading="lazy" src="img/04-infographic-section-4.webp" width="1280"/>
+      </div>
+      <aside class="toc" aria-label="本页目录">
+        <p class="toc-title">目录</p>
+        <ul><li><a href="#开发是首付-维护是月供">开发是首付，维护是月供</a></li><li><a href="#power-bi-项目维护-钱花在四个地方">Power BI 项目维护，钱花在四个地方</a></li><li><a href="#power-bi-项目维护-落到六个动作">Power BI 项目维护，落到六个动作</a></li><li><a href="#我的判断">我的判断</a></li></ul>
+      </aside>
+    </div>
+    <div class="blog-wrap">
+      <section class="related" aria-label="相关阅读">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          <li><a href="../../blog/ai-ask-data-semantic-model/"><strong>智能问数让 AI 直连数据库？我建议你别这么做</strong><span class="related-meta">2026 年 11 月 26 日 · 5 分钟</span></a></li>
+          <li><a href="../../blog/semantic-model-open-both-ends/"><strong>语义模型两头被打开：这 5 条更新指向同一件事</strong><span class="related-meta">2026 年 11 月 12 日 · 11 分钟</span></a></li>
+          <li><a href="../../blog/power-bi-report-nobody-uses/"><strong>为什么你的 Power BI 报表上线后没人用？</strong><span class="related-meta">2026 年 11 月 25 日 · 6 分钟</span></a></li>
+        </ul>
+      </section>
+    </div>
+    <div class="blog-wrap"><nav class="post-nav post-nav--single" aria-label="上下篇"><a href="../../blog/ai-ask-data-semantic-model/"><span class="dir">← 上一篇</span><strong>智能问数让 AI 直连数据库？我建议你别这么做</strong></a></nav></div>
+    <div class="blog-wrap">
+    <footer class="article-end">
+      <div class="author-card">
+        <img src="../../assets/about-portrait-480.webp" alt="Jevon Zhu" width="56" height="56" loading="lazy">
+        <div>
+          <h2>Jevon Zhu · Power BI 顾问</h2>
+          <p>成都，十年报表开发与语义模型经验。写 Power BI、DAX、SAP BW 和 Microsoft Fabric 里真正卡住人的那部分。<a href="https://ipowerbi.icu/">看四个站点</a>。</p>
+        </div>
+      </div>
+      <div class="article-cta">
+        <a class="cta-main" href="../../#contact">聊聊你的报表</a>
+        <a class="cta-ghost" href="../../blog/">全部文章</a>
+      </div>
+    </footer></div>
+  </article>
+</main>
+<footer class="blog-foot">
+  <div class="blog-wrap">
+    <div class="blog-foot-top">
+      <p class="blog-foot-name">JEVON ZHU</p>
+      <nav aria-label="页脚">
+        <a href="../../">首页</a>
+        <a href="../../blog/">博客</a>
+        <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">教学站</a>
+        <a href="https://ipowerbi.icu/AIA-PowerBI-Portfolio/" target="_blank" rel="noopener">作品集</a>
+        <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
+      </nav>
+    </div>
+    <p class="blog-foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口</p>
+  </div>
+</footer>
+<script src="../../assets/blog.js?v=20261117-2" defer></script>
+</body>
+</html>

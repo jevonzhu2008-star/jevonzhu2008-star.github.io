@@ -12,11 +12,12 @@
     "finops-power-bi-dashboard",
     "get-data-redesign",
     "onelake-security-eventhouse-ga",
+    "power-bi-project-maintenance-cost",
     "power-bi-report-nobody-uses",
     "power-bi-row-level-security",
     "powerbi-ai-task-unit",
     "sap-bw-powerbi-connection",
     "semantic-model-open-both-ends"
   ],
-  "updated": "2026-11-26"
+  "updated": "2026-11-27"
 }
