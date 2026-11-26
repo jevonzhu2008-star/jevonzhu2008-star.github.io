@@ -196,6 +196,22 @@
             "@type": "Answer",
             "text": "Fabric 是微软的数据平台，把 Lakehouse、数据工厂、实时分析和 Power BI 放在同一套体系里。Power BI 既是 Fabric 里的报表层，也能单独连接 Databricks、SQL Server 或 SAP。已经用 Databricks 的团队，可以只把 Fabric 当语义模型和报表层。"
           }
+        },
+        {
+          "@type": "Question",
+          "name": "现有报表能接进公司的 AI 工作流吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "能，但顺序要对：先把指标、口径和权限做进语义模型，再让 AI 在模型上说话。常见接法是自动周报、异常推送到 Teams、自然语言问数，以及一键生成汇报；AI 只负责理解问题和表达结论，算数仍然由模型完成。反过来先上 AI、再回头补口径，最后基本都要返工。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "让 AI 查数，口径和权限还管得住吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "管得住的前提是不给 AI 数据库账号。AI 只能调用模型里登记过的指标和维度，名单外的问题直接回「模型里没有这个口径」，不会现编一个；行级权限也写在模型里，谁来问都只看到自己那份。每条回答附上执行的 DAX，数字可疑时能顺着公式查回去。"
+          }
         }
       ]
     }
@@ -1006,6 +1022,14 @@
         <details data-reveal style="--i:11">
           <summary>Microsoft Fabric 和 Power BI 是什么关系？</summary>
           <p class="faq-a">Fabric 是微软的数据平台，把 Lakehouse、数据工厂、实时分析和 Power BI 放在同一套体系里。Power BI 既是 Fabric 里的报表层，也能单独连接 Databricks、SQL Server 或 SAP。已经用 Databricks 的团队，可以只把 Fabric 当语义模型和报表层。</p>
+        </details>
+        <details data-reveal style="--i:12">
+          <summary>现有报表能接进公司的 AI 工作流吗？</summary>
+          <p class="faq-a">能，但顺序要对：先把指标、口径和权限做进语义模型，再让 AI 在模型上说话。常见接法是自动周报、异常推送到 Teams、自然语言问数，以及一键生成汇报；AI 只负责理解问题和表达结论，算数仍然由模型完成。反过来先上 AI、再回头补口径，最后基本都要返工。</p>
+        </details>
+        <details data-reveal style="--i:13">
+          <summary>让 AI 查数，口径和权限还管得住吗？</summary>
+          <p class="faq-a">管得住的前提是不给 AI 数据库账号。AI 只能调用模型里登记过的指标和维度，名单外的问题直接回「模型里没有这个口径」，不会现编一个；行级权限也写在模型里，谁来问都只看到自己那份。每条回答附上执行的 DAX，数字可疑时能顺着公式查回去。</p>
         </details>
       </div>
     </div>
