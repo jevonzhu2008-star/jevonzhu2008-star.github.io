@@ -1140,6 +1140,12 @@ html.nav-open body { overflow: hidden; }
 #site-ipowerbi .panel-alt a { color: var(--ink); text-decoration-color: var(--accent-ink); }
 #site-ipowerbi .panel-alt a:hover { text-decoration-color: var(--ink); }
 
+/* 黄底面板里的主按钮：悬停反相成白底，否则按钮和面板底色撞在一起分不出边界 */
+#site-ipowerbi .btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+
 /* ── 方法 ─────────────────────────────────────────────────── */
 
 .method {
