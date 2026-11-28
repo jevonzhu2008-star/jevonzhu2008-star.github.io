@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>访问统计 · ipowerbi.icu</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f6f7f9;
+    --surface: #ffffff;
+    --ink: #191919;
+    --ink-2: #666666;
+    --ink-3: #8a8a8a;
+    --line: #e7e7e7;
+    --line-2: #ededed;
+    --grid: #e7e7e7;
+    --baseline: #c2c2c2;
+    --s1: #257de0;
+    --s2: #f47230;
+    --warn: #fbb315;
+    --critical: #dc3c3d;
+    --good: #0aac23;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(11, 11, 11, .04), 0 12px 32px -20px rgba(11, 11, 11, .25);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font: 14px/1.55 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--s1); }
+
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 14px 24px;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; }
+
+  .brand b { font-size: 16px; letter-spacing: .01em; }
+
+  .brand span { color: var(--ink-3); font-size: 12px; }
+
+  .seg { display: inline-flex; background: #f0f1f4; border-radius: 999px; padding: 3px; }
+
+  .seg button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0 10px;
+    height: 34px;
+  }
+
+  .field input {
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 13px;
+    width: 150px;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .field input[type="date"] { width: 128px; }
+
+  .field svg { flex: none; color: var(--ink-3); }
+
+  .btn {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 13px;
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn:hover { background: #fafafa; }
+  .btn.ghost { border-color: transparent; color: var(--ink-3); }
+  .btn.ghost:hover { color: var(--ink); background: #f0f1f4; }
+  .btn.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .btn.primary:hover { background: #333; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 22px 24px 64px; }
+
+  .note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border: 1px solid #f4e3b8;
+    border-radius: 10px;
+    color: #6b5200;
+    font-size: 12.5px;
+  }
+
+  .note b { color: #4d3a00; }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .tile .k { color: var(--ink-2); font-size: 12.5px; }
+
+  .tile .v { font-size: 30px; font-weight: 650; letter-spacing: -.01em; margin-top: 4px; line-height: 1.1; }
+
+  .tile .s { color: var(--ink-3); font-size: 12px; margin-top: 4px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+
+  .card-head h2 { font-size: 14px; margin: 0; font-weight: 650; letter-spacing: .01em; }
+
+  .card-head .sub { color: var(--ink-3); font-size: 12px; }
+
+  .legend { display: flex; gap: 16px; margin-left: auto; color: var(--ink-2); font-size: 12px; }
+
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  .chart-box { position: relative; }
+
+  #chart { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .tip {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    background: #191919;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 7px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .1s;
+    box-shadow: 0 6px 20px -8px rgba(0,0,0,.5);
+  }
+
+  .tip.on { opacity: 1; }
+
+  .tip em { font-style: normal; color: #a9c8ee; }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px; }
+
+  .grid3 .card { margin-bottom: 0; }
+
+  .rank { display: flex; flex-direction: column; gap: 9px; }
+
+  .rank-row { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: baseline; }
+
+  .rank-row .label {
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ink);
+    padding-bottom: 6px;
+  }
+
+  .rank-row .num { font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  .rank-row .track {
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    height: 4px;
+    width: 100%;
+    background: #f0f1f4;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .rank-row .fill { height: 100%; background: var(--s1); border-radius: 2px; }
+
+  .empty { color: var(--ink-3); font-size: 13px; padding: 18px 0; text-align: center; }
+
+  .table-scroll { overflow-x: auto; margin: 0 -4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink-2);
+    font-size: 12px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+
+  td { padding: 9px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+
+  tr:last-child td { border-bottom: 0; }
+
+  td.mono, .mono { font-family: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .path { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .muted { color: var(--ink-3); }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 0 6px;
+    border-radius: 5px;
+    background: #f0f1f4;
+    color: var(--ink-2);
+    margin-left: 4px;
+  }
+
+  .tag.bot { background: #fdecec; color: var(--critical); }
+
+  .pager { display: flex; align-items: center; gap: 12px; justify-content: flex-end; margin-top: 14px; color: var(--ink-2); font-size: 13px; }
+
+  .pager .btn:disabled { opacity: .4; cursor: default; }
+
+  .toggle { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-2); font-size: 12.5px; cursor: pointer; user-select: none; }
+
+  .toggle input { accent-color: #191919; width: 15px; height: 15px; }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: rgba(246, 247, 249, .86);
+    backdrop-filter: blur(6px);
+    padding: 24px;
+  }
+
+  .overlay[hidden] { display: none; }
+
+  .login {
+    width: 100%;
+    max-width: 340px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,.5);
+    padding: 26px 24px;
+  }
+
+  .login h1 { font-size: 17px; margin: 0 0 4px; }
+
+  .login p { color: var(--ink-3); font-size: 12.5px; margin: 0 0 18px; }
+
+  .login input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0 12px;
+    font: inherit;
+    outline: none;
+  }
+
+  .login input:focus { border-color: #191919; }
+
+  .login button { width: 100%; height: 40px; margin-top: 12px; }
+
+  .login .err { color: var(--critical); font-size: 12.5px; min-height: 18px; margin-top: 8px; }
+
+  .foot { color: var(--ink-3); font-size: 12px; text-align: center; margin-top: 28px; }
+
+  @media (max-width: 900px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid3 { grid-template-columns: 1fr; }
+    .top { padding: 12px 16px; }
+    .wrap { padding: 16px 16px 48px; }
+    .brand span { display: none; }
+    /* 窄屏下表格保持自然宽度横向滚动，不把单元格挤成多行 */
+    .table-scroll table { min-width: 720px; }
+  }
+
+  @media (max-width: 560px) {
+    .field input { width: 110px; }
+    .field input[type="date"] { width: 112px; }
+    .tile .v { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="login" hidden>
+  <form class="login" id="login-form">
+    <h1>访问统计</h1>
+    <p>ipowerbi.icu · 仅限本人查看</p>
+    <input id="pwd" type="password" placeholder="后台口令" autocomplete="current-password" required>
+    <button class="btn primary" type="submit">进入</button>
+    <div class="err" id="login-err"></div>
+  </form>
+</div>
+
+<header class="top">
+  <div class="brand"><b>访问统计</b><span>ipowerbi.icu</span></div>
+
+  <div class="seg" id="presets">
+    <button type="button" data-days="0">今天</button>
+    <button type="button" data-days="7">近 7 天</button>
+    <button type="button" data-days="30" aria-pressed="true">近 30 天</button>
+    <button type="button" data-days="90">近 90 天</button>
+  </div>
+
+  <label class="field" title="自定义起止日期">
+    <input id="from" type="date" aria-label="开始日期">
+    <span class="muted">至</span>
+    <input id="to" type="date" aria-label="结束日期">
+  </label>
+
+  <label class="field">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="q" type="search" placeholder="搜 IP / 页面 / 运营商" aria-label="搜索">
+  </label>
+
+  <label class="toggle"><input id="nobot" type="checkbox"> 隐藏爬虫</label>
+  <label class="toggle"><input id="mask" type="checkbox" checked> IP 打码</label>
+
+  <button class="btn" id="export" type="button">导出 CSV</button>
+  <button class="btn ghost" id="logout" type="button">退出</button>
+</header>
+
+<main class="wrap">
+  <div class="note">
+    <span aria-hidden="true">🔒</span>
+    <div><b>IP 为访客公网地址，属于个人信息。</b>后台默认打码显示，只有本人口令可看原始值；请勿对外分享明细，导出文件也不要外传。</div>
+  </div>
+
+  <section class="tiles" id="tiles" aria-label="关键指标"></section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>每日访问</h2>
+      <span class="sub" id="chart-sub"></span>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>浏览量 PV</span>
+        <span><i style="background:var(--s2)"></i>访客数 UV</span>
+      </div>
+    </div>
+    <div class="chart-box" id="chart-box">
+      <svg id="chart" viewBox="0 0 900 260" role="img" aria-label="每日浏览量柱状图与访客数折线"></svg>
+      <div class="tip" id="tip"></div>
+    </div>
+  </section>
+
+  <section class="grid3">
+    <div class="card">
+      <div class="card-head"><h2>热门页面</h2></div>
+      <div class="rank" id="pages"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>访问来源</h2></div>
+      <div class="rank" id="refs"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>地区</h2></div>
+      <div class="rank" id="places"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>IP 排行</h2><span class="sub">按访问次数排序，最多 20 个</span></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>IP</th><th>次数</th><th>最近访问</th><th>地区</th><th>运营商 / 机构</th><th>设备</th></tr></thead>
+        <tbody id="ips"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>访问明细</h2><span class="sub" id="rows-sub"></span></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>时间</th><th>IP</th><th>页面</th><th>地区</th><th>运营商 / 机构</th><th>浏览器 / 系统</th><th>来源</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span id="pager-label"></span>
+      <button class="btn" id="prev" type="button">上一页</button>
+      <button class="btn" id="next" type="button">下一页</button>
+    </div>
+  </section>
+
+  <p class="foot">数据存于 Cloudflare D1 · 北京时间分天 · 同 IP 同页面 60 秒内只记一次</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var S1 = "#257de0", S2 = "#f47230", GRID = "#e7e7e7", BASE = "#c2c2c2", INK2 = "#666666";
+  var PAGE_LIMIT = 50;
+  var state = { from: "", to: "", q: "", page: 1, nobot: false, mask: true, data: null };
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ── 工具 ── */
+  function num(n) {
+    n = Number(n) || 0;
+    return n.toLocaleString("zh-CN");
+  }
+  function dayStr(offset) {
+    var d = new Date(Date.now() + 8 * 3600e3 - (offset || 0) * 864e5);
+    return d.toISOString().slice(0, 10);
+  }
+  function timeStr(ts) {
+    var d = new Date(ts + 8 * 3600e3);
+    return d.toISOString().slice(5, 16).replace("T", " ");
+  }
+  function maskIP(ip) {
+    if (!ip) return "—";
+    if (!state.mask) return ip;
+    if (ip.indexOf(":") >= 0) {
+      var p = ip.split(":");
+      return p.slice(0, 3).join(":") + "::";
+    }
+    var a = ip.split(".");
+    if (a.length === 4) return a[0] + "." + a[1] + "." + a[2] + ".*";
+    return ip;
+  }
+  function hostOf(ref) {
+    if (!ref) return "直接访问";
+    try { return new URL(ref).hostname.replace(/^www\./, ""); } catch (e) { return ref.slice(0, 40); }
+  }
+  function placeText(r) {
+    var parts = [r.city, r.region].filter(Boolean);
+    if (!parts.length && r.country) parts = [r.country];
+    return parts.join(" · ") || "未知";
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ── 数据 ── */
+  function query() {
+    var p = new URLSearchParams();
+    if (state.from) p.set("from", state.from);
+    if (state.to) p.set("to", state.to);
+    if (state.q) p.set("q", state.q);
+    if (state.nobot) p.set("nobot", "1");
+    p.set("page", String(state.page));
+    return p.toString();
+  }
+
+  function load() {
+    fetch("/admin/api/data?" + query(), { credentials: "same-origin", cache: "no-store" })
+      .then(function (r) {
+        if (r.status === 401) { showLogin(true); throw new Error("auth"); }
+        return r.json();
+      })
+      .then(function (d) {
+        if (!d || !d.ok) return;
+        state.data = d;
+        render();
+      })
+      .catch(function () {});
+  }
+
+  /* ── 渲染 ── */
+  function render() {
+    var d = state.data;
+    if (!d) return;
+    renderTiles(d);
+    renderChart(d);
+    renderRank("pages", d.pages, function (r) {
+      return { label: r.path || "/", value: r.pv, note: "PV " + num(r.pv) + " · UV " + num(r.uv) };
+    });
+    var refMap = {};
+    (d.refs || []).forEach(function (r) {
+      var h = hostOf(r.ref);
+      refMap[h] = (refMap[h] || 0) + r.pv;
+    });
+    var refs = Object.keys(refMap).map(function (k) { return { label: k, value: refMap[k] }; })
+      .sort(function (a, b) { return b.value - a.value; });
+    renderRank("refs", refs, function (r) { return { label: r.label, value: r.value, note: num(r.value) }; });
+
+    renderRank("places", d.places, function (r) {
+      return { label: placeText(r), value: r.pv, note: "PV " + num(r.pv) + " · UV " + num(r.uv) };
+    });
+
+    renderIps(d);
+    renderRows(d);
+  }
+
+  function renderTiles(d) {
+    var tiles = [
+      { k: "今日浏览量 PV", v: d.today.pv, s: "北京时间 " + d.range.today },
+      { k: "今日访客 UV", v: d.today.uv, s: "按 IP 去重" },
+      { k: "区间浏览量 PV", v: d.summary.pv, s: d.range.from + " 至 " + d.range.to },
+      { k: "区间访客 UV", v: d.summary.uv, s: "按 IP 去重" }
+    ];
+    $("tiles").innerHTML = tiles.map(function (t) {
+      return '<div class="tile"><div class="k">' + esc(t.k) + '</div><div class="v">' +
+        num(t.v) + '</div><div class="s">' + esc(t.s) + '</div></div>';
+    }).join("");
+  }
+
+  function renderRank(id, rows, map) {
+    var el = $(id);
+    rows = rows || [];
+    if (!rows.length) { el.innerHTML = '<div class="empty">这个区间没有数据</div>'; return; }
+    var items = rows.map(map);
+    var max = Math.max.apply(null, items.map(function (i) { return i.value || 0; })) || 1;
+    el.innerHTML = items.map(function (i) {
+      var w = Math.max(2, Math.round((i.value || 0) / max * 100));
+      return '<div class="rank-row" title="' + esc(i.label + " · " + i.note) + '">' +
+        '<span class="label">' + esc(i.label) + '</span>' +
+        '<span class="num">' + esc(i.note) + '</span>' +
+        '<span class="track"><span class="fill" style="width:' + w + '%"></span></span>' +
+        '</div>';
+    }).join("");
+  }
+
+  function renderIps(d) {
+    var rows = d.ips || [];
+    if (!rows.length) { $("ips").innerHTML = '<tr><td colspan="6" class="empty">没有数据</td></tr>'; return; }
+    $("ips").innerHTML = rows.map(function (r) {
+      var dev = r.device === "bot" ? '<span class="tag bot">爬虫</span>' :
+        (r.device === "mobile" ? "手机" : r.device === "tablet" ? "平板" : "桌面");
+      return '<tr>' +
+        '<td class="mono">' + esc(maskIP(r.ip)) + '</td>' +
+        '<td class="num">' + num(r.pv) + '</td>' +
+        '<td class="mono muted">' + esc(timeStr(r.last)) + '</td>' +
+        '<td>' + esc(placeText(r)) + '</td>' +
+        '<td>' + esc(r.org || "—") + '</td>' +
+        '<td>' + dev + '</td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  function renderRows(d) {
+    var rows = d.rows || [];
+    var pages = Math.max(1, Math.ceil(d.total / d.limit));
+    $("rows-sub").textContent = "共 " + num(d.total) + " 条";
+    $("pager-label").textContent = "第 " + d.page + " / " + pages + " 页";
+    $("prev").disabled = d.page <= 1;
+    $("next").disabled = d.page >= pages;
+
+    if (!rows.length) { $("rows").innerHTML = '<tr><td colspan="7" class="empty">没有数据</td></tr>'; return; }
+    $("rows").innerHTML = rows.map(function (r) {
+      var dev = esc((r.browser || "—") + " / " + (r.os || "—"));
+      var path = r.title ? r.path + '<div class="muted" style="font-size:11.5px">' + esc(r.title) + '</div>' : r.path;
+      return '<tr>' +
+        '<td class="mono muted">' + esc(timeStr(r.ts)) + '</td>' +
+        '<td class="mono">' + esc(maskIP(r.ip)) + (r.device === "bot" ? '<span class="tag bot">爬虫</span>' : '') + '</td>' +
+        '<td class="path">' + path + '</td>' +
+        '<td>' + esc(placeText(r)) + '</td>' +
+        '<td>' + esc(r.org || "—") + '</td>' +
+        '<td>' + dev + '</td>' +
+        '<td class="muted">' + esc(hostOf(r.ref)) + '</td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  /* ── 趋势图 ── */
+  function renderChart(d) {
+    var days = d.daily || [];
+    var svg = $("chart");
+    // 按容器实际宽度绘制，让轴标签保持在真实像素大小，不被 viewBox 缩小
+    var boxW = Math.max(300, Math.min(1200, $("chart-box").clientWidth || 900));
+    var narrow = boxW < 560;
+    var W = boxW, H = narrow ? 210 : 260;
+    var L = narrow ? 30 : 44, R = 10, T = 16, B = narrow ? 26 : 34;
+    var iw = W - L - R, ih = H - T - B;
+    var FS = narrow ? 10 : 11;
+
+    // 补齐空白天，保证横轴连续
+    var map = {};
+    days.forEach(function (r) { map[r.d] = r; });
+    var series = [];
+    var start = new Date(d.range.from + "T00:00:00Z").getTime();
+    var end = new Date(d.range.to + "T00:00:00Z").getTime();
+    for (var t = start; t <= end; t += 864e5) {
+      var key = new Date(t).toISOString().slice(0, 10);
+      var r = map[key] || { pv: 0, uv: 0 };
+      series.push({ d: key, pv: r.pv || 0, uv: r.uv || 0 });
+    }
+    var totalDays = series.length;
+    if (narrow && series.length > 14) series = series.slice(-14);
+    else if (series.length > 120) series = series.slice(-120);
+
+    $("chart-sub").textContent = d.range.from + " 至 " + d.range.to +
+      (series.length < totalDays ? " · 图上近 " + series.length + " 天" : " · " + series.length + " 天");
+
+    var maxPv = Math.max.apply(null, series.map(function (s) { return s.pv; })) || 1;
+    // 4 个整数刻度
+    var step = niceStep(maxPv / 4);
+    var top = Math.max(step * 4, step);
+    var n = series.length || 1;
+    var band = iw / n;
+    var bw = Math.min(24, Math.max(3, band - Math.min(6, band * 0.35)));
+
+    var p = [];
+    p.push('<g aria-hidden="true">');
+    for (var i = 0; i <= 4; i++) {
+      var y = T + ih - (ih * i / 4);
+      var v = step * i;
+      p.push('<line x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R) + '" y2="' + y.toFixed(1) +
+        '" stroke="' + (i === 0 ? BASE : GRID) + '" stroke-width="1"/>');
+      p.push('<text x="' + (L - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="' + FS + '" fill="' + INK2 + '">' + num(v) + '</text>');
+    }
+    p.push('</g>');
+
+    var maxIdx = 0;
+    series.forEach(function (s, idx) { if (s.pv > series[maxIdx].pv) maxIdx = idx; });
+
+    // 柱
+    series.forEach(function (s, idx) {
+      var x = L + band * idx + (band - bw) / 2;
+      var h = ih * (s.pv / top);
+      var y = T + ih - h;
+      var w = Math.max(1, bw);
+      if (h <= 0.5) return;
+      var r = Math.min(4, h, w / 2);
+      var path = 'M' + x + ',' + (y + r) +
+        ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+        ' L' + (x + w - r) + ',' + y +
+        ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) +
+        ' L' + (x + w) + ',' + (T + ih) +
+        ' L' + x + ',' + (T + ih) + ' Z';
+      p.push('<path d="' + path + '" fill="' + S1 + '"/>');
+    });
+
+    // UV 折线
+    var pts = series.map(function (s, idx) {
+      return [L + band * idx + band / 2, T + ih - ih * (s.uv / top)];
+    });
+    p.push('<polyline fill="none" stroke="' + S2 + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="' +
+      pts.map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(" ") + '"/>');
+    pts.forEach(function (q) {
+      p.push('<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="2.5" fill="' + S2 +
+        '" stroke="#fff" stroke-width="1.5"/>');
+    });
+
+    // 只标极值
+    if (series[maxIdx].pv > 0) {
+      var mx = L + band * maxIdx + band / 2;
+      var my = T + ih - ih * (series[maxIdx].pv / top);
+      p.push('<text x="' + mx.toFixed(1) + '" y="' + (my - 8).toFixed(1) + '" text-anchor="middle" font-size="11.5" font-weight="600" fill="#191919">' +
+        num(series[maxIdx].pv) + '</text>');
+    }
+
+    // 横轴日期
+    var tickCount = Math.min(7, series.length);
+    if (tickCount > 1) {
+      for (var k = 0; k < tickCount; k++) {
+        var idx = Math.round(k * (series.length - 1) / (tickCount - 1));
+        var cx = L + band * idx + band / 2;
+        p.push('<text x="' + cx.toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="' + FS + '" fill="' + INK2 + '">' +
+          series[idx].d.slice(5) + '</text>');
+      }
+    }
+
+    // 命中区（比柱宽）
+    series.forEach(function (s, idx) {
+      var x = L + band * idx;
+      p.push('<rect class="hit" data-i="' + idx + '" x="' + x.toFixed(1) + '" y="' + T + '" width="' + band.toFixed(1) +
+        '" height="' + ih + '" fill="transparent" style="cursor:default"/>');
+    });
+
+    svg.innerHTML = p.join("");
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "每日浏览量柱状图与访客数折线，共 " + series.length + " 天");
+
+    // 悬停提示
+    var tip = $("tip");
+    var box = $("chart-box");
+    svg.querySelectorAll(".hit").forEach(function (rect) {
+      rect.addEventListener("mousemove", function (e) {
+        var i = Number(rect.getAttribute("data-i"));
+        var s = series[i];
+        if (!s) return;
+        tip.innerHTML = esc(s.d) + '<br><em>PV</em> ' + num(s.pv) + ' &nbsp; <em style="color:#f6b28a">UV</em> ' + num(s.uv);
+        var r = svg.getBoundingClientRect();
+        var scale = r.width / W;
+        var cx = r.left - box.getBoundingClientRect().left + (L + band * i + band / 2) * scale;
+        var cy = r.top - box.getBoundingClientRect().top + T * scale;
+        tip.style.left = cx + "px";
+        tip.style.top = (cy + 40) + "px";
+        tip.classList.add("on");
+      });
+      rect.addEventListener("mouseleave", function () { tip.classList.remove("on"); });
+    });
+  }
+
+  function niceStep(v) {
+    if (v <= 0) return 1;
+    var pow = Math.pow(10, Math.floor(Math.log10(v)));
+    var n = v / pow;
+    var m = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
+    return m * pow;
+  }
+
+  /* ── 交互 ── */
+  function showLogin(on) {
+    $("login").hidden = !on;
+    if (on) setTimeout(function () { $("pwd").focus(); }, 30);
+  }
+
+  $("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pwd = $("pwd").value;
+    $("login-err").textContent = "";
+    fetch("/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "pwd=" + encodeURIComponent(pwd),
+      credentials: "same-origin",
+    }).then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) { $("pwd").value = ""; showLogin(false); load(); }
+        else $("login-err").textContent = d.error || "口令不对";
+      })
+      .catch(function () { $("login-err").textContent = "网络错误，请重试"; });
+  });
+
+  $("logout").addEventListener("click", function () {
+    fetch("/admin/logout", { method: "POST", credentials: "same-origin" })
+      .then(function () { showLogin(true); });
+  });
+
+  $("presets").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-days]");
+    if (!b) return;
+    var days = Number(b.getAttribute("data-days"));
+    Array.prototype.forEach.call(this.querySelectorAll("button"), function (x) {
+      if (x === b) x.setAttribute("aria-pressed", "true"); else x.removeAttribute("aria-pressed");
+    });
+    state.from = dayStr(days === 0 ? 0 : days - 1);
+    state.to = dayStr(0);
+    $("from").value = state.from;
+    $("to").value = state.to;
+    state.page = 1;
+    load();
+  });
+
+  $("from").addEventListener("change", function () {
+    state.from = this.value; state.page = 1;
+    Array.prototype.forEach.call($("presets").querySelectorAll("button"), function (x) { x.removeAttribute("aria-pressed"); });
+    load();
+  });
+  $("to").addEventListener("change", function () {
+    state.to = this.value; state.page = 1;
+    Array.prototype.forEach.call($("presets").querySelectorAll("button"), function (x) { x.removeAttribute("aria-pressed"); });
+    load();
+  });
+
+  var qTimer = null;
+  $("q").addEventListener("input", function () {
+    var v = this.value;
+    clearTimeout(qTimer);
+    qTimer = setTimeout(function () { state.q = v.trim(); state.page = 1; load(); }, 320);
+  });
+
+  $("nobot").addEventListener("change", function () { state.nobot = this.checked; state.page = 1; load(); });
+  $("mask").addEventListener("change", function () { state.mask = this.checked; if (state.data) { renderIps(state.data); renderRows(state.data); } });
+
+  $("prev").addEventListener("click", function () { if (state.page > 1) { state.page--; load(); } });
+  $("next").addEventListener("click", function () { state.page++; load(); });
+
+  $("export").addEventListener("click", function () {
+    var p = new URLSearchParams();
+    if (state.from) p.set("from", state.from);
+    if (state.to) p.set("to", state.to);
+    location.href = "/admin/api/export?" + p.toString();
+  });
+
+  // 窗口变宽变窄时重画趋势图，保持标签为真实字号
+  var rz = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(rz);
+    rz = setTimeout(function () { if (state.data) renderChart(state.data); }, 180);
+  });
+
+  /* ── 启动 ── */
+  state.from = dayStr(29);
+  state.to = dayStr(0);
+  $("from").value = state.from;
+  $("to").value = state.to;
+  load();
+})();
+</script>
+</body>
+</html>

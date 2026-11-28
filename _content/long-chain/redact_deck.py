@@ -139,6 +139,9 @@ def redact(source: str) -> str:
     # 站点补充样式
     html = html.replace("</style>", EXTRA_CSS + "</style>", 1)
 
+    # 自建访问统计（与站点其余页面同一份脚本）
+    html = html.replace("</body>", '<script src="../assets/stats.js" defer></script>\n</body>', 1)
+
     # 替换后修顺语序：「头部经销商天津经销商 A」-> 「头部经销商：天津经销商 A」；
     # 「经销商 A销售额」-> 「经销商 A 销售额」
     html = html.replace("头部经销商天津经销商", "头部经销商：天津经销商")

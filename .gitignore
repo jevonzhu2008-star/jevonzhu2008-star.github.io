@@ -27,3 +27,8 @@ chatbi-deck-*.html
 
 # Python 缓存
 __pycache__/
+
+# 访问统计 Worker 的本地状态与密钥，不能提交
+_content/analytics-worker/node_modules/
+_content/analytics-worker/.wrangler/
+_content/analytics-worker/.dev.vars

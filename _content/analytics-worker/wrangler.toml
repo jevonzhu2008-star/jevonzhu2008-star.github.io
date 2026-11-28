@@ -1,0 +1,25 @@
+name = "ipowerbi-stats"
+main = "src/index.js"
+compatibility_date = "2026-11-20"
+
+# 接收前端 beacon 的 HTML 后台页面，作为文本模块打包进来
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
+
+# 创建后把 database_id 填进来：
+#   npx wrangler d1 create ipowerbi_stats
+[[d1_databases]]
+binding = "DB"
+database_name = "ipowerbi_stats"
+database_id = "2c44fea8-9731-44be-b103-2a95dbd82faf"
+
+[vars]
+# 允许上报的来源域名，逗号分隔
+ALLOWED_ORIGINS = "https://ipowerbi.icu,https://www.ipowerbi.icu"
+
+# 自定义域：部署后自动在 Cloudflare 建 stats.ipowerbi.icu 的 DNS 记录
+[[routes]]
+pattern = "stats.ipowerbi.icu"
+custom_domain = true

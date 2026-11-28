@@ -121,6 +121,28 @@ window.SITE_ANALYTICS = {
 
 内容里带链接时统一加 UTM，GA4 里就能按来源看转化，规范见 `_content/内容营销计划.md`。
 
+### 自建 IP 访问统计（stats.ipowerbi.icu）
+
+GitHub Pages 是纯静态托管，拿不到访客 IP；GA4、百度统计、Clarity 也都按隐私规范抹掉 IP。所以另起一个 Cloudflare Worker 自己收日志，后台能看 IP 明细、地区、运营商、页面和来源，也能看 PV/UV 汇总。
+
+- 上报脚本：`assets/stats.js`，所有页面在 `</body>` 前引用一次；本地预览和 Do Not Track 不上报。
+- 服务端：`_content/analytics-worker/`（下划线开头，GitHub Pages 不发布）。Worker + D1 数据库，代码见 `src/`。
+- 后台：`https://stats.ipowerbi.icu/admin`，口令登录，数据存 Cloudflare D1。
+- 同 IP 同页面 60 秒内只记一次，另有每分钟频率上限，防刷新和脚本刷量。
+- IP 属个人信息：后台默认打码，只有本人口令能看原始值；明细和导出文件不要外传。
+
+首次部署：
+```powershell
+cd _content\analytics-worker
+npx wrangler login
+npx wrangler d1 create ipowerbi_stats          # 把输出的 database_id 填进 wrangler.toml
+npx wrangler d1 execute ipowerbi_stats --remote --file=schema.sql
+npx wrangler secret put ADMIN_PASSWORD          # 后台口令
+npx wrangler secret put SESSION_SECRET          # 随机长串，给登录 Cookie 签名
+npx wrangler deploy
+```
+改代码后只需重新 `npx wrangler deploy`；页面侧不用动。
+
 ## 搜索引擎收录
 
 页面本身已经做了：唯一 H1、canonical、OG / Twitter 卡片、`Person` / `WebSite` / `ProfilePage` / `Service` / `FAQPage` 结构化数据、含作品集的 sitemap、robots.txt、IndexNow 密钥，以及「服务」和「常见问题」两块正文内容。
