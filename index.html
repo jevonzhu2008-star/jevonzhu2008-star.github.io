@@ -226,7 +226,7 @@
 <link rel="preload" as="image" type="image/webp"
       imagesrcset="assets/shots/pf-overview-800.webp 800w, assets/shots/pf-overview-1600.webp 1600w"
       imagesizes="(max-width: 720px) 72vw, 520px">
-<link rel="stylesheet" href="assets/site.css?v=20261115-2">
+<link rel="stylesheet" href="assets/site.css?v=20261128-1">
 <link rel="stylesheet" href="assets/blog.css?v=20261117-7">
 </head>
 <body>
@@ -240,7 +240,7 @@
     <div class="nav-more">
       <button class="nav-more-toggle" id="nav-more-toggle" type="button"
               aria-expanded="false" aria-controls="nav-more-menu"
-              data-spy-group="site-ipowerbi site-portfolio site-platform site-finance">
+              data-spy-group="site-ipowerbi site-portfolio site-platform site-finance site-portal">
         作品<span class="nav-caret" aria-hidden="true"></span>
       </button>
       <div class="nav-more-menu" id="nav-more-menu" hidden>
@@ -260,6 +260,10 @@
           <strong>智能问数</strong>
           <span>建在语义模型上的 AI 问数</span>
         </a>
+        <a href="#site-portal">
+          <strong>报表门户</strong>
+          <span>报表、问数、汇报合成一个入口</span>
+        </a>
       </div>
     </div>
     <a href="#about" data-spy="about">关于</a>
@@ -278,6 +282,7 @@
       <a href="#site-portfolio">作品集</a>
       <a href="#site-platform">开发平台</a>
       <a href="#site-finance">智能问数</a>
+      <a href="#site-portal">报表门户</a>
       <a href="#about">关于</a>
       <a href="blog/">博客</a>
       <a href="#contact">联系</a>
@@ -832,6 +837,50 @@
     </div>
   </section>
 
+  <!-- ── 站点五：报表门户 ─────────────────────────────── -->
+  <section class="panel panel-soft" id="site-portal">
+    <div class="panel-inner">
+      <div class="panel-text">
+        <h2 class="mask" data-reveal>报表门户</h2>
+        <p class="panel-desc" data-reveal style="--i:1">把报表目录、中文问数和 HTML 汇报收进一个入口。员工用 Microsoft 账号登录一次，能看哪些报表、哪些数据，全按本人在 Power BI 的权限生效：不二次登录，也不给 AI 一个能读全库的账号。</p>
+        <dl class="panel-facts" data-reveal style="--i:2">
+          <div><dt>入口</dt><dd>报表按名称列在侧栏，点开就嵌在页里；右侧抽屉直接提问、直接生成汇报。</dd></div>
+          <div><dt>身份</dt><dd>Microsoft 单点登录，首次登录自动建号；报表用本人令牌加载，权限不够只回退 iframe，不拿服务账号替你越权。</dd></div>
+          <div><dt>隔离</dt><dd>每个报表绑自己的数据集，问数的会话与结构快照互不串；行级权限按本人角色过滤。</dd></div>
+        </dl>
+        <a class="btn" href="https://portal.ipowerbi.icu" target="_blank" rel="noopener" data-reveal style="--i:3">打开报表门户 <span class="arr" aria-hidden="true">→</span></a>
+        <p class="panel-alt" data-reveal style="--i:4">登录页备了只读演示账号，打开就能看；要看自己团队的报表，换成你的 Microsoft 账号。<a href="#contact">聊聊部署方案</a></p>
+      </div>
+      <div class="panel-visual wipe wipe-r" data-reveal style="--i:1">
+        <a class="stage stage--l2" data-stage href="https://portal.ipowerbi.icu" target="_blank" rel="noopener" aria-label="打开报表门户（新窗口）">
+          <span class="stage-cursor" aria-hidden="true">打开门户 <b>↗</b></span>
+          <div class="stage-scene">
+            <figure class="window window--dark">
+              <div class="window-bar">
+                <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="window-url">
+                  <span class="url-idle">portal.ipowerbi.icu</span>
+                  <span class="url-hot" aria-hidden="true">打开门户 ↗</span>
+                </span>
+                <span class="window-go" aria-hidden="true">↗</span>
+              </div>
+              <div class="window-shot window-shot--video">
+                <video class="stage-video" width="1280" height="720" muted loop playsinline preload="none"
+                       poster="assets/shots/portal-home.webp"
+                       aria-label="报表门户宣传片：Microsoft 登录、工作台报表卡、在线报表与右侧问数抽屉">
+                  <source src="assets/portal-promo.mp4" type="video/mp4">
+                </video>
+                <span class="window-glare" aria-hidden="true"></span>
+              </div>
+            </figure>
+            <span class="stage-badge stage-badge--l2">Microsoft 登录 · 权限随人</span>
+          </div>
+          <span class="stage-glow" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ── 关于 ─────────────────────────────────────────── -->
   <section class="about" id="about">
     <div class="wrap">
@@ -849,7 +898,7 @@
         </figure>
         <div class="about-body">
           <p class="about-lead" data-reveal>我做 Power BI 十年。十年里做的其实是一件事：把数据变成能用于决策的报表——先把它讲明白，再把它做出来，最后交付进一家每天都要用它的公司。</p>
-          <p class="about-note" data-reveal style="--i:1">教学站是讲的部分，作品集是做的部分，PBI 平台是交付的部分，智能问数是问的部分。四个站点合起来，才是一份完整的简历。</p>
+          <p class="about-note" data-reveal style="--i:1">教学站讲方法与案例，作品集放做出来的看板，开发平台是交付现场，智能问数把问题变成答案，报表门户再把报表、问数和汇报收进一个入口。五块合起来，才是一份完整的简历。</p>
           <dl class="about-facts" data-reveal style="--i:2">
             <div><dt>现居</dt><dd>成都</dd></div>
             <div><dt>身份</dt><dd>世界 500 强公司 BI 开发者</dd></div>
@@ -889,6 +938,12 @@
             <a href="https://ipowerbi.mysxl.cn/" target="_blank" rel="noopener">
               <span class="proof-num">05</span>
               <span class="proof-main"><strong>教学站与 18 集教程</strong><span>B 站免费看，新窗口打开</span></span>
+            </a>
+          </li>
+          <li>
+            <a href="#site-portal">
+              <span class="proof-num">06</span>
+              <span class="proof-main"><strong>报表门户</strong><span>报表、问数、汇报一个入口，演示账号只读</span></span>
             </a>
           </li>
         </ul>
@@ -1082,7 +1137,7 @@
             <a href="https://app.ipowerbi.icu" target="_blank" rel="noopener">智能问数</a>
           </nav>
         </div>
-        <p class="foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 四个站点，一个入口 · 成都高新区天府大道北段 18 号</p>
+        <p class="foot-copy">© 2026 Jevon Zhu · 成都 Power BI 报表顾问 · 五个站点，一个入口 · 成都高新区天府大道北段 18 号</p>
       </footer>
     </div>
   </section>
