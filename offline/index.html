@@ -53,7 +53,7 @@
     position: absolute;
     inset: auto 0 0 0;
     height: 70vh;
-    background: url("/assets/shots/portal-skyline.webp") center bottom / cover no-repeat;
+    background: url("https://ipowerbi.icu/assets/shots/portal-skyline.webp") center bottom / cover no-repeat;
     opacity: 0.78;
     -webkit-mask-image: linear-gradient(to top, #000 24%, transparent 94%);
     mask-image: linear-gradient(to top, #000 24%, transparent 94%);
@@ -317,7 +317,7 @@
       </ul>
     </div>
     <figure class="qr">
-      <img src="/assets/wechat-qr.webp" width="116" height="116" alt="Jevon Zhu 的微信二维码">
+      <img src="https://ipowerbi.icu/assets/wechat-qr.webp" width="116" height="116" alt="Jevon Zhu 的微信二维码">
       <figcaption>扫码加微信<br>备注「演示站点」</figcaption>
     </figure>
   </section>
@@ -375,15 +375,38 @@
   var countdown = document.getElementById("countdown");
   var left = 20;
   var timer;
+  var busy = false;
+  // 只有门户/问数这两个应用域名才自动探测；个人站上的 /offline/ 只是展示页
+  var isAppHost = /^(portal|app)\./.test(location.hostname);
+
+  // 被 Service Worker 或网关兜底时，请求回来的仍是这一页，不能盲刷新
+  function looksOffline(text) {
+    return /服务器暂时|Error 1033|cloudflare/i.test(text);
+  }
+
+  function probe() {
+    if (busy) return;
+    busy = true;
+    if (countdown) countdown.textContent = "正在检测…";
+    fetch(location.origin + "/", { cache: "no-store", redirect: "follow" })
+      .then(function (r) { return r.text(); })
+      .then(function (text) {
+        if (!looksOffline(text)) { location.reload(); return; }
+        resetProbe("还没恢复，稍后再试");
+      })
+      .catch(function () { resetProbe("网络不通，稍后再试"); });
+  }
+
+  function resetProbe(message) {
+    busy = false;
+    left = 20;
+    if (countdown) countdown.textContent = message + " · " + left + " 秒后自动重试";
+  }
 
   function tick() {
-    if (!countdown) return;
+    if (!countdown || busy) return;
     countdown.textContent = left + " 秒后自动重试";
-    if (left <= 0) {
-      countdown.textContent = "正在重试…";
-      location.reload();
-      return;
-    }
+    if (left <= 0) { probe(); return; }
     left -= 1;
   }
 
@@ -394,13 +417,17 @@
     timer = setInterval(tick, 1000);
   }
 
-  if (countdown) start();
+  if (countdown) {
+    if (isAppHost) start();
+    else countdown.textContent = "服务器恢复后刷新本页";
+  }
 
   if (again) {
     again.addEventListener("click", function () {
       again.disabled = true;
       again.textContent = "检测中…";
-      location.reload();
+      probe();
+      setTimeout(function () { again.disabled = false; again.textContent = "重新检测"; }, 2500);
     });
   }
 })();
