@@ -21,7 +21,7 @@
 
 ```
 index.html            页面结构（文案、链接都在这里）
-long-chain/           长链任务分析演示汇报（39 页可翻页、自包含 HTML；数据为合成演示数据）
+long-chain/           长链任务分析演示汇报（54 页可翻页、自包含 HTML；由智能问数实测输出脱敏生成）
 blog/                 博客：索引页与每篇文章（由公众号工作流同步生成）
 blog/index.html       文章列表，按标签筛选
 blog/<slug>/          单篇文章，图片已转 WebP
@@ -48,18 +48,19 @@ assets/shots/promo-poster.webp  宣传片封面帧
 
 ## 长链任务分析演示（long-chain/）
 
-首页「长链任务分析」板块链到的 39 页可翻页汇报。**不要手改 `long-chain/index.html`**，它由 `_content/long-chain/` 里的脚本从合成数据生成（数据全部虚构，不含真实经营数字）：
+首页「长链任务分析」板块链到的 54 页可翻页汇报，来自智能问数的一次真实输出。**不要手改 `long-chain/index.html`**，它由 `_content/long-chain/redact_deck.py` 从导出的原始 HTML 脱敏生成：
 
 ```powershell
 cd _content\long-chain
-python gen_pages.py
+python redact_deck.py <智能问数导出的原始汇报.html>
 ```
 
-- `gen_deck.py`：合成订单明细（固定随机种子，可复现）并聚合指标
-- `gen_pages.py`：渲染 39 页（封面 + 24 页洞察 + 总结 + 行动清单 + 12 页 DAX 附录）
+- `redact_deck.py`：品牌名、数据集名与 ID、经销商公司名、品牌型号统一换成代号，去掉导出环境自带的统计脚本，再补上站点导航与 SEO 元信息；脚本会做残留检查，命中敏感词直接报错
+- 金额、页数、口径、DAX 查询原样保留，页与页之间的数字关系不变；原始导出 HTML 不入库（见 `.gitignore`）
+- `gen_deck.py` / `gen_pages.py`：早先的合成数据版生成器，线上页面已不再使用，保留作模板参考
 - `deck-style.css`：版式取自智能问数的汇报模板，页面自包含、不引外部资源
 
-正文数字由同一份明细推导，所以页与页之间自洽；要换行业只改 `gen_deck.py` 顶部的产品、区域、季节权重。
+要换一份新汇报，重新导出后跑一遍 `redact_deck.py` 即可。
 
 ## 博客（公众号同步）
 

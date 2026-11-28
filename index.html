@@ -670,20 +670,20 @@
     <div class="wrap">
       <div class="chain-head">
         <h2 class="mask" data-reveal>不再只答一个数<br>一次跑完整条分析链</h2>
-        <p class="chain-lead" data-reveal style="--i:1">普通问数答完一句就结束，换个人还得从头再问。长链任务分析把「做一份汇报」整件事接过去：自己拆章节、逐页写查询取数、出图写结论，再补归因和行动清单。会上被追问的「为什么增长」「下一步做什么」，汇报往后翻就有答案。</p>
+        <p class="chain-lead" data-reveal style="--i:1">普通问数答完一句就结束，换个人还得从头再问。长链任务分析把「做一份汇报」整件事接过去：自己拆章节、逐页写查询取数、出图写结论，再补归因和改进计划。会上被追问的「为什么增长」「下一步做什么」，汇报往后翻就有答案。</p>
       </div>
 
       <div class="chain-board" data-reveal>
         <p class="chain-board-label">一条链上的八步 · 全程不用人盯</p>
         <ol class="chain-flow">
-          <li style="--i:0"><span class="chain-num">01</span><h3>拆题</h3><p>读懂模型里的业务，自己列出 6 个章节、24 个问题，不用写提示词</p></li>
+          <li style="--i:0"><span class="chain-num">01</span><h3>拆题</h3><p>读懂模型里的业务，自己列出 5 个章节、23 个问题，不用写提示词</p></li>
           <li style="--i:1"><span class="chain-num">02</span><h3>定口径</h3><p>只用语义模型里现成的度量值，不临时拼算法、不改口径</p></li>
           <li style="--i:2"><span class="chain-num">03</span><h3>写查询</h3><p>每一页先写 1–2 条只读 DAX，取到数才开口</p></li>
           <li style="--i:3"><span class="chain-num">04</span><h3>取数</h3><p>服务端直接执行；取不到就明确标注，不编数字</p></li>
           <li style="--i:4"><span class="chain-num">05</span><h3>出图</h3><p>柱、条、折线、饼在服务端画好，断网也能翻完整本</p></li>
-          <li style="--i:5"><span class="chain-num">06</span><h3>写结论</h3><p>一页一条结论、3–5 个关键点，附指标和口径</p></li>
+          <li style="--i:5"><span class="chain-num">06</span><h3>写结论</h3><p>一页一条结论、3–4 个关键点，附指标和口径</p></li>
           <li style="--i:6"><span class="chain-num">07</span><h3>归因</h3><p>每个章节补一页归因，说清涨跌来自哪类产品、哪个区域</p></li>
-          <li style="--i:7"><span class="chain-num">08</span><h3>收口</h3><p>总结、问题清单、P0/P1/P2 行动，末尾附全量 DAX 附录</p></li>
+          <li style="--i:7"><span class="chain-num">08</span><h3>收口</h3><p>总结、主题归因、改进计划，末尾附全量 DAX 附录</p></li>
         </ol>
       </div>
 
@@ -691,12 +691,12 @@
         <div class="chain-case-text" data-reveal>
           <p class="chain-tag">实测案例</p>
           <h3>某教育硬件品牌 · 销售数据自动体检</h3>
-          <p>不写主题、不写提示词，只点一下「生成汇报」。42 秒后拿到全篇 39 页，最后一页是真的能落地的行动清单。数字与姓名已脱敏，章节骨架与口径原样保留。</p>
+          <p>不写主题、不写提示词，只点一下「生成汇报」：自己拆出 5 个章节、逐页取数出图，第 24 页收口成总结，后面还跟 5 篇主题归因和 24 页 DAX 附录。品牌与经销商名已脱敏，金额、章节与口径原样保留。</p>
           <dl class="chain-stats">
-            <div><dt>章节</dt><dd>6</dd></div>
-            <div><dt>洞察页</dt><dd>24</dd></div>
-            <div><dt>全篇</dt><dd>39 页</dd></div>
-            <div><dt>附录</dt><dd>12 页</dd></div>
+            <div><dt>章节</dt><dd>5</dd></div>
+            <div><dt>洞察页</dt><dd>23</dd></div>
+            <div><dt>全篇</dt><dd>54 页</dd></div>
+            <div><dt>附录</dt><dd>24 页</dd></div>
           </dl>
 
           <div class="chain-chapters">
@@ -705,9 +705,9 @@
               <summary><span>总体规模与趋势</span><em>5 页</em></summary>
               <ul>
                 <li>整体规模与订单量走势</li>
-                <li>年度销售额与同比变化</li>
-                <li>月度节奏与季节性</li>
-                <li>客单价水平</li>
+                <li>利润与渠道金额的规模关系</li>
+                <li>年度销售与利润节奏</li>
+                <li>客户与经销商覆盖规模</li>
                 <li>关键指标归因</li>
               </ul>
             </details>
@@ -716,43 +716,45 @@
               <ul>
                 <li>品类销售构成</li>
                 <li>销售额排名与集中度</li>
-                <li>利润贡献排名</li>
-                <li>销量排名与结构</li>
+                <li>利润排名与利润结构</li>
+                <li>销量与销售额的错位</li>
                 <li>关键指标归因</li>
               </ul>
             </details>
             <details>
-              <summary><span>渠道与区域对比</span><em>5 页</em></summary>
+              <summary><span>时间与周期变化</span><em>5 页</em></summary>
               <ul>
-                <li>区域销售额与经销商</li>
-                <li>城市维度 TOP20</li>
-                <li>区域经理业绩</li>
-                <li>区域目标达成率</li>
+                <li>年度销售额同比变化</li>
+                <li>月度销售的季节规律</li>
+                <li>季度销售与利润节奏</li>
+                <li>客户类型的时间结构</li>
                 <li>关键指标归因</li>
               </ul>
             </details>
             <details>
-              <summary><span>时间周期与节奏</span><em>4 页</em></summary>
+              <summary><span>区域与渠道对比</span><em>5 页</em></summary>
               <ul>
-                <li>年度结构变化</li>
-                <li>月度环比变化</li>
-                <li>工作日与周末差异</li>
+                <li>区域销售额与利润</li>
+                <li>省份销售排名与贡献</li>
+                <li>城市层级销售分布</li>
+                <li>经销商贡献集中度</li>
                 <li>关键指标归因</li>
               </ul>
             </details>
             <details>
-              <summary><span>客户结构与价值</span><em>2 页</em></summary>
+              <summary><span>结论与行动建议</span><em>3 页</em></summary>
               <ul>
-                <li>客户类型销售构成</li>
-                <li>RFM 客户分群</li>
+                <li>核心增长来源拆解</li>
+                <li>高价值产品与客户组合</li>
+                <li>关键指标归因</li>
               </ul>
             </details>
             <details>
-              <summary><span>异常波动与行动建议</span><em>3 页</em></summary>
+              <summary><span>总结与附录</span><em>30 页</em></summary>
               <ul>
-                <li>异常波动月份识别</li>
-                <li>低毛利与折扣异常</li>
-                <li>关键指标归因</li>
+                <li>总结：5 条根因链与 4 个汇总指标</li>
+                <li>主题归因 5 篇：规模 / 利润 / 单品 / 区域 / 数据完整性</li>
+                <li>DAX 查询附录 24 页 · 34 条</li>
               </ul>
             </details>
           </div>
@@ -764,57 +766,57 @@
         </div>
 
         <figure class="chain-page" data-reveal style="--i:1">
-          <figcaption>汇报里的任意一页，拆开就是这五个部位</figcaption>
+          <figcaption>第 08 页原样拆开，就是这五个部位</figcaption>
           <div class="page-card">
             <div class="page-part">
               <span class="page-part-label">页眉 · 章节与序号</span>
               <p class="page-kicker">产品结构与贡献 · 08</p>
-              <h4>产品利润贡献排名</h4>
+              <h4>单品利润排名与利润结构</h4>
             </div>
             <div class="page-part">
               <span class="page-part-label">结论 · 一句话回答这一页的问题</span>
-              <p class="page-claim">销量第一名，利润只排第五</p>
+              <p class="page-claim">利润第一名，销售额只排第 8</p>
             </div>
             <div class="page-part">
               <span class="page-part-label">指标 · 标明口径与数据截止日</span>
               <dl class="page-kpis">
                 <div><dt>利润排名</dt><dd>1</dd></div>
                 <div><dt>销售排名</dt><dd>8</dd></div>
-                <div><dt>利润率差</dt><dd>17.3pp</dd></div>
+                <div><dt>利润率</dt><dd>21.8%</dd></div>
               </dl>
             </div>
             <div class="page-part">
               <span class="page-part-label">图表 · 服务端画好的静态图</span>
-              <svg class="page-chart" viewBox="0 0 340 128" role="img" aria-label="五款产品的利润贡献横向条形图（示意）">
+              <svg class="page-chart" viewBox="0 0 340 128" role="img" aria-label="第 08 页利润排名横向条形图：A39、A90、A80 居前，S20、B6 利润明显偏低">
                 <g font-family="inherit" font-size="11" fill="#6f6f68">
-                  <text x="0" y="14">学习机 A</text>
-                  <text x="0" y="40">平板 B</text>
-                  <text x="0" y="66">平板 C</text>
-                  <text x="0" y="92">学习机 D</text>
-                  <text x="0" y="118">平板 E</text>
+                  <text x="0" y="14">A39</text>
+                  <text x="0" y="40">A90</text>
+                  <text x="0" y="66">A80</text>
+                  <text x="0" y="92">S20</text>
+                  <text x="0" y="118">B6</text>
                 </g>
                 <g fill="#f2c811">
                   <rect x="68" y="4" width="222" height="14" rx="3"/>
-                  <rect x="68" y="30" width="171" height="14" rx="3"/>
-                  <rect x="68" y="56" width="96" height="14" rx="3"/>
-                  <rect x="68" y="82" width="76" height="14" rx="3"/>
-                  <rect x="68" y="108" width="51" height="14" rx="3"/>
+                  <rect x="68" y="30" width="207" height="14" rx="3"/>
+                  <rect x="68" y="56" width="198" height="14" rx="3"/>
+                  <rect x="68" y="82" width="80" height="14" rx="3"/>
+                  <rect x="68" y="108" width="57" height="14" rx="3"/>
                 </g>
                 <g fill="#141413" font-size="10" font-weight="600">
                   <text x="298" y="15">1</text>
-                  <text x="247" y="41">2</text>
-                  <text x="172" y="67">3</text>
-                  <text x="152" y="93">4</text>
-                  <text x="127" y="119">5</text>
+                  <text x="283" y="41">2</text>
+                  <text x="274" y="67">3</text>
+                  <text x="156" y="93">6</text>
+                  <text x="133" y="119">15</text>
                 </g>
               </svg>
             </div>
             <div class="page-part">
-              <span class="page-part-label">关键点 · 3–5 条支撑结论</span>
+              <span class="page-part-label">关键点 · 3–4 条支撑结论</span>
               <ul class="page-keys">
-                <li>利润第一名与销售额第一名不是同一款产品</li>
-                <li>利润率最高与最低相差 17.3 个百分点</li>
-                <li>大单品利润薄，规模没换成利润</li>
+                <li>A39 利润第 1，销售额只排第 8</li>
+                <li>A90 销售额第 1，利润第 2，利润率 10.9%</li>
+                <li>教师平板 B6 销售额第 3，利润只排第 15</li>
               </ul>
             </div>
             <p class="page-source">指标：利润、销售额、利润率 · 数据截至 2026-12-31 · 1 条 DAX · 见附录可复现</p>
@@ -824,8 +826,8 @@
 
       <ul class="chain-proof" data-reveal>
         <li><strong>每页都能追到出处</strong><span>写清用了哪些指标、数据截止到哪天、跑了几条查询</span></li>
-        <li><strong>数字对不上会自己说</strong><span>正文数字与取数结果不一致时，直接标在页面上，不藏</span></li>
-        <li><strong>过程全程留痕</strong><span>末页附全量 DAX 查询，粘回 Power BI 可逐条复现</span></li>
+        <li><strong>数字对不上会自己说</strong><span>正文与取数结果不一致时直接标在页面上——这份汇报自己标了 4 处</span></li>
+        <li><strong>过程全程留痕</strong><span>24 页附录、34 条 DAX 查询，粘回 Power BI 可逐条复现</span></li>
       </ul>
     </div>
   </section>
@@ -880,7 +882,7 @@
           <li>
             <a href="long-chain/">
               <span class="proof-num">04</span>
-              <span class="proof-main"><strong>39 页长链汇报演示</strong><span>一次提问生成的完整汇报</span></span>
+              <span class="proof-main"><strong>54 页长链汇报演示</strong><span>一次提问生成的完整汇报</span></span>
             </a>
           </li>
           <li>

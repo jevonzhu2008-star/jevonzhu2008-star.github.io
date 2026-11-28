@@ -22,5 +22,8 @@ promo.mp4
 报表平台-宣传片.mp4
 promo-v2.mp4
 
+# 智能问数导出的原始汇报（含客户品牌与经销商名），脱敏产物才入库
+chatbi-deck-*.html
+
 # Python 缓存
 __pycache__/
