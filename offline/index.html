@@ -253,6 +253,21 @@
   .note[open] summary::before { content: "－ "; }
 
   .note p { margin: 10px 0 0; }
+
+  .reset { margin: 14px 0 0; }
+  .reset button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--teal);
+    font: inherit;
+    font-size: 12.5px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .reset button[disabled] { color: var(--faint); text-decoration: none; cursor: default; }
+
   .note code {
     font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
     font-size: 11.5px;
@@ -328,6 +343,8 @@
     <span class="countdown" id="countdown" aria-live="polite"></span>
   </div>
 
+  <p class="reset"><button id="resetSw" type="button" hidden>打不开？清除离线缓存后重试</button></p>
+
   <noscript><p class="countdown">当前浏览器禁用了脚本，请点上方按钮手动刷新。</p></noscript>
 
   <details class="note">
@@ -381,7 +398,7 @@
 
   // 被 Service Worker 或网关兜底时，请求回来的仍是这一页，不能盲刷新
   function looksOffline(text) {
-    return /服务器暂时|Error 1033|cloudflare/i.test(text);
+    return /服务器暂时|Error 1033|Argo Tunnel/i.test(text);
   }
 
   function probe() {
@@ -428,6 +445,28 @@
       again.textContent = "检测中…";
       probe();
       setTimeout(function () { again.disabled = false; again.textContent = "重新检测"; }, 2500);
+    });
+  }
+
+  // 自救：万一某个 SW 版本判断错了，允许用户清掉再试
+  var resetBtn = document.getElementById("resetSw");
+  if (resetBtn && "serviceWorker" in navigator) {
+    resetBtn.hidden = false;
+    resetBtn.addEventListener("click", function () {
+      resetBtn.disabled = true;
+      resetBtn.textContent = "清理中…";
+      var tasks = [];
+      if (navigator.serviceWorker.getRegistrations) {
+        tasks.push(navigator.serviceWorker.getRegistrations().then(function (regs) {
+          return Promise.all(regs.map(function (reg) { return reg.unregister(); }));
+        }));
+      }
+      if (window.caches) {
+        tasks.push(caches.keys().then(function (keys) {
+          return Promise.all(keys.map(function (key) { return caches.delete(key); }));
+        }));
+      }
+      Promise.all(tasks).then(function () { location.reload(); }, function () { location.reload(); });
     });
   }
 })();
