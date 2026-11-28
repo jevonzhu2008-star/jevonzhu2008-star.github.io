@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>服务器暂时未开机 · Jevon Zhu</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #eef1f8;
+    --muted: #a7aec4;
+    --faint: #7c849c;
+    --line: rgba(255, 255, 255, 0.12);
+    --card: rgba(18, 24, 43, 0.72);
+    --teal: #5eead4;
+    --teal-deep: #0f766e;
+    --amber: #f6c453;
+    --bg: #0b1020;
+    --font: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    min-height: 100svh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* 天际线 + 光斑：只用一张图，其余交给 CSS */
+  .scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(680px 420px at 18% 8%, rgba(45, 212, 191, 0.16), transparent 70%),
+      radial-gradient(760px 520px at 92% 0%, rgba(99, 102, 241, 0.18), transparent 72%),
+      var(--bg);
+  }
+
+  .scene::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 70vh;
+    background: url("/assets/shots/portal-skyline.webp") center bottom / cover no-repeat;
+    opacity: 0.78;
+    -webkit-mask-image: linear-gradient(to top, #000 24%, transparent 94%);
+    mask-image: linear-gradient(to top, #000 24%, transparent 94%);
+  }
+
+  .scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 16, 32, 0.12) 0%, rgba(11, 16, 32, 0.58) 56%, rgba(11, 16, 32, 0.9) 100%);
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 72px) clamp(20px, 5vw, 32px) 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .brand i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 4px rgba(246, 196, 83, 0.16);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(246, 196, 83, 0.12); }
+    50% { box-shadow: 0 0 0 9px rgba(246, 196, 83, 0.02); }
+  }
+
+  h1 {
+    margin: 26px 0 0;
+    font-size: clamp(2.3rem, 6.4vw, 3.6rem);
+    line-height: 1.14;
+    letter-spacing: -0.025em;
+    font-weight: 750;
+  }
+
+  .lead {
+    margin: 18px 0 0;
+    max-width: 36em;
+    font-size: clamp(1rem, 2.4vw, 1.12rem);
+    color: var(--muted);
+  }
+
+  .lead strong { color: var(--ink); font-weight: 650; }
+
+  .card {
+    margin-top: 34px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .card-title {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .ways { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+  .way { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+
+  .way span:first-child {
+    flex: none;
+    width: 3.2em;
+    font-size: 13px;
+    color: var(--faint);
+  }
+
+  .way a {
+    color: var(--ink);
+    font-size: clamp(0.98rem, 2.4vw, 1.06rem);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(94, 234, 212, 0.35);
+    word-break: break-all;
+  }
+
+  .way a:hover,
+  .way a:focus-visible { color: var(--teal); border-bottom-color: var(--teal); }
+
+  .copy {
+    flex: none;
+    margin-left: 4px;
+    padding: 2px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--muted);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .copy:hover { color: var(--ink); border-color: rgba(255, 255, 255, 0.28); }
+
+  .qr { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+  .qr img {
+    width: 116px;
+    height: 116px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 6px;
+  }
+
+  .qr figcaption { font-size: 11.5px; color: var(--faint); text-align: center; }
+
+  .retry {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: var(--teal);
+    color: #062e2a;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.18s ease, background 0.18s ease;
+  }
+
+  .btn:hover { background: #8ff5e3; transform: translateY(-1px); }
+
+  .btn--ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .btn--ghost:hover { background: rgba(255, 255, 255, 0.07); transform: none; }
+
+  .countdown { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+
+  .note {
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    font-size: 12.5px;
+    color: var(--faint);
+  }
+
+  .note summary {
+    cursor: pointer;
+    list-style: none;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+
+  .note summary::-webkit-details-marker { display: none; }
+  .note summary::before { content: "＋ "; color: var(--faint); }
+  .note[open] summary::before { content: "－ "; }
+
+  .note p { margin: 10px 0 0; }
+  .note code {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 11.5px;
+    color: #cbd5e8;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
+
+  .foot {
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(20px, 5vw, 32px) 28px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(167, 174, 196, 0.55);
+  }
+
+  .foot a { color: inherit; }
+
+  @media (max-width: 620px) {
+    .card { grid-template-columns: 1fr; gap: 18px; }
+    .qr { flex-direction: row; justify-content: flex-start; gap: 14px; }
+    .qr img { width: 96px; height: 96px; }
+    .qr figcaption { text-align: left; }
+    .way span:first-child { width: 2.8em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand i { animation: none; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="scene" aria-hidden="true"></div>
+
+<main class="page">
+  <p class="brand"><i aria-hidden="true"></i><span id="product">演示服务器</span> · 当前离线</p>
+
+  <h1>服务器暂时<br>没有开机</h1>
+
+  <p class="lead">这个演示跑在作者自己的电脑上，不是云端服务。电脑关机、休眠，或者家里网络断了，Cloudflare 就会返回 <strong>Error 1033</strong>。<strong>不是链接失效，也不是你的问题。</strong></p>
+
+  <section class="card" aria-label="联系方式">
+    <div>
+      <h2 class="card-title">联系作者开机</h2>
+      <ul class="ways">
+        <li class="way">
+          <span>微信</span>
+          <a href="weixin://dl/chat?DoctorJevon">DoctorJevon</a>
+          <button class="copy" type="button" data-copy="DoctorJevon">复制</button>
+        </li>
+        <li class="way">
+          <span>邮箱</span>
+          <a href="mailto:zhujh1164@163.com?subject=Power%20BI%20%E6%BC%94%E7%A4%BA%E7%AB%99%E7%82%B9%E8%AE%BF%E9%97%AE">zhujh1164@163.com</a>
+        </li>
+        <li class="way">
+          <span>电话</span>
+          <a href="tel:18608138487">186 0813 8487</a>
+        </li>
+      </ul>
+    </div>
+    <figure class="qr">
+      <img src="/assets/wechat-qr.webp" width="116" height="116" alt="Jevon Zhu 的微信二维码">
+      <figcaption>扫码加微信<br>备注「演示站点」</figcaption>
+    </figure>
+  </section>
+
+  <div class="retry">
+    <button class="btn" id="again" type="button">重新检测</button>
+    <a class="btn btn--ghost" href="https://ipowerbi.icu/#site-portfolio">先看公开看板 <span aria-hidden="true">→</span></a>
+    <span class="countdown" id="countdown" aria-live="polite"></span>
+  </div>
+
+  <noscript><p class="countdown">当前浏览器禁用了脚本，请点上方按钮手动刷新。</p></noscript>
+
+  <details class="note">
+    <summary>技术说明</summary>
+    <p>页面由 Cloudflare 返回，说明隧道 <code>report-portal</code> 没有连上。作者本机确认三件事即可恢复：<code>Get-Process cloudflared</code> 有进程、<code>127.0.0.1:5180</code> 在监听、或者运行 <code>deploy\start-portal-prod.ps1</code>。</p>
+    <p>如果你不是作者：把这条页面截图发给他，比描述「打不开」更快定位。</p>
+  </details>
+</main>
+
+<p class="foot">© 2026 Jevon Zhu · <a href="https://ipowerbi.icu/">ipowerbi.icu</a> · 成都</p>
+
+<script>
+(function () {
+  var host = location.hostname;
+  var label = host.indexOf("portal.") === 0 ? "报表门户"
+    : host.indexOf("app.") === 0 ? "智能问数"
+    : "演示服务器";
+  var product = document.getElementById("product");
+  if (product) product.textContent = label;
+  document.title = label + " · 服务器暂时未开机 | Jevon Zhu";
+
+  var copyBtn = document.querySelector(".copy");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function () {
+      var text = copyBtn.getAttribute("data-copy") || "";
+      var done = function () {
+        copyBtn.textContent = "已复制";
+        setTimeout(function () { copyBtn.textContent = "复制"; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  }
+
+  var again = document.getElementById("again");
+  var countdown = document.getElementById("countdown");
+  var left = 20;
+  var timer;
+
+  function tick() {
+    if (!countdown) return;
+    countdown.textContent = left + " 秒后自动重试";
+    if (left <= 0) {
+      countdown.textContent = "正在重试…";
+      location.reload();
+      return;
+    }
+    left -= 1;
+  }
+
+  function start() {
+    left = 20;
+    if (timer) clearInterval(timer);
+    tick();
+    timer = setInterval(tick, 1000);
+  }
+
+  if (countdown) start();
+
+  if (again) {
+    again.addEventListener("click", function () {
+      again.disabled = true;
+      again.textContent = "检测中…";
+      location.reload();
+    });
+  }
+})();
+</script>
+</body>
+</html>
